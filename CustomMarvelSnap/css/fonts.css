@@ -1,14 +1,14 @@
 @font-face {
     font-family: 'Ultimatum-Bold';
-    src: url('/res/fonts/Ultimatum Bold.otf');
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/fonts/Ultimatum Bold.otf');
 }
 
 @font-face {
     font-family: 'Ultimatum-Bold-Italic';
-    src: url('/res/fonts/Ultimatum Bold Italic.otf');
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/fonts/Ultimatum Bold Italic.otf');
 }
 
 @font-face {
     font-family: 'BadaBoom';
-    src: url('/res/fonts/Badaboom.ttf');
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/fonts/Badaboom.ttf');
 }
