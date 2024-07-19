@@ -13,9 +13,28 @@ body {
 
 h1 {
     font-family: 'Ultimatum-Bold', sans-serif;
-    font-size: 3rem;
+    font-size: 3em;
     text-align: center;
-    margin-top: 5px;
+    margin-top: 10px;
+    display: block;
+    text-shadow: 
+        3px 3px 3px #000,
+        -3px 3px 3px #000,
+        3px -3px 3px #000,
+        -3px -3px 3px #000;
+    color: white;
+}
+
+@media only screen and (max-width: 775px) {
+    h1 {
+        font-size: 2em;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    h1 {
+        font-size: 1.5em;
+    }
 }
 
 h2 {
@@ -42,3 +61,31 @@ h2 {
     background-color: #10072b;
     color: white;
 }
+
+.default-button:active {
+    background-color: #10072b;
+    color: white;
+    border: 3px solid white;
+}
+
+.info-div {
+    text-align: left;
+    color: white;
+    font-size: 1em;
+    text-shadow: 
+        3px 3px 3px #000,
+        -3px 3px 3px #000,
+        3px -3px 3px #000,
+        -3px -3px 3px #000;
+    margin: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    width: 550px;
+}
+
+@media (max-width: 600px) {
+    .info-div {
+        width: 250px;
+    }
+}
+
