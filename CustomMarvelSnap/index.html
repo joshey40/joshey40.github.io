@@ -2,16 +2,17 @@
 <html>
 <head>
     <title>Custom Marvel Snap</title>
-    <link rel="shortcut icon" type="image/x-icon" href="https://joshey40.github.io/CustomMarvelSnap/favicon.ico"/>
-    <link href="https://joshey40.github.io/CustomMarvelSnap/css/main.css" rel="stylesheet">
-    <link href="https://joshey40.github.io/CustomMarvelSnap/css/fonts.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/fonts.css" rel="stylesheet">
 </head>
 <body>
-    <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/background.png" class="background-img" alt="background">
+    <img src="/res/images/background.png" class="background-img" alt="background">
     <div style="position: absolute; height: 100vh; margin-right: 0px; ">
         <h1>Custom Marvel Snap</h1>
         <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
             <div class="info-div">
+                <h2 style="margin: 4px 0px;">Filter</h2>
                 <input type="text" id="search" name="search" placeholder="Search" class="default-text-input" oninput="updateSearch()">
                 <button onclick="clearFilters()" class="default-button">Clear</button>
                 <select name="cardTypeSelect" id="cardTypeSelect" class="default-select" onchange="updateSearch()">
