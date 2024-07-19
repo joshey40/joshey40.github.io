@@ -24,6 +24,14 @@
                     <option value="official">Official</option>
                     <option value="custom">Custom</option>
                 </select>
+                <br>
+                <select name="order" id="order" class="select" onchange="updateSearch()">
+                    <option value="Name">Name</option>
+                    <option value="Cost">Cost</option>
+                    <option value="Power">Power</option>
+                </select>
+                <button onclick="ascendOrder()" class="button" style="width:33px;">&#8593;</button>
+                <button onclick="descendOrder()" class="button" style="width:33px;">&#8595;</button>
             </div>
             <div class="info-div">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -35,6 +43,6 @@
             <p>All rights reserved. All art and/or graphic content is property of their respective artists and/or owners. This website is not produced, endorsed, supported, or affiliated with MARVEL, Nuverse and Second Dinner. Text and images are user-submitted and do not represent official endorsements of this site.</p>
         </div>
     </div>
-    <script src="index.js"></script>
+    <script type="module" src="index.js"></script>
 </body>
 </html>
