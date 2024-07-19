@@ -11,12 +11,13 @@
         <h1>Custom Marvel Snap</h1>
         <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
             <div class="info-div">
-                <input type="text" id="search" name="search" placeholder="Search" class="default-text-input" onchange="updateSearch()">
+                <input type="text" id="search" name="search" placeholder="Search" class="default-text-input" oninput="updateSearch()">
                 <button onclick="clearFilters()" class="default-button">Clear</button>
                 <select name="cardTypeSelect" id="cardTypeSelect" class="default-select" onchange="updateSearch()">
-                    <option value="All">All</option>
-                    <option value="Token">Token only</option>
-                    <option value="Character">Character only</option>
+                    <option value="all">All</option>
+                    <option value="token">Tokens</option>
+                    <option value="character">Characters</option>
+                    <option value="location">Locations</option>
                 </select>
                 <select name="sourceSelect" id="sourceSelect" class="default-select" onchange="updateSearch()">
                     <option value="All">All</option>
