@@ -26,21 +26,21 @@
                     <option value="custom">Custom</option>
                 </select>
                 <br>
-                <select name="order" id="order" class="select" onchange="updateSearch()">
+                <select name="order" id="order" class="default-select" onchange="updateSearch()">
                     <option value="Name">Name</option>
                     <option value="Cost">Cost</option>
                     <option value="Power">Power</option>
                 </select>
-                <button onclick="ascendOrder()" class="button" style="width:33px;">&#8593;</button>
-                <button onclick="descendOrder()" class="button" style="width:33px;">&#8595;</button>
+                <button onclick="ascendOrder()" class="default-button" style="width:33px;">&#8593;</button>
+                <button onclick="descendOrder()" class="default-button" style="width:33px;">&#8595;</button>
             </div>
             <div class="info-div">
                 <div>
-                    <h1 style="margin: 4px 0px;">Custom</h1>
-                    <button onclick="openCreateCardPopup()" class="createCustomCardButton">Create Custom Card</button>
+                    <h2 style="margin: 4px 0px;">Custom</h2>
+                    <button onclick="openCreateCardPopup()" class="default-button">Create Custom Card</button>
                 </div>
                 <div>
-                    <h1 style="margin: 4px 0px;">About</h1>
+                    <h2 style="margin: 4px 0px;">About</h2>
                     <p style="margin: 4px 0px; font: 1em 'Roboto', sans-serif;">This is a fan-made website for the Marvel Snap card game. It is a place where you can find and share custom cards for the game.</p>
                 </div>
             </div>
