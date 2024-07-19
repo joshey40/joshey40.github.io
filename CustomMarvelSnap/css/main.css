@@ -9,13 +9,15 @@ body {
     width: 100vw;
     height: 100vh;
     object-fit: cover;
+    position: absolute;
 }
 
 h1 {
     font-family: 'Ultimatum-Bold', sans-serif;
-    font-size: 3rem;
+    font-size: 5rem;
     text-align: center;
     margin-top: 10px;
+    margin-bottom: 10px;
     display: block;
     text-shadow: 
         3px 3px 3px #000,
@@ -91,6 +93,14 @@ h2 {
     }
 }
 
+.cards-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
 
 .legals-div {
     display: flex;
