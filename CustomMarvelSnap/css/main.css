@@ -10,3 +10,35 @@ body {
     height: 100vh;
     object-fit: cover;
 }
+
+h1 {
+    font-family: 'Ultimatum-Bold', sans-serif;
+    font-size: 3rem;
+    text-align: center;
+    margin-top: 5px;
+}
+
+h2 {
+    font-family: 'Ultimatum-Bold', sans-serif;
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.default-button {
+    background-color: white;
+    padding: 5px 10px;
+    margin: 4px 0;
+    display: inline-block;
+    border: 3px solid #10072b;
+    border-radius: 4px;
+    cursor: pointer;
+    font: 1em 'Roboto', sans-serif;
+    text-shadow: none;
+    width: 70px;
+}
+
+.default-button:hover {
+    background-color: #10072b;
+    color: white;
+}
