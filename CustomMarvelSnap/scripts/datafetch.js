@@ -37,6 +37,7 @@ async function getCards() {
     // TODO: Clean up the data and return the final list
     console.log(officialCards);
     console.log(customCards);
+    return [];
 }
 
 async function getLocations() {
@@ -45,6 +46,7 @@ async function getLocations() {
     // TODO: Clean up the data and return the final list
     console.log(officialLocations);
     console.log(customLocations);
+    return [];
 }
 
 export { getCards, getLocations }
