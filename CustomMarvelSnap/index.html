@@ -7,19 +7,32 @@
 </head>
 <body>
     <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/background.png" class="background-img" alt="background">
-    <h1>Custom Marvel Snap</h1>
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-        <div class="info-div">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <div style="position: absolute; height: 100vh; margin-right: 0px; ">
+        <h1>Custom Marvel Snap</h1>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            <div class="info-div">
+                <input type="text" id="search" name="search" placeholder="Search" class="default-text-input" onchange="updateSearch()">
+                <button onclick="clearFilters()" class="default-button">Clear</button>
+                <select name="cardTypeSelect" id="cardTypeSelect" class="default-select" onchange="updateSearch()">
+                    <option value="All">All</option>
+                    <option value="Token">Token only</option>
+                    <option value="Character">Character only</option>
+                </select>
+                <select name="sourceSelect" id="sourceSelect" class="default-select" onchange="updateSearch()">
+                    <option value="All">All</option>
+                    <option value="official">Official</option>
+                    <option value="custom">Custom</option>
+                </select>
+            </div>
+            <div class="info-div">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
         </div>
-        <div class="info-div">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        </div>
-    </div>
 
-    <div id="cards-div" class="cards-div"> </div>
-    <div id="legals-div" class="legals-div">
-        <p>All rights reserved. All art and/or graphic content is property of their respective artists and/or owners. This website is not produced, endorsed, supported, or affiliated with MARVEL, Nuverse and Second Dinner. Text and images are user-submitted and do not represent official endorsements of this site.</p>
+        <div id="cards-div" class="cards-div"> </div>
+        <div id="legals-div" class="legals-div">
+            <p>All rights reserved. All art and/or graphic content is property of their respective artists and/or owners. This website is not produced, endorsed, supported, or affiliated with MARVEL, Nuverse and Second Dinner. Text and images are user-submitted and do not represent official endorsements of this site.</p>
+        </div>
     </div>
 </body>
 </html>

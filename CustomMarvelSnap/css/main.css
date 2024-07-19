@@ -53,30 +53,6 @@ h2 {
     color: white;
 }
 
-.default-button {
-    background-color: white;
-    padding: 5px 10px;
-    margin: 4px 0;
-    display: inline-block;
-    border: 3px solid #10072b;
-    border-radius: 4px;
-    cursor: pointer;
-    font: 1em 'Roboto', sans-serif;
-    text-shadow: none;
-    width: 70px;
-}
-
-.default-button:hover {
-    background-color: #10072b;
-    color: white;
-}
-
-.default-button:active {
-    background-color: #10072b;
-    color: white;
-    border: 3px solid white;
-}
-
 .info-div {
     text-align: left;
     color: white;
@@ -113,4 +89,57 @@ h2 {
     font: 1em 'Roboto', sans-serif;
     text-align: center;
     padding: 5px;
+}
+
+
+.default-button {
+    background-color: white;
+    padding: 5px 10px;
+    margin: 4px 0;
+    display: inline-block;
+    border: 3px solid #10072b;
+    border-radius: 4px;
+    cursor: pointer;
+    font: 1em 'Roboto', sans-serif;
+    text-shadow: none;
+    width: 70px;
+}
+
+.default-button:hover {
+    background-color: #10072b;
+    color: white;
+}
+
+.default-button:active {
+    background-color: #10072b;
+    color: white;
+    border: 3px solid white;
+}
+
+.default-text-input {
+    width: 150px;
+    padding: 5px 10px;
+    margin: 4px 0;
+    display: inline-block;
+    border: 3px solid #10072b;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font: 1em 'Roboto', sans-serif;
+}
+
+
+.default-select {
+    width: 150px;
+    padding: 5px 10px;
+    margin: 4px 0;
+    display: inline-block;
+    border: 3px solid #10072b;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font: 1em 'Roboto', sans-serif;
+}
+
+.default-select option {
+    background-color: white;
+    font: 1em 'Roboto', sans-serif;
 }
