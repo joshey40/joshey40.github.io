@@ -1,8 +1,18 @@
+body {
+    margin: 0;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
 .header {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 10px;
     text-align: center;
+    margin: 10px;
 }
 
 .content {
@@ -10,6 +20,7 @@
     color: white;
     padding: 10px;
     text-align: center;
+    margin: 10px;
 }
 
 .dices {
@@ -21,13 +32,12 @@
 }
 
 .dice_roll_button {
-    background-color: white;
-    border: none;
     width: 50px;
     height: 50px;
     margin: 10px;
     border: 3px solid black;
     border-radius: 10px;
+    display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
