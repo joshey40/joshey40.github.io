@@ -5,6 +5,13 @@
     text-align: center;
 }
 
+.content {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
 .dices {
     display: flex;
     flex-direction: column;

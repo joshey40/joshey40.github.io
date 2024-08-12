@@ -14,7 +14,10 @@ function rerollDice() {
     for (var i = 0; i < 6; i++) {
         dice = document.createElement("div");
         dice.className = "dice";
-        dice.style.backgroundColor = dice_colors[Math.floor(Math.random() * 6)];
+        dice.style.backgroundColor = dice_colors[i];
+        dice.innerHTML = dice_values[dice_colors[i]];
         dice_container.appendChild(dice);
     }
 }
+
+rerollDice();
