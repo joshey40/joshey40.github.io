@@ -7,26 +7,28 @@
 
 .dices {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin-top: 20px;
 }
 
 .dice_roll_button {
-    background-color: #4CAF50;
+    background-color: white;
     border: none;
     width: 50px;
     height: 50px;
     margin: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
+    border: 3px solid black;
+    border-radius: 10px;
 }
 
 .dice {
     width: 50px;
     height: 50px;
     margin: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
+    border: 3px solid black;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
