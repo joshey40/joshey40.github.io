@@ -1,9 +1,9 @@
 
 function startGame(gameNum) {
     var game = document.getElementById("game_select");
-    game.style.visibility = "hidden";
+    game.style.display = "none";
     var game = document.getElementById("game");
-    game.style.visibility = "visible";
+    game.style.display = "block";
 }
 
 
