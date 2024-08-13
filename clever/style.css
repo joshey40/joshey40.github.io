@@ -2,11 +2,6 @@ body {
     margin: 0;
 }
 
-img {
-    width: 100%;
-    height: auto;
-}
-
 .header {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
@@ -15,12 +10,33 @@ img {
     margin: 10px;
 }
 
-.content {
+.game_select {
     background-color: rgba(0, 0, 0, 0.5);
-    color: white;
     padding: 10px;
-    text-align: center;
     margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: visible;
+}
+
+.game_select_button {
+    width: 100px;
+    height: 200px;
+    margin: 10px;
+    border: 3px solid black;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.game {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    margin: 10px;
+    visibility: hidden;
 }
 
 .dices {
@@ -41,6 +57,7 @@ img {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    background: url('res/reroll.png') no-repeat center;
 }
 
 .dice {

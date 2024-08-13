@@ -1,3 +1,14 @@
+
+function startGame(gameNum) {
+    var game = document.getElementById("game_select");
+    game.style.visibility = "hidden";
+    var game = document.getElementById("game");
+    game.style.visibility = "visible";
+}
+
+
+
+
 const dice_colors = ["white", "silver", "yellow", "blue", "green", "pink"];
 const dice_values = {
     "white": 1,
@@ -19,5 +30,3 @@ function rerollDice() {
         dice_container.appendChild(dice);
     }
 }
-
-rerollDice();
