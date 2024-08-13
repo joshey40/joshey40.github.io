@@ -2,6 +2,25 @@ body {
     margin: 0;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 50px;
+    margin: 10px;
+    font-family: 'Bungee', cursive;
+}
+
+@supports (-webkit-text-stroke: 2px black) {
+    h1 {
+      -webkit-text-fill-color: white;
+      -webkit-text-stroke: 2px black;
+    }
+  }
+
 .header {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
@@ -57,7 +76,6 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    background: url('res/reroll.png') no-repeat center;
 }
 
 .dice {
@@ -71,3 +89,10 @@ body {
     align-items: center;
     font-size: 20px;
 }
+
+@supports (-webkit-text-stroke: 2px black) {
+    .dice {
+      -webkit-text-fill-color: white;
+      -webkit-text-stroke: 2px black;
+    }
+  }
