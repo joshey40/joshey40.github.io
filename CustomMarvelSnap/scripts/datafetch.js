@@ -1,9 +1,9 @@
-
 // Constants
 const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true"
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 
 async function getOfficialCards() {
+    console.log("hiiii");
     return fetch(CARDS_API_URL, { mode: 'no-cors' })
         .then(response => response.json())
         .then(data => {
