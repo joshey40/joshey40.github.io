@@ -6,7 +6,7 @@ async function getOfficialCards() {
     return fetch(CARDS_API_URL, { mode: 'no-cors' })
         .then(response => response.json())
         .then(data => {
-            var cards = data.sucess.cards;
+            var cards = data.success.cards;
             return cards;
         });
 }
@@ -15,7 +15,7 @@ async function getOfficialLocations() {
     return fetch(LOCATIONS_API_URL, { mode: 'no-cors' })
         .then(response => response.json())
         .then(data => {
-            var locations = data.sucess.locations;
+            var locations = data.success.locations;
             return locations;
         });
 }
