@@ -21,7 +21,7 @@ async function getOfficialLocations() {
         })
 }
 
-async function getCustomeCards() {
+async function getCustomCards() {
     // TODO: Implement this function
     return [];
 }
@@ -33,7 +33,7 @@ async function getCustomLocations() {
 
 async function getCards() {
     var officialCards = await getOfficialCards();
-    var customCards = await getCustomeCards();
+    var customCards = await getCustomCards();
     // TODO: Clean up the data and return the final list
     console.log(officialCards);
     console.log(customCards);
