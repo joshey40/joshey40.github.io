@@ -4,11 +4,80 @@
     <title>Custom Marvel Snap Card Maker</title>
     <link rel="shortcut icon" type="image/x-icon" href="https://joshey40.github.io/CustomMarvelSnap/favicon.ico"/>
     <link href="https://joshey40.github.io/CustomMarvelSnap/css/fonts.css" rel="stylesheet">
-    <link href="https://joshey40.github.io/CustomMarvelSnap/CardMaker/main.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .background-img {
+            z-index: -1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            overflow: hidden;
+        }
+        .content-div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Ultimatum-Bold', sans-serif;
+            font-size: 5rem;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            display: block;
+            text-shadow: 
+                3px 3px 3px #000,
+                -3px 3px 3px #000,
+                3px -3px 3px #000,
+                -3px -3px 3px #000;
+            color: white;
+        }
+        .result-div {
+            width: 40%;
+            margin: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        .editor-div {
+            width: 40%;
+            margin: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        .default-text-input {
+            margin: 4px 0px;
+            padding: 4px;
+            font: 1em 'Roboto', sans-serif;
+            border-radius: 5px;
+            border: 1px solid white;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: black;
+        }
+        
+    </style>
 </html>
 <body>
     <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/background.png" class="background-img" alt="background">
     <div class="content-div">
         <h1>Custom Marvel Snap Card Maker</h1>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            <div class="result-div">
+                <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/default_cards/default.png" alt="result" style="width: 100%;">
+            </div>
+            <div class="editor-div">
+                <input type="text" id="name" name="name" placeholder="Name" class="default-text-input"">
+            </div>
+        </div>
     </div>
 </body>
