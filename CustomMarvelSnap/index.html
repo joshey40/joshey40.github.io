@@ -8,48 +8,50 @@
 </head>
 <body>
     <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/background.png" class="background-img" alt="background">
-    <div style="position: absolute; height: 100vh; margin-right: 0px; ">
-        <h1>Custom Marvel Snap</h1>
-        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-            <div class="filter-div">
-                <h2 style="margin: 4px 0px;">Filter</h2>
-                <input type="text" id="search" name="search" placeholder="Search" class="default-text-input" oninput="updateSearch()">
-                <button onclick="clearFilters()" class="default-button">Clear</button>
-                <select name="cardTypeSelect" id="cardTypeSelect" class="default-select" onchange="updateSearch()">
-                    <option value="all">All</option>
-                    <option value="token">Tokens</option>
-                    <option value="character">Characters</option>
-                    <option value="location">Locations</option>
-                </select>
-                <select name="sourceSelect" id="sourceSelect" class="default-select" onchange="updateSearch()">
-                    <option value="All">All</option>
-                    <option value="official">Official</option>
-                    <option value="custom">Custom</option>
-                </select>
-                <br>
-                <select name="order" id="order" class="default-select" onchange="updateSearch()">
-                    <option value="Name">Name</option>
-                    <option value="Cost">Cost</option>
-                    <option value="Power">Power</option>
-                </select>
-                <button onclick="ascendOrder()" class="default-button" style="width:33px;">&#8593;</button>
-                <button onclick="descendOrder()" class="default-button" style="width:33px;">&#8595;</button>
-            </div>
-            <div class="info-div">
-                <div style="background-color: rgba(0, 0, 0, 0.5); margin: 10px; padding: 10px;">
-                    <h2 style="margin: 4px 0px;">Custom</h2>
-                    <button onclick="openCreateCardPopup()" class="default-button">Create Custom Card</button>
+    <div class="content">
+        <div style="position: absolute; height: 100vh; margin-right: 0px; ">
+            <h1>Custom Marvel Snap</h1>
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                <div class="filter-div">
+                    <h2 style="margin: 4px 0px;">Filter</h2>
+                    <input type="text" id="search" name="search" placeholder="Search" class="default-text-input" oninput="updateSearch()">
+                    <button onclick="clearFilters()" class="default-button">Clear</button>
+                    <select name="cardTypeSelect" id="cardTypeSelect" class="default-select" onchange="updateSearch()">
+                        <option value="all">All</option>
+                        <option value="token">Tokens</option>
+                        <option value="character">Characters</option>
+                        <option value="location">Locations</option>
+                    </select>
+                    <select name="sourceSelect" id="sourceSelect" class="default-select" onchange="updateSearch()">
+                        <option value="All">All</option>
+                        <option value="official">Official</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                    <br>
+                    <select name="order" id="order" class="default-select" onchange="updateSearch()">
+                        <option value="Name">Name</option>
+                        <option value="Cost">Cost</option>
+                        <option value="Power">Power</option>
+                    </select>
+                    <button onclick="ascendOrder()" class="default-button" style="width:33px;">&#8593;</button>
+                    <button onclick="descendOrder()" class="default-button" style="width:33px;">&#8595;</button>
                 </div>
-                <div style="background-color: rgba(0, 0, 0, 0.5); margin: 10px; padding: 10px;">
-                    <h2 style="margin: 4px 0px;">About</h2>
-                    <p style="margin: 4px 0px; font: 1em 'Roboto', sans-serif;">This is a fan-made website for the Marvel Snap card game. It is a place where you can find and share custom cards for the game.</p>
+                <div class="info-div">
+                    <div style="background-color: rgba(0, 0, 0, 0.5); margin: 10px; padding: 10px;">
+                        <h2 style="margin: 4px 0px;">Custom</h2>
+                        <button onclick="openCreateCardPopup()" class="default-button">Create Custom Card</button>
+                    </div>
+                    <div style="background-color: rgba(0, 0, 0, 0.5); margin: 10px; padding: 10px;">
+                        <h2 style="margin: 4px 0px;">About</h2>
+                        <p style="margin: 4px 0px; font: 1em 'Roboto', sans-serif;">This is a fan-made website for the Marvel Snap card game. It is a place where you can find and share custom cards for the game.</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="cards-div" class="cards-div"> </div>
-        <div id="legals-div" class="legals-div">
-            <p>All rights reserved. All art and/or graphic content is property of their respective artists and/or owners. This website is not produced, endorsed, supported, or affiliated with MARVEL, Nuverse and Second Dinner. Text and images are user-submitted and do not represent official endorsements of this site.</p>
+            <div id="cards-div" class="cards-div"> </div>
+            <div id="legals-div" class="legals-div">
+                <p>All rights reserved. All art and/or graphic content is property of their respective artists and/or owners. This website is not produced, endorsed, supported, or affiliated with MARVEL, Nuverse and Second Dinner. Text and images are user-submitted and do not represent official endorsements of this site.</p>
+            </div>
         </div>
     </div>
     <script type="module" src="index.js"></script>
