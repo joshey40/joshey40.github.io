@@ -11,8 +11,9 @@ function updateResult() {
     const canvas = generatecard(name, colorName, cost, power, description);
 
     // Update the card image
-    const cardImage = document.getElementById('cardImage');
-    cardImage.src = canvas.toDataURL();
+    const cardImageDiv = document.getElementById('result-div');
+    cardImageDiv.innerHTML = '';
+    cardImageDiv.appendChild(canvas);
 }
 
 // Attach to the global window object

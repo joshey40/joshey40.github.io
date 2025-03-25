@@ -1,4 +1,4 @@
-async function generatecard(name, colorName, cost, power, description) {
+async function generatecard(name, colorName, cost, power, description, size=1024) {
     // Create Canvas
     var canvas = document.createElement("canvas");
     canvas.width = size;
