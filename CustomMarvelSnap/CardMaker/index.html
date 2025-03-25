@@ -96,7 +96,7 @@
         <h1>CMS Card Maker</h1>
         <div class="divider-div">
             <div class="result-div">
-                <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/default_cards/default.png" alt="result" style="width: 100%;">
+                <img id="cardImage" src="https://joshey40.github.io/CustomMarvelSnap/res/images/default_cards/default.png" alt="result" style="width: 100%;">
             </div>
             <div class="editor-div">
                 <div style="display: flex; justify-content: space-evenly;">
@@ -107,7 +107,7 @@
                     <input type="number" id="cost" name="cost" placeholder="Cost" class="default-text-input" style="width: 89px; margin-right: 10px;" oninput="updateResult()">
                     <input type="number" id="power" name="power" placeholder="Power" class="default-text-input" style="width: 89px;" oninput="updateResult()">
                 </div>
-                <textarea id="description" name="description" placeholder="Description" class="default-text-input" style="width: 200px; height: 100px; resize: none;" oninput="updateCard()"></textarea>
+                <textarea id="description" name="description" placeholder="Description" class="default-text-input" style="width: 200px; height: 100px; resize: none;" oninput="updateResult()"></textarea>
                 
                 
             </div>
