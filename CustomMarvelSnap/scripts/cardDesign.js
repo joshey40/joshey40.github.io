@@ -1,14 +1,14 @@
 async function generatecard(name, colorName, cost, power, description, size=1024) {
     // Create Canvas
-    var canvas = document.createElement("canvas");
+    const canvas = document.createElement("canvas");
     canvas.width = size;
     canvas.height = size;
-    ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
     // Art_Mask
-    var artMask = await getImg("res/images/default_cards/art_mask.png");
+    const artMask = await getImg("res/images/default_cards/art_mask.png");
     ctx.drawImage(artMask, 0, 0, size, size);
     // Background
-    var backgroundImg = await getImg("res/images/default_cards/ghost_rider.png");
+    const backgroundImg = await getImg("res/images/default_cards/ghost_rider.png");
     ctx.globalCompositeOperation = "source-in";
     var w = backgroundImg.width;
     var h = backgroundImg.height;

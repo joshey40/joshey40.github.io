@@ -11,7 +11,7 @@ function updateResult() {
     const canvas = generatecard(name, colorName, cost, power, description);
 
     // Update the card image
-    const cardImageDiv = document.getElementById('result-div');
+    const cardImageDiv = document.getElementById('resultDiv');
     cardImageDiv.innerHTML = '';
     cardImageDiv.appendChild(canvas);
 }
