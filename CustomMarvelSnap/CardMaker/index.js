@@ -1,4 +1,4 @@
-import {generatecard} from './cardDesign.js';
+import {generatecard} from '../scripts/cardDesign.js';
 
 function onChange() {
     const name = document.getElementById('name').value;
