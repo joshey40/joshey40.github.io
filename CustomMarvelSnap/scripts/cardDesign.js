@@ -38,3 +38,5 @@ function getImg (src) {
         img.onerror = reject;
     });
 }
+
+export {generatecard};
