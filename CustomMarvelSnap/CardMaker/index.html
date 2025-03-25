@@ -42,27 +42,42 @@
             color: white;
         }
         .result-div {
-            width: 40%;
             margin: 10px;
             padding: 10px;
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
+            max-height: 500px;
+            max-width: 500px;
+        }
+        .divider-div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+        @media (max-width: 600px) {
+            .divider-div {
+                flex-direction: column;
+            }
         }
         .editor-div {
-            width: 40%;
             margin: 10px;
             padding: 10px;
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 300px;
+            
         }
         .default-text-input {
             margin: 4px 0px;
             padding: 4px;
             font: 1em 'Roboto', sans-serif;
             border-radius: 5px;
-            border: 1px solid white;
-            background-color: rgba(255, 255, 255, 0.5);
-            color: black;
+            border: 2px solid #10072b;
+            background-color: rgba(255, 255, 255);
+            color: rgb(255, 255, 255);
         }
         
     </style>
@@ -70,13 +85,20 @@
 <body>
     <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/background.png" class="background-img" alt="background">
     <div class="content-div">
-        <h1>Custom Marvel Snap Card Maker</h1>
-        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+        <h1>Custom Marvel Snap Card Maker</h1>  
+        <div class="divider-div">
             <div class="result-div">
                 <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/default_cards/default.png" alt="result" style="width: 100%;">
             </div>
             <div class="editor-div">
-                <input type="text" id="name" name="name" placeholder="Name" class="default-text-input"">
+                <input type="text" id="name" name="name" placeholder="Name" class="default-text-input" style="width: 200px;">
+                <div style="display: flex; justify-content: space-evenly;">
+                    <input type="number" id="cost" name="cost" placeholder="Cost" class="default-text-input" style="width: 89px; margin-right: 10px;">
+                    <input type="number" id="power" name="power" placeholder="Power" class="default-text-input" style="width: 89px;">
+                </div>
+                <textarea id="description" name="description" placeholder="Description" class="default-text-input" style="width: 200px; height: 100px; resize: none;"></textarea>
+                
+                
             </div>
         </div>
     </div>
