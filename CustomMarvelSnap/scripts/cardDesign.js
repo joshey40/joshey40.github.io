@@ -5,10 +5,10 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     canvas.height = size;
     const ctx = canvas.getContext("2d");
     // Art_Mask
-    const artMask = await getImg("res/images/default_cards/art_mask.png");
+    const artMask = await getImg("../res/images/default_cards/art_mask.png");
     ctx.drawImage(artMask, 0, 0, size, size);
     // Background
-    const backgroundImg = await getImg("res/images/default_cards/ghost_rider.png");
+    const backgroundImg = await getImg("../res/images/default_cards/ghost_rider.png");
     ctx.globalCompositeOperation = "source-in";
     var w = backgroundImg.width;
     var h = backgroundImg.height;
