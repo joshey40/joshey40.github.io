@@ -11,9 +11,8 @@ async function updateResult() {
     const canvas = await generatecard(name, colorName, cost, power, description);
 
     // Update the card image
-    const cardImageDiv = document.getElementById('resultDiv');
-    cardImageDiv.innerHTML = '';
-    cardImageDiv.appendChild(canvas);
+    const cardImage = document.getElementById('cardImage');
+    cardImage.src = canvas.toDataURL();
 }
 
 // Attach to the global window object
