@@ -88,9 +88,9 @@
         }
         
     </style>
+    <script async src="script.js"></script>
 </html>
 <body>
-    <script type="module" src="indexCardMaker.js"></script>
     <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/background.png" class="background-img" alt="background">
     <div class="content-div">
         <h1>CMS Card Maker</h1>
@@ -100,14 +100,14 @@
             </div>
             <div class="editor-div">
                 <div style="display: flex; justify-content: space-evenly;">
-                    <input type="text" id="name" name="name" placeholder="Name" class="default-text-input" style="width: 164px; margin-right: 10px;">
-                    <input type="color" id="nameColor" name="nameColor" class="default-text-input" style="width: 25px; padding: 1px;" value="#ffffff">
+                    <input type="text" id="name" name="name" placeholder="Name" class="default-text-input" style="width: 164px; margin-right: 10px;" oninput="updateCard()">
+                    <input type="color" id="nameColor" name="nameColor" class="default-text-input" style="width: 25px; padding: 1px;" value="#ffffff" oninput="updateCard()">
                 </div>
                 <div style="display: flex; justify-content: space-evenly;">
-                    <input type="number" id="cost" name="cost" placeholder="Cost" class="default-text-input" style="width: 89px; margin-right: 10px;">
-                    <input type="number" id="power" name="power" placeholder="Power" class="default-text-input" style="width: 89px;">
+                    <input type="number" id="cost" name="cost" placeholder="Cost" class="default-text-input" style="width: 89px; margin-right: 10px;" oninput="updateCard()">
+                    <input type="number" id="power" name="power" placeholder="Power" class="default-text-input" style="width: 89px;" oninput="updateCard()">
                 </div>
-                <textarea id="description" name="description" placeholder="Description" class="default-text-input" style="width: 200px; height: 100px; resize: none;"></textarea>
+                <textarea id="description" name="description" placeholder="Description" class="default-text-input" style="width: 200px; height: 100px; resize: none;" oninput="updateCard()"></textarea>
                 
                 
             </div>

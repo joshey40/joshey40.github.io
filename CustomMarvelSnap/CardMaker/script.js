@@ -15,8 +15,3 @@ function updateResult() {
     cardImage.src = canvas.toDataURL();
 
 }
-
-document.getElementById('name').addEventListener('input', updateResult);
-document.getElementById('colorName').addEventListener('input', updateResult);
-document.getElementById('cost').addEventListener('input', updateResult);
-document.getElementById('power').addEventListener('input', updateResult);
