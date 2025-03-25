@@ -1,6 +1,6 @@
 import {generatecard} from '../scripts/cardDesign.js';
 
-function onChange() {
+function updateResult() {
     const name = document.getElementById('name').value;
     const colorName = document.getElementById('colorName').value;
     const cost = document.getElementById('cost').value;
