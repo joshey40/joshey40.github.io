@@ -15,8 +15,9 @@
         .background-img {
             z-index: -1;
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 0%);
             width: 100vw;
             height: 100vh;
             object-fit: cover;
@@ -24,8 +25,9 @@
         }
         .content-div {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             align-items: center;
             width: 100vw;
             height: 100vh;
@@ -82,7 +84,7 @@
             border-radius: 5px;
             border: 2px solid #10072b;
             background-color: rgba(255, 255, 255);
-            color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
         }
         
     </style>
@@ -90,24 +92,26 @@
 <body>
     <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/background.png" class="background-img" alt="background">
     <div class="content-div">
-        <h1>CMS Card Maker</h1>  
+        <h1>CMS Card Maker</h1>
         <div class="divider-div">
             <div class="result-div">
                 <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/default_cards/default.png" alt="result" style="width: 100%;">
             </div>
             <div class="editor-div">
                 <div style="display: flex; justify-content: space-evenly;">
-                    <input type="text" id="name" name="name" placeholder="Name" class="default-text-input" style="width: 164px; margin-right: 10px;">
-                    <input type="color" id="nameColor" name="nameColor" class="default-text-input" style="width: 25px; padding: 1px;" value="#ffffff">
+                    <input type="text" id="name" name="name" placeholder="Name" class="default-text-input" style="width: 164px; margin-right: 10px;" onchange="updateResult()">
+                    <input type="color" id="nameColor" name="nameColor" class="default-text-input" style="width: 25px; padding: 1px;" value="#ffffff" onchange="updateResult()">
                 </div>
                 <div style="display: flex; justify-content: space-evenly;">
-                    <input type="number" id="cost" name="cost" placeholder="Cost" class="default-text-input" style="width: 89px; margin-right: 10px;">
-                    <input type="number" id="power" name="power" placeholder="Power" class="default-text-input" style="width: 89px;">
+                    <input type="number" id="cost" name="cost" placeholder="Cost" class="default-text-input" style="width: 89px; margin-right: 10px;" onchange="updateResult()">
+                    <input type="number" id="power" name="power" placeholder="Power" class="default-text-input" style="width: 89px;" onchange="updateResult()">
                 </div>
-                <textarea id="description" name="description" placeholder="Description" class="default-text-input" style="width: 200px; height: 100px; resize: none;"></textarea>
+                <textarea id="description" name="description" placeholder="Description" class="default-text-input" style="width: 200px; height: 100px; resize: none;" onchange="updateResult()"></textarea>
                 
                 
             </div>
         </div>
     </div>
+    <script type="module" src="index.js"></script>
 </body>
+</html>
