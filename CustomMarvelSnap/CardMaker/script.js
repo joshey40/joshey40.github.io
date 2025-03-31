@@ -39,6 +39,11 @@ function clearTitleImage() {
     console.log('clearTitleImage');
 }
 
+
+function selectFrame() {
+    console.log('selectFrame');
+}
+
 // Attach to the global window object
 window.updateResult = updateResult;
 window.mainImageChange = mainImageChange;
@@ -47,6 +52,7 @@ window.titleImageChange = titleImageChange;
 window.clearMainImage = clearMainImage;
 window.clearFrameBreakImage = clearFrameBreakImage;
 window.clearTitleImage = clearTitleImage;
+window.selectFrame = selectFrame;
 
-export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage };
+export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame };
 
