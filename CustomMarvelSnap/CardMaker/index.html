@@ -108,8 +108,9 @@
                     <input type="number" id="power" name="power" placeholder="Power" class="default-text-input" style="width: 89px;" oninput="updateResult()">
                 </div>
                 <textarea id="description" name="description" placeholder="Description" class="default-text-input" style="width: 200px; height: 100px; resize: none;" oninput="updateResult()"></textarea>
-                
-                
+                <input type="file" id="mainImage" name="mainImage" accept="image/*" style="display: none;" onchange="updateResult()">
+                <button id="mainImageButton" class="default-text-input" style="width: 200px;">Upload Image</button>
+                <label id="mainImageLabel"></label>
             </div>
         </div>
     </div>
