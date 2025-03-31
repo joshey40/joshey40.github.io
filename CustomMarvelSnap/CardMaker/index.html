@@ -127,13 +127,10 @@
                 </div>
                 <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 100px; resize: none;" oninput="updateResult()"></textarea>
                 <div>
-                    <input type="file" id="mainImage" name="mainImage" accept="image/*" class="default-button" onchange="updateResult()">
-                </div>
-                <div>
-                    <input type="file" id="frameBreakImage" name="frameBreakImage" accept="image/*" class="default-button" onchange="updateResult()">
-                </div>
-                <div>
-                    <input type="file" id="titleImage" name="titleImage" accept="image/*" class="default-button" onchange="updateResult()">
+                    <label for="mainImage" class="default-button" style="width: 200px; cursor: pointer;">
+                        Custom Upload
+                    </label>
+                    <input type="file" id="mainImage" name="mainImage" accept="image/*"style="display: none;" onchange="updateResult()">
                 </div>
             </div>
         </div>
