@@ -96,7 +96,8 @@
             color: rgb(0, 0, 0);
         }
         .default-button:hover {
-            background-color: rgb(200, 200, 200);
+            background-color: #10072b;
+            color: rgb(255, 255, 255);
         }
         .default-button:active {
             border: 2px solid rgb(255, 255, 255);
@@ -126,8 +127,8 @@
                 </div>
                 <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 100px; resize: none;" oninput="updateResult()"></textarea>
                 <div>
-                    <input type="file" id="mainImage" name="mainImage" accept="image/*" style="display: none; width: 200px;" onchange="updateResult()">
-                    <button id="mainImageButton" class="default-button">Upload Image</button>
+                    <input type="file" id="mainImage" name="mainImage" accept="image/*" style="display: none;" onchange="updateResult()">
+                    <button id="mainImageButton" class="default-button" style="width: 212px;">Upload Image</button>
                     <label id="mainImageLabel"></label>
                 </div>
             </div>
