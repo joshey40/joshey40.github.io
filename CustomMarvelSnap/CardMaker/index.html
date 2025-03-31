@@ -91,12 +91,12 @@
     <script async src="script.js" type="module"></script>
 </html>
 <body>
-    <img src="https://joshey40.github.io/CustomMarvelSnap/res/images/background.png" class="background-img" alt="background">
+    <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/background.png" class="background-img" alt="background">
     <div class="content-div">
         <h1>CMS Card Maker</h1>
         <div class="divider-div">
             <div class="result-div" id="resultDiv">
-                <img id="cardImage" src="https://joshey40.github.io/CustomMarvelSnap/res/images/default_cards/default.png" alt="result" style="width: 100%;">
+                <img id="cardImage" src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/default.png" alt="result" style="width: 100%;">
             </div>
             <div class="editor-div">
                 <div style="display: flex; justify-content: space-evenly;">
@@ -108,9 +108,11 @@
                     <input type="number" id="power" name="power" placeholder="Power" class="default-text-input" style="width: 89px;" oninput="updateResult()">
                 </div>
                 <textarea id="description" name="description" placeholder="Description" class="default-text-input" style="width: 200px; height: 100px; resize: none;" oninput="updateResult()"></textarea>
-                <input type="file" id="mainImage" name="mainImage" accept="image/*" style="display: none;" onchange="updateResult()">
-                <button id="mainImageButton" class="default-text-input" style="width: 200px;">Upload Image</button>
-                <label id="mainImageLabel"></label>
+                <div>
+                    <input type="file" id="mainImage" name="mainImage" accept="image/*" style="display: none;" onchange="updateResult()">
+                    <button id="mainImageButton" class="default-text-input" style="width: 200px;">Upload Image</button>
+                    <label id="mainImageLabel"></label>
+                </div>
             </div>
         </div>
     </div>
