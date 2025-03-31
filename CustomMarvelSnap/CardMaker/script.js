@@ -15,7 +15,38 @@ async function updateResult() {
     cardImage.src = canvas.toDataURL();
 }
 
+function mainImageChange(event) {
+    console.log('mainImageChange');
+}
+
+function frameBreakImageChange(event) {
+    console.log('frameBreakImageChange');
+}
+
+function titleImageChange(event) {
+    console.log('titleImageChange');
+}
+
+function clearMainImage() {
+    console.log('clearMainImage');
+}
+
+function clearFrameBreakImage() {
+    console.log('clearFrameBreakImage');
+}
+
+function clearTitleImage() {
+    console.log('clearTitleImage');
+}
+
 // Attach to the global window object
 window.updateResult = updateResult;
+window.mainImageChange = mainImageChange;
+window.frameBreakImageChange = frameBreakImageChange;
+window.titleImageChange = titleImageChange;
+window.clearMainImage = clearMainImage;
+window.clearFrameBreakImage = clearFrameBreakImage;
+window.clearTitleImage = clearTitleImage;
 
-export { updateResult };
+export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage };
+
