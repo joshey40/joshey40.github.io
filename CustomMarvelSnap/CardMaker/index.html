@@ -118,8 +118,8 @@
             </div>
             <div class="editor-div">
                 <div style="display: flex; justify-content: space-evenly;">
-                    <input type="text" id="name" name="name" placeholder="Name" class="default-input" style="width: 164px; margin-right: 10px;" oninput="updateResult()">
-                    <input type="color" id="nameColor" name="nameColor" class="default-input" style="width: 25px; padding: 1px;" value="#ffffff" oninput="updateResult()">
+                    <input type="text" id="name" name="name" placeholder="Name" class="default-input" style="width: 162px; margin-right: 10px;" oninput="updateResult()">
+                    <input type="color" id="nameColor" name="nameColor" class="default-input" style="width: 27px; padding: 1px;" value="#ffffff" oninput="updateResult()">
                 </div>
                 <div style="display: flex; justify-content: space-evenly;">
                     <input type="number" id="cost" name="cost" placeholder="Cost" class="default-input" style="width: 89px; margin-right: 10px;" oninput="updateResult()">
@@ -128,10 +128,14 @@
                 <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 100px; resize: none;" oninput="updateResult()"></textarea>
                 <label for="mainImage" class="default-button" style="width: 200px; cursor: pointer;">Upload Image</label>
                 <input type="file" id="mainImage" name="mainImage" accept="image/*"style="display: none;" onchange="updateResult()">
+                <button class="default-button" style="width: 27px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearImage()"></button>
                 <label for="frameBreakImage" class="default-button" style="width: 200px; cursor: pointer;">Upload Frame Break</label>
                 <input type="file" id="frameBreakImage" name="frameBreakImage" accept="image/*" style="display: none;" onchange="updateResult()">
+                <button class="default-button" style="width: 27px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearFrameBreak()"></button>
                 <label for="titleImage" class="default-button" style="width: 200px; cursor: pointer;">Upload Title Image</label>
                 <input type="file" id="titleImage" name="titleImage" accept="image/*" style="display: none;" onchange="updateResult()">
+                <button class="default-button" style="width: 27px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearTitle()"></button>
+
             </div>
         </div>
     </div>
