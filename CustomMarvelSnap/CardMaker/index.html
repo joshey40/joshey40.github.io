@@ -130,18 +130,19 @@
                 <div style="display: flex; justify-content: space-evenly;">
                     <label for="mainImage" class="default-button" style="width: 162px; margin-right: 10px;">Upload Image</label>
                     <input type="file" id="mainImage" name="mainImage" accept="image/*"style="display: none;" onchange="mainImageChange(event)">
-                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearImage()"></button>
+                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearMainImage()"></button>
                 </div>
                 <div style="display: flex; justify-content: space-evenly;">
                     <label for="frameBreakImage" class="default-button" style="width: 162px; margin-right: 10px;">Upload Frame Break</label>
                     <input type="file" id="frameBreakImage" name="frameBreakImage" accept="image/*" style="display: none;" onchange="frameBreakImageChange(event)">
-                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearFrameBreak()"></button>
+                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearFrameBreakImage()"></button>
                 </div>
                 <div style="display: flex; justify-content: space-evenly;">
                     <label for="titleImage" class="default-button" style="width: 162px; margin-right: 10px;">Upload Title Image</label>
                     <input type="file" id="titleImage" name="titleImage" accept="image/*" style="display: none;" onchange="titleImageChange(event)">
-                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearTitle()"></button>
+                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearTitleImage()"></button>
                 </div>
+                <button id="selectFrameButton" class="default-button" style="width: 200px;" onclick="selectFrame()">Select Frame</button>
             </div>
         </div>
     </div>
