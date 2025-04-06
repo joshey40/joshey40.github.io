@@ -28,8 +28,8 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         w = h * aspectRatio;
     }
     let scale = size / 1024;
-    w *= scale * zoom;
-    h *= scale * zoom;
+    w *= scale;
+    h *= scale;
     let x = (1024 - w) / 2 * scale;
     let y = (1024 - h) / 2 * scale + 3 * scale;
     ctx.drawImage(backgroundImg, x, y, w, h);
