@@ -136,7 +136,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         ctx.strokeStyle = "#000000";
         ctx.lineWidth = 5 * scale;
         ctx.strokeText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
-        ctx.lineWidth = 5 * scale;
+        ctx.lineWidth = 1 * scale;
         ctx.strokeStyle = "#FFFFFF";
         ctx.strokeText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
     }
