@@ -115,8 +115,6 @@
             border: 4px solid #10072b;
             padding: 20px;
             z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
             transition: opacity 0.3s ease-in-out;
             width: 90vw;
             height: 90vh;
@@ -154,12 +152,8 @@
             width: 100%;
         }
         .frame-image {
-            width: 20vw;
-            height: auto;
-            max-width: 150px;
-            max-height: 150px;
-            min-width: 75px;
-            min-height: 75px;
+            width: 150px;
+            height: 150px;
             cursor: pointer;
             margin-bottom: 10px;
         }
@@ -209,7 +203,7 @@
             <h1>Select Frame</h1>
             <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeFrameSelectPopup()"></button>
         </div>
-        <div style="display: flex; flex-direction: column; justify-content: center; padding: 10px; overflow-y: auto;" id="frameSelectDiv"></div>
+        <div style="display: flex; flex-direction: column; justify-content: center; padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);" id="frameSelectDiv"></div>
     </div>
 </body>
 </html>
