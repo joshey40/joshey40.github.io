@@ -129,6 +129,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         if (titleWidth > 500 * scale) {
             titleWidth = 500 * scale;
             titleHeight = titleWidth / titleAspectRatio;
+            ctx.font = `${Math.round(titleHeight)}px 'Ultimatum-Bold'`;
         }
         let titleX = (1024 - titleWidth) / 2 * scale;
         let titleY = 850 * scale - titleHeight / 2;
