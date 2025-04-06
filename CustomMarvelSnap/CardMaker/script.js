@@ -94,3 +94,36 @@ window.selectFrame = selectFrame;
 
 export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup };
 
+
+
+// Add Frames to frameSelectPopup
+const frameSelectDiv = document.getElementById('frameSelectDiv');
+const frameDir = '../res/img/frames/';
+const categories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon' };
+for (const category in categories) {
+    const categoryDiv = document.createElement('div');
+    categoryDiv.className = 'frame-category';
+    const categoryTitle = document.createElement('h3');
+    categoryTitle.textContent = categories[category];
+    categoryDiv.appendChild(categoryTitle);
+    frameSelectDiv.appendChild(categoryDiv);
+
+    // Fetch the frames from the directory
+    fetch(`${frameDir}${category}/`)
+        .then(response => response.text())
+        .then(data => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(data, 'text/html');
+            const images = htmlDoc.querySelectorAll('img');
+            images.forEach(img => {
+                const frameImg = document.createElement('img');
+                frameImg.src = `${frameDir}${category}/${img.src}`;
+                frameImg.className = 'frame-image';
+                frameImg.onclick = function () {
+                    console.log(`Selected frame: ${frameImg.src}`);
+                };
+                categoryDiv.appendChild(frameImg);
+            });
+        })
+        .catch(error => console.error('Error fetching frames:', error));
+}
