@@ -116,7 +116,7 @@ function downloadCard() {
     } else {
         link.download = `${name.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
     }
-    link.href = canvas.toDataURL('image/png');
+    link.href = canvas.toDataURL();
     link.click();
 }
 
