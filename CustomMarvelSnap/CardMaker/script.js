@@ -133,5 +133,3 @@ for (const category in categories) {
         categoryDiv.appendChild(frameImg);
     }
 }
-
-
