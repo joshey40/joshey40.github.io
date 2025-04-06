@@ -18,12 +18,12 @@ async function updateResult() {
 function mainImageChange(event) {
     const imageFile = event.target.files[0];
     const reader = new FileReader();
-    // Get base64 string of the image
-    reader.onload = function (e) {
-        const base64String = e.target.result.split(',')[1];
-        console.log('Base64 String:', base64String);
-        // You can now use this base64 string to update the image source or send it to a server
+    reader.onload = function(e) {
+        const mainImage = document.getElementById('mainImage');
+        mainImage.src = e.target.result;
     };
+    reader.readAsDataURL(imageFile);
+    console.log(reader);
 
 }
 
