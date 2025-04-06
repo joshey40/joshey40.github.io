@@ -18,20 +18,20 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         });
     }
     ctx.globalCompositeOperation = "source-in";
-    var w = backgroundImg.width;
-    var h = backgroundImg.height;
-    var aspectRatio = w / h;
+    let w = backgroundImg.width;
+    let h = backgroundImg.height;
+    let aspectRatio = w / h;
     w = 596;
     h = w / aspectRatio;
     if (h < 842) {
         h = 842;
         w = h * aspectRatio;
     }
-    var scale = size / 1024;
+    let scale = size / 1024;
     w *= scale;
     h *= scale;
-    var x = (1024 - w) / 2 * scale;
-    var y = (1024 - h) / 2 * scale + 3 * scale;
+    let x = (1024 - w) / 2 * scale;
+    let y = (1024 - h) / 2 * scale + 3 * scale;
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     let frameImg = await getImg("../res/img/frames/basic/common.png");
@@ -95,9 +95,42 @@ async function generatecard(name, colorName, cost, power, description, size=1024
             powerX += numbersWidth[powerNumber[i]] * scale;
         }
     }
-
-    
     // Title
+    if (imagesBase64.titleImage) {
+        let titleImg = new Image();
+        titleImg.src = imagesBase64.titleImage;
+        titleImg = await new Promise((resolve, reject) => {
+            titleImg.onload = () => resolve(titleImg);
+            titleImg.onerror = reject;
+        });
+        ctx.globalCompositeOperation = "source-over";
+        let titleWidth = titleImg.width;
+        let titleHeight = titleImg.height;
+        let titleAspectRatio = titleWidth / titleHeight;
+        titleWidth = 600 * scale;
+        titleHeight = titleWidth / titleAspectRatio;
+        if (titleHeight < 300 * scale) {
+            titleHeight = 300 * scale;
+            titleWidth = titleHeight * titleAspectRatio;
+        }
+        let titleX = (1024 - titleWidth) / 2 * scale;
+        let titleY = 850 * scale;
+        ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
+    } else {
+        ctx.globalCompositeOperation = "source-over";
+        ctx.font = `${Math.round(80 * scale)}px 'Ultimatum-Bold'`;
+        ctx.fillStyle = colorName;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        let titleWidth = ctx.measureText(name).width;
+        let titleHeight = 80 * scale;
+        let titleX = (1024 - titleWidth) / 2 * scale;
+        let titleY = 850 * scale;
+        ctx.fillText(name, titleX, titleY, 600 * scale);
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = Math.round(5 * scale);
+        ctx.strokeText(name, titleX, titleY, 600 * scale);
+    }
 
     return canvas;
 }
