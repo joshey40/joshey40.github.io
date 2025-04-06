@@ -25,34 +25,36 @@ function mainImageChange(event) {
     const imageFile = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
-    console.log(reader);
-    const base64 = reader.result;
-    console.log(base64);
-    imagesBase64.mainImage = base64;
-    updateResult();
+    reader.onload = function (e) {
+        const base64 = e.target.result;
+        imagesBase64.mainImage = base64;
+        updateResult();
+    };
 }
 
 function frameBreakImageChange(event) {
     const imageFile = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
-    const base64 = reader.result;
-    console.log(base64);
-    imagesBase64.frameBreakImage = base64;
-    updateResult();
+    reader.onload = function (e) {
+        const base64 = e.target.result;
+        imagesBase64.frameBreakImage = base64;
+        updateResult();
+    };
 }
 
 function titleImageChange(event) {
     const imageFile = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
-    const base64 = reader.result;
-    console.log(base64);
-    imagesBase64.titleImage = base64;
-    updateResult();
+    reader.onload = function (e) {
+        const base64 = e.target.result;
+        imagesBase64.titleImage = base64;
+        updateResult();
+    };
 }
 
-function clearMainImage() {
+async function clearMainImage() {
     imagesBase64.mainImage = null;
     updateResult();
 }
