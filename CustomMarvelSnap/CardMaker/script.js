@@ -25,8 +25,8 @@ function mainImageChange(event) {
     const imageFile = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
-    const base64 = reader.result;
     console.log(reader);
+    const base64 = reader.result;
     console.log(base64);
     imagesBase64.mainImage = base64;
     updateResult();
