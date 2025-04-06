@@ -117,6 +117,7 @@ for (const category in categories) {
             const htmlDoc = parser.parseFromString(data, 'text/html');
             const images = htmlDoc.querySelectorAll('img');
             images.forEach(img => {
+                console.log(img); // Debugging line to check the image source
                 const frameImg = document.createElement('img');
                 frameImg.src = `${frameDir}${category}/${img.src}`;
                 frameImg.className = 'frame-image';
