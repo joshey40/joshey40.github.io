@@ -18,10 +18,6 @@ async function updateResult() {
 function mainImageChange(event) {
     const imageFile = event.target.files[0];
     const reader = new FileReader();
-    reader.onload = function(e) {
-        const mainImage = document.getElementById('mainImage');
-        mainImage.src = e.target.result;
-    };
     reader.readAsDataURL(imageFile);
     console.log(reader);
 
