@@ -14,7 +14,7 @@ async function updateResult() {
     const description = document.getElementById('description').value;
 
     // Update the card
-    const canvas = await generatecard(name, colorName, cost, power, description, imagesBase64);
+    const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64);
 
     // Update the card image
     const cardImage = document.getElementById('cardImage');
@@ -26,6 +26,7 @@ function mainImageChange(event) {
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
     const base64 = reader.result;
+    console.log(reader);
     console.log(base64);
     imagesBase64.mainImage = base64;
     updateResult();
