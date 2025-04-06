@@ -46,7 +46,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
             frameBreakImg.onerror = reject;
         });
         ctx.globalCompositeOperation = "source-over";
-        ctx.drawImage(frameBreakImgLoaded, x, y, size, size);
+        ctx.drawImage(frameBreakImgLoaded, x, y, w, h);
     }
     // Title
 

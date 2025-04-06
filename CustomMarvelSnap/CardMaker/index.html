@@ -105,6 +105,19 @@
             background-color: #10072b;
             color: rgb(255, 255, 255);
         }
+        .default-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 1000;
+            visibility: hidden;
+            width: 80vw;
+
+        }
         
     </style>
     <script async src="script.js" type="module"></script>
@@ -145,6 +158,10 @@
                 <button id="selectFrameButton" class="default-button" style="width: 212px;" onclick="selectFrame()">Select Frame</button>
             </div>
         </div>
+    </div>
+    <div class="default-popup" id="frameSelectPopup">
+        <h1>Select Frame</h1>
+
     </div>
 </body>
 </html>
