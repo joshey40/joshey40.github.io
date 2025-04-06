@@ -144,7 +144,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     completeCanvas.width = size;
     completeCanvas.height = 1318 * scale;
     const completeCtx = completeCanvas.getContext("2d");
-    if (backgroundColor ) {
+    if (backgroundColor != 'transparent') {
         completeCtx.fillStyle = backgroundColor;
         completeCtx.fillRect(0, 0, size, 1318 * scale);
     }
