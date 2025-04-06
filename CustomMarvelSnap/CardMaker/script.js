@@ -108,15 +108,15 @@ function closeFrameSelectPopup() {
 }
 
 function downloadCard() {
-    const canvas = document.getElementById('cardImage');
-    const link = document.createElement('a');
+    const cardImage = document.getElementById('cardImage');
     const name = document.getElementById('name').value;
+    const link = document.createElement('a');
+    link.href = cardImage.src;
     if (!name) {
         link.download = 'custom_card.png';
     } else {
         link.download = `${name.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
     }
-    link.href = canvas.toDataURL();
     link.click();
 }
 
