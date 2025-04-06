@@ -65,19 +65,22 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     const numbersWidth = {'-':36, 0:65, 1:43, 2:67, 3:65, 4:61, 5:64, 6:65, 7:61, 8:65, 9:65};
     // Cost number
     if (cost == null || cost == "") {
-        let costNumber = cost.toString().split("");
-        let costWidth = 0;
-        for (let i = 0; i < costNumber.length; i++) {
-            costWidth += numbersWidth[costNumber[i]] * scale;
-        }
-        let costX = 240 * scale - costWidth / 2; 
-        let costY = 88 * scale;
-        for (let i = 0; i < costNumber.length; i++) {
-            let numberImg = await getImg(numbersDir + "cost/" + costNumber[i] + ".png");
-            ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * scale);
-            costX += numbersWidth[costNumber[i]] * scale;
-        }
-        // Power number
+        cost = 0;
+    }
+    let costNumber = cost.toString().split("");
+    let costWidth = 0;
+    for (let i = 0; i < costNumber.length; i++) {
+        costWidth += numbersWidth[costNumber[i]] * scale;
+    }
+    let costX = 240 * scale - costWidth / 2; 
+    let costY = 88 * scale;
+    for (let i = 0; i < costNumber.length; i++) {
+        let numberImg = await getImg(numbersDir + "cost/" + costNumber[i] + ".png");
+        ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * scale);
+        costX += numbersWidth[costNumber[i]] * scale;
+    }
+    // Power number
+    if (power != null && power != "") {
         let powerNumber = power.toString().split("");
         let powerWidth = 0;
         for (let i = 0; i < powerNumber.length; i++) {
@@ -91,6 +94,8 @@ async function generatecard(name, colorName, cost, power, description, size=1024
             powerX += numbersWidth[powerNumber[i]] * scale;
         }
     }
+
+    
     // Title
 
     return canvas;
