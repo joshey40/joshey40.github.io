@@ -76,7 +76,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     }
     costWidth *= multiply;
     let costX = 240 * scale - costWidth / 2; 
-    let costY = 70 * scale;
+    let costY = 65 * scale;
     for (let i = 0; i < costNumber.length; i++) {
         let numberImg = await getImg(numbersDir + "cost/" + costNumber[i] + ".png");
         ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * multiply * scale);
@@ -91,7 +91,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
             powerWidth += numbersWidth[powerNumber[i]] * scale;
         }
         let powerX = 787 * scale - powerWidth / 2;
-        let powerY = 70 * scale;
+        let powerY = 65 * scale;
         for (let i = 0; i < powerNumber.length; i++) {
             let numberImg = await getImg(numbersDir + "power/" + powerNumber[i] + ".png");
             ctx.drawImage(numberImg, powerX, powerY, numbersWidth[powerNumber[i]] * scale, 79 * multiply * scale);

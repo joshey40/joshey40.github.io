@@ -107,6 +107,19 @@ function closeFrameSelectPopup() {
     frameSelectPopup.style.visibility = 'hidden';
 }
 
+function downloadCard() {
+    const canvas = document.getElementById('cardImage');
+    const link = document.createElement('a');
+    const name = document.getElementById('name').value;
+    if (!name) {
+        link.download = 'custom_card.png';
+    } else {
+        link.download = `${name.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+    }
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+}
+
 // Attach to the global window object
 window.updateResult = updateResult;
 window.mainImageChange = mainImageChange;
@@ -117,8 +130,9 @@ window.clearFrameBreakImage = clearFrameBreakImage;
 window.clearTitleImage = clearTitleImage;
 window.selectFrame = selectFrame;
 window.closeFrameSelectPopup = closeFrameSelectPopup;
+window.downloadCard = downloadCard;
 
-export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup };
+export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, downloadCard };
 
 
 
