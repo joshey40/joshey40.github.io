@@ -71,7 +71,10 @@ function clearTitleImage() {
 
 
 function selectFrame() {
-    console.log('selectFrame');
+    const frameSelectPopup = document.getElementById('frameSelectPopup');
+    frameSelectPopup.style.visibility = 'visible';
+    frameSelectPopup.style.opacity = '1';
+    
 }
 
 // Attach to the global window object
