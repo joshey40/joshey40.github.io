@@ -65,32 +65,31 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     const numbersWidth = {'-':36, 0:65, 1:43, 2:67, 3:65, 4:61, 5:64, 6:65, 7:61, 8:65, 9:65};
     // Cost number
     if (cost == null || cost == "") {
-        cost = 0;
-    }
-    let costNumber = cost.toString().split("");
-    let costWidth = 0;
-    for (let i = 0; i < costNumber.length; i++) {
-        costWidth += numbersWidth[costNumber[i]] * scale;
-    }
-    let costX = 240 * scale - costWidth / 2; 
-    let costY = 88 * scale;
-    for (let i = 0; i < costNumber.length; i++) {
-        let numberImg = await getImg(numbersDir + "cost/" + costNumber[i] + ".png");
-        ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * scale);
-        costX += numbersWidth[costNumber[i]] * scale;
-    }
-    // Power number
-    let powerNumber = power.toString().split("");
-    let powerWidth = 0;
-    for (let i = 0; i < powerNumber.length; i++) {
-        powerWidth += numbersWidth[powerNumber[i]] * scale;
-    }
-    let powerX = 787 * scale - powerWidth / 2;
-    let powerY = 88 * scale + 79 * scale;
-    for (let i = 0; i < powerNumber.length; i++) {
-        let numberImg = await getImg(numbersDir + "power/" + powerNumber[i] + ".png");
-        ctx.drawImage(numberImg, powerX, powerY, numbersWidth[powerNumber[i]] * scale, 79 * scale);
-        powerX += numbersWidth[powerNumber[i]] * scale;
+        let costNumber = cost.toString().split("");
+        let costWidth = 0;
+        for (let i = 0; i < costNumber.length; i++) {
+            costWidth += numbersWidth[costNumber[i]] * scale;
+        }
+        let costX = 240 * scale - costWidth / 2; 
+        let costY = 88 * scale;
+        for (let i = 0; i < costNumber.length; i++) {
+            let numberImg = await getImg(numbersDir + "cost/" + costNumber[i] + ".png");
+            ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * scale);
+            costX += numbersWidth[costNumber[i]] * scale;
+        }
+        // Power number
+        let powerNumber = power.toString().split("");
+        let powerWidth = 0;
+        for (let i = 0; i < powerNumber.length; i++) {
+            powerWidth += numbersWidth[powerNumber[i]] * scale;
+        }
+        let powerX = 787 * scale - powerWidth / 2;
+        let powerY = 88 * scale + 79 * scale;
+        for (let i = 0; i < powerNumber.length; i++) {
+            let numberImg = await getImg(numbersDir + "power/" + powerNumber[i] + ".png");
+            ctx.drawImage(numberImg, powerX, powerY, numbersWidth[powerNumber[i]] * scale, 79 * scale);
+            powerX += numbersWidth[powerNumber[i]] * scale;
+        }
     }
     // Title
 
