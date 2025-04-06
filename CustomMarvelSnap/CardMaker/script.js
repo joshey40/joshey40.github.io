@@ -7,6 +7,8 @@ let imagesBase64 = {
     titleImage: null
 };
 
+var transparentBg = false;
+
 // AbortController für Abbruch von vorherigen Aufrufen
 let abortController = null;
 
@@ -28,10 +30,7 @@ async function updateResult() {
         const power = document.getElementById('power').value;
         const description = document.getElementById('description').value;
         const zoom = 1 + (document.getElementById('imageZoom').value / 100);
-        const transparentBg = document.getElementById('transparentBg').value;
-        console.log('Transparent Background:', transparentBg);
         const backgroundColor = transparentBg === 'true' ? 'transparent' : document.getElementById('backgroundColor').value;
-        console.log('Background Color:', backgroundColor);
 
         // Update the card (hier wird das Signal weitergegeben)
         const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom, nameZoom, backgroundColor, signal);
@@ -125,6 +124,10 @@ function downloadCard() {
     link.click();
 }
 
+function transparentSwitch() {
+    transparentBg = !transparentBg;
+}
+
 // Attach to the global window object
 window.updateResult = updateResult;
 window.mainImageChange = mainImageChange;
@@ -136,8 +139,9 @@ window.clearTitleImage = clearTitleImage;
 window.selectFrame = selectFrame;
 window.closeFrameSelectPopup = closeFrameSelectPopup;
 window.downloadCard = downloadCard;
+window.transparentSwitch = transparentSwitch;
 
-export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, downloadCard };
+export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, downloadCard, transparentSwitch };
 
 
 
