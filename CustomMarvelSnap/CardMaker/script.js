@@ -104,8 +104,8 @@ const frameDir = '../res/img/frames/';
 const categories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon' };
 const frames = {
     'basic': ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite'],
-    'cosmic': ['blue', 'green', 'red', 'purple', 'yellow', 'orange'],
-    'neon': ['blue', 'green', 'red', 'purple', 'yellow', 'white']
+    'cosmic': ['blue', 'green', 'red', 'pink', 'yellow', 'orange'],
+    'neon': ['blue', 'green', 'red', 'pink', 'yellow', 'white']
 };
 
 for (const category in categories) {
