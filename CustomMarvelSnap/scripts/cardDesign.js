@@ -1,4 +1,4 @@
-async function generatecard(name, colorName, cost, power, description, size=1024) {
+async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64) {
     // Create Canvas
     const canvas = document.createElement("canvas");
     canvas.width = size;
@@ -8,7 +8,15 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     const artMask = await getImg("../res/img/default_cards/art_mask.png");
     ctx.drawImage(artMask, 0, 0, size, size);
     // Background
-    const backgroundImg = await getImg("../res/img/default_cards/ghost_rider.png");
+    let backgroundImg = await getImg("../res/img/default_cards/ghost_rider.png");
+    if (imagesBase64.mainImage) {
+        const mainImg = new Image();
+        mainImg.src = imagesBase64.mainImage;
+        backgroundImg = await new Promise((resolve, reject) => {
+            mainImg.onload = () => resolve(mainImg);
+            mainImg.onerror = reject;
+        });
+    }
     ctx.globalCompositeOperation = "source-in";
     var w = backgroundImg.width;
     var h = backgroundImg.height;

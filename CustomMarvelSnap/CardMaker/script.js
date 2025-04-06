@@ -1,5 +1,11 @@
 import {generatecard} from '../scripts/cardDesign.js';
 
+let imagesBase64 = {
+    mainImage: null,
+    frameBreakImage: null,
+    titleImage: null
+};
+
 async function updateResult() {
     const name = document.getElementById('name').value;
     const colorName = document.getElementById('nameColor').value;
@@ -8,7 +14,7 @@ async function updateResult() {
     const description = document.getElementById('description').value;
 
     // Update the card
-    const canvas = await generatecard(name, colorName, cost, power, description);
+    const canvas = await generatecard(name, colorName, cost, power, description, imagesBase64);
 
     // Update the card image
     const cardImage = document.getElementById('cardImage');
@@ -19,28 +25,45 @@ function mainImageChange(event) {
     const imageFile = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
-    console.log(reader);
-
+    const base64 = reader.result;
+    console.log(base64);
+    imagesBase64.mainImage = base64;
+    updateResult();
 }
 
 function frameBreakImageChange(event) {
-    console.log('frameBreakImageChange');
+    const imageFile = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFile);
+    const base64 = reader.result;
+    console.log(base64);
+    imagesBase64.frameBreakImage = base64;
+    updateResult();
 }
 
 function titleImageChange(event) {
-    console.log('titleImageChange');
+    const imageFile = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFile);
+    const base64 = reader.result;
+    console.log(base64);
+    imagesBase64.titleImage = base64;
+    updateResult();
 }
 
 function clearMainImage() {
-    console.log('clearMainImage');
+    imagesBase64.mainImage = null;
+    updateResult();
 }
 
 function clearFrameBreakImage() {
-    console.log('clearFrameBreakImage');
+    imagesBase64.frameBreakImage = null;
+    updateResult();
 }
 
 function clearTitleImage() {
-    console.log('clearTitleImage');
+    imagesBase64.titleImage = null;
+    updateResult();
 }
 
 
