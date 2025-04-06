@@ -151,8 +151,8 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     completeCtx.drawImage(canvas, 0, 0, size, size);
     completeCtx.globalCompositeOperation = "source-over";
     completeCtx.font = `${Math.round(40 * scale)}px 'HelveticaNeueBold'`;
-    completeCtx.fillStyle = "#000000";
-    completeCtx.strokeStyle = "#ffffff";
+    completeCtx.fillStyle = "#ffffff";
+    completeCtx.strokeStyle = "#000000";
     completeCtx.textAlign = "center";
     completeCtx.lineWidth = 1;
     const descriptionLines = description.split('\n');
