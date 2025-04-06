@@ -107,30 +107,37 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         let titleWidth = titleImg.width;
         let titleHeight = titleImg.height;
         let titleAspectRatio = titleWidth / titleHeight;
-        titleWidth = 600 * scale;
+        titleWidth = 500 * scale;
         titleHeight = titleWidth / titleAspectRatio;
         if (titleHeight < 300 * scale) {
             titleHeight = 300 * scale;
             titleWidth = titleHeight * titleAspectRatio;
         }
         let titleX = (1024 - titleWidth) / 2 * scale;
-        let titleY = 850 * scale;
+        let titleY = 850 * scale - titleHeight / 2;
         ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
     } else {
         ctx.globalCompositeOperation = "source-over";
-        ctx.font = `${Math.round(80 * scale)}px 'Ultimatum-Bold'`;
+        ctx.font = `${Math.round(100 * scale)}px 'Ultimatum-Bold'`;
         ctx.fillStyle = colorName;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         let titleWidth = ctx.measureText(name).width;
         console.log(titleWidth);
-        let titleHeight = 80 * scale;
+        let titleHeight = 100 * scale;
+        let titleAspectRatio = titleWidth / titleHeight;
+        titleWidth = 500 * scale;
+        titleHeight = titleWidth / titleAspectRatio;
+        if (titleHeight < 300 * scale) {
+            titleHeight = 300 * scale;
+            titleWidth = titleHeight * titleAspectRatio;
+        }
         let titleX = (1024 - titleWidth) / 2 * scale;
-        let titleY = 850 * scale;
-        ctx.fillText(name, titleX, titleY, 600 * scale);
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = Math.round(5 * scale);
-        ctx.strokeText(name, titleX, titleY, 600 * scale);
+        let titleY = 850 * scale - titleHeight / 2;
+        ctx.fillText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 10 * scale;
+        ctx.strokeText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
     }
 
     return canvas;
