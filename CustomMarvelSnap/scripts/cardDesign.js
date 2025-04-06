@@ -121,13 +121,12 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
     } else {
         const fontSize = Math.round(300 * scale * nameZoom);
-        name = name.toUpperCase().split('\n').reverse();
+        name = name.toUpperCase().split('\n');
         ctx.globalCompositeOperation = "source-over";
         ctx.font = `${fontSize}px 'HelveticaNeueBold'`;
         ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+        ctx.textBaseline = "top";
         for (let i = 0; i < name.length; i++) {
-            let titleWidth = ctx.measureText(name[i]).width;
             let titleHeight = 300 * scale * nameZoom * name.length;
             let titleY = 850 * scale;
             titleY -= titleHeight / 2;
