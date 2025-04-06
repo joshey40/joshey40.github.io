@@ -35,6 +35,14 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     const frameImg = await getImg("../res/img/frames/basic/common.png");
+    if (imagesBase64.frameImage) {
+        const frameImg = new Image();
+        frameImg.src = imagesBase64.frameImage;
+        frameImg = await new Promise((resolve, reject) => {
+            frameImg.onload = () => resolve(frameImg);
+            frameImg.onerror = reject;
+        });
+    }
     ctx.globalCompositeOperation = "source-over";
     ctx.drawImage(frameImg, 0, 0, size, size);
     // Frame Break
