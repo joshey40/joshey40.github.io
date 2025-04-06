@@ -118,19 +118,16 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
     } else {
         ctx.globalCompositeOperation = "source-over";
-        ctx.font = `${Math.round(100 * scale)}px 'Ultimatum-Bold'`;
+        ctx.font = `${Math.round(300 * scale)}px 'Ultimatum-Bold'`;
         ctx.fillStyle = colorName;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         let titleWidth = ctx.measureText(name).width;
-        console.log(titleWidth);
-        let titleHeight = 100 * scale;
+        let titleHeight = 300 * scale;
         let titleAspectRatio = titleWidth / titleHeight;
-        titleWidth = 500 * scale;
-        titleHeight = titleWidth / titleAspectRatio;
-        if (titleHeight < 300 * scale) {
-            titleHeight = 300 * scale;
-            titleWidth = titleHeight * titleAspectRatio;
+        if (titleWidth > 500 * scale) {
+            titleWidth = 500 * scale;
+            titleHeight = titleWidth / titleAspectRatio;
         }
         let titleX = (1024 - titleWidth) / 2 * scale;
         let titleY = 850 * scale - titleHeight / 2;
