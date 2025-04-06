@@ -30,8 +30,8 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     var scale = size / 1024;
     w *= scale;
     h *= scale;
-    var x = 214 * scale;
-    var y = 88 * scale;
+    var x = (1024 - w) / 2 * scale;
+    var y = (1024 - h) / 2 * scale + 3 * scale;
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     let frameImg = await getImg("../res/img/frames/basic/common.png");
