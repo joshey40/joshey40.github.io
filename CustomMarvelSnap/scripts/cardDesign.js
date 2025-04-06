@@ -123,6 +123,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         let titleWidth = ctx.measureText(name).width;
+        console.log(titleWidth);
         let titleHeight = 80 * scale;
         let titleX = (1024 - titleWidth) / 2 * scale;
         let titleY = 850 * scale;
