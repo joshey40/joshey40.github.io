@@ -123,7 +123,6 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         let titleWidth = ctx.measureText(name).width;
-        console.log(titleWidth);
         let titleHeight = 300 * scale;
         let titleAspectRatio = titleWidth / titleHeight;
         if (titleWidth > 500 * scale) {
@@ -135,7 +134,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         let titleY = 850 * scale - titleHeight / 2;
         ctx.fillText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
         ctx.strokeStyle = "#000000";
-        ctx.lineWidth = 10 * scale;
+        ctx.lineWidth = 5 * scale;
         ctx.strokeText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
         ctx.lineWidth = 5 * scale;
         ctx.strokeStyle = "#FFFFFF";
