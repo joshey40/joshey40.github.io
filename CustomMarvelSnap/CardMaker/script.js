@@ -108,22 +108,11 @@ for (const category in categories) {
     categoryDiv.appendChild(categoryTitle);
     frameSelectDiv.appendChild(categoryDiv);
 
-    // Fetch the frames from the directory
-    fetch(`${frameDir}${category}/`)
-        .then(response => response.text())
-        .then(data => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(data, 'text/html');
-            const images = htmlDoc.querySelectorAll('img');
-            images.forEach(img => {
-                const frameImg = document.createElement('img');
-                frameImg.src = img.src;
-                frameImg.className = 'frame-image';
-                frameImg.onclick = function () {
-                    console.log(`Selected frame: ${frameImg.src}`);
-                };
-                categoryDiv.appendChild(frameImg);
-            });
-        })
-        .catch(error => console.error('Error fetching frames:', error));
+    // Fetch the names of the images in the directory
+    const dir = frameDir + category + '/';
+    const response = await fetch(dir);
+    const files = await response.text();
+    const fileNames = files.match(/href="([^"]+)"/g).map(file => file.replace(/href="([^"]+)"/, '$1'));
+    console.log(fileNames);
+    
 }
