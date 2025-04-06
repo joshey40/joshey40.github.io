@@ -79,8 +79,8 @@ function selectFrame() {
 
 function closeFrameSelectPopup() {
     const frameSelectPopup = document.getElementById('frameSelectPopup');
-    frameSelectPopup.style.visibility = 'hidden';
     frameSelectPopup.style.opacity = '0';
+    frameSelectPopup.style.visibility = 'hidden';
 }
 
 // Attach to the global window object
@@ -92,6 +92,7 @@ window.clearMainImage = clearMainImage;
 window.clearFrameBreakImage = clearFrameBreakImage;
 window.clearTitleImage = clearTitleImage;
 window.selectFrame = selectFrame;
+window.closeFrameSelectPopup = closeFrameSelectPopup;
 
 export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup };
 
