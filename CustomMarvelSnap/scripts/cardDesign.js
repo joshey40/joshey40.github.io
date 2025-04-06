@@ -1,4 +1,4 @@
-async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1) {
+async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1) {
     // Create Canvas
     const canvas = document.createElement("canvas");
     canvas.width = size;
@@ -121,18 +121,12 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
     } else {
         ctx.globalCompositeOperation = "source-over";
-        ctx.font = `${Math.round(300 * scale)}px 'HelveticaNeueBold'`;
+        ctx.font = `${Math.round(300 * scale * nameZoom)}px 'HelveticaNeueBold'`;
         ctx.fillStyle = colorName;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         let titleWidth = ctx.measureText(name).width;
         let titleHeight = 300 * scale;
-        let titleAspectRatio = titleWidth / titleHeight;
-        if (titleWidth > 600 * scale) {
-            titleWidth = 600 * scale;
-            titleHeight = titleWidth / titleAspectRatio;
-            ctx.font = `${Math.round(titleHeight)}px 'HelveticaNeueBold'`;
-        }
         let titleX = (1024 - titleWidth) / 2 * scale;
         let titleY = 850 * scale - titleHeight / 2;
         ctx.fillText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
