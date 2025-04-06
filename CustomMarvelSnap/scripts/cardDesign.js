@@ -33,7 +33,22 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     var x = 214 * scale;
     var y = 88 * scale;
     ctx.drawImage(backgroundImg, x, y, w, h);
-    // 
+    // Frame
+    const frameImg = await getImg("../res/img/default_cards/frames/basic/common.png");
+    ctx.globalCompositeOperation = "source-over";
+    ctx.drawImage(frameImg, 0, 0, size, size);
+    // Frame Break
+    if (imagesBase64.frameBreakImage) {
+        const frameBreakImg = new Image();
+        frameBreakImg.src = imagesBase64.frameBreakImage;
+        const frameBreakImgLoaded = await new Promise((resolve, reject) => {
+            frameBreakImg.onload = () => resolve(frameBreakImg);
+            frameBreakImg.onerror = reject;
+        });
+        ctx.globalCompositeOperation = "source-over";
+        ctx.drawImage(frameBreakImgLoaded, x, y, size, size);
+    }
+    // Title
 
     return canvas;
 }
