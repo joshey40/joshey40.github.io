@@ -10,5 +10,10 @@
 
 @font-face {
     font-family: 'BadaBoom';
-    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/Badaboom.ttf');
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/Badaboom.TTF');
+}
+
+@font-face {
+    font-family: 'HelveticaNeueBold';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/Helvetica Neue Bold.ttf');
 }

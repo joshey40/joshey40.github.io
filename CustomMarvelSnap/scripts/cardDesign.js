@@ -118,7 +118,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
     } else {
         ctx.globalCompositeOperation = "source-over";
-        ctx.font = `${Math.round(300 * scale)}px 'Ultimatum-Bold'`;
+        ctx.font = `${Math.round(300 * scale)}px 'HelveticaNeueBold'`;
         ctx.fillStyle = colorName;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -128,7 +128,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         if (titleWidth > 500 * scale) {
             titleWidth = 500 * scale;
             titleHeight = titleWidth / titleAspectRatio;
-            ctx.font = `${Math.round(titleHeight)}px 'Ultimatum-Bold'`;
+            ctx.font = `${Math.round(titleHeight)}px 'HelveticaNeueBold'`;
         }
         let titleX = (1024 - titleWidth) / 2 * scale;
         let titleY = 850 * scale - titleHeight / 2;
