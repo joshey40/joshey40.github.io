@@ -1,4 +1,4 @@
-async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1) {
+async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b") {
     // Create Canvas
     const canvas = document.createElement("canvas");
     canvas.width = size;
@@ -139,7 +139,27 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         }
     }
 
-    return canvas;
+    // Description
+    const completeCanvas = document.createElement("canvas");
+    completeCanvas.width = size;
+    completeCanvas.height = 1318 * scale;
+    const completeCtx = completeCanvas.getContext("2d");
+    completeCtx.fillStyle = backgroundColor;
+    completeCtx.drawRect(0, 0, size, size);
+    completeCtx.drawImage(canvas, 0, 0, size, size);
+    completeCtx.globalCompositeOperation = "source-over";
+    completeCtx.font = `${Math.round(40 * scale)}px 'HelveticaNeueBold'`;
+    completeCtx.fillStyle = "#000000";
+    completeCtx.strokeStyle = "#ffffff";
+    completeCtx.textAlign = "center";
+    completeCtx.lineWidth = 1;
+    const descriptionLines = description.split('\n');
+    for (let i = 0; i < descriptionLines.length; i++) {
+        completeCtx.strokeText(descriptionLines[i], 512 * scale, 1024 * scale + (i * 50 * scale));
+        completeCtx.fillText(descriptionLines[i], 512 * scale, 1024 * scale + (i * 50 * scale));
+    }
+
+    return completeCanvas;
 }
 
 function getImg (src) {
