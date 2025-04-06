@@ -120,19 +120,24 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         let titleY = 850 * scale - titleHeight / 2;
         ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
     } else {
+        const fontSize = Math.round(300 * scale * nameZoom);
+        name = name.toUpperCase().split('\n').reverse();
         ctx.globalCompositeOperation = "source-over";
-        ctx.font = `${Math.round(300 * scale * nameZoom)}px 'HelveticaNeueBold'`;
-        ctx.fillStyle = colorName;
+        ctx.font = `${fontSize}px 'HelveticaNeueBold'`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        let titleWidth = ctx.measureText(name).width;
-        let titleHeight = 300 * scale;
-        let titleX = (1024 - titleWidth) / 2 * scale;
-        let titleY = 850 * scale - titleHeight / 2;
-        ctx.fillText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
-        ctx.lineWidth = 10 * scale;
-        ctx.strokeStyle = "#000000";
-        ctx.strokeText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
+        for (let i = 0; i < name.length; i++) {
+            let titleWidth = ctx.measureText(name[i]).width;
+            let titleHeight = 300 * scale * nameZoom * name.length;
+            let titleY = 850 * scale;
+            titleY -= titleHeight / 2;
+            titleY += (i * fontSize * 0.9);
+            ctx.fillStyle = colorName;
+            ctx.fillText(name[i], 512 * scale, titleY);
+            ctx.lineWidth = 10 * scale * nameZoom;
+            ctx.strokeStyle = "#000000";
+            ctx.strokeText(name[i], 512 * scale, titleY);
+        }
     }
 
     return canvas;
