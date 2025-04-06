@@ -161,7 +161,7 @@
             min-width: 75px;
             min-height: 75px;
             cursor: pointer;
-            margin: 5px;
+            margin-bottom: 10px;
         }
         
     </style>
@@ -205,12 +205,12 @@
         </div>
     </div>
     <div class="default-popup" id="frameSelectPopup">
-        <div style="width: 100%; height: 100%;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
-                <h1>Select Frame</h1>
-                <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeFrameSelectPopup()"></button>
-            </div>
-            <div style="align-items: vertical; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; height: 80vh; width: 100%;" id="frameSelectDiv"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
+            <h1>Select Frame</h1>
+            <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeFrameSelectPopup()"></button>
+        </div>
+        <div style="align-items: vertical; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; height: 80vh; width: 100%;">
+            <div id="frameSelectDiv"></div>
         </div>
     </div>
 </body>
