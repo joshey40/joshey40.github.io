@@ -154,6 +154,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     completeCtx.fillStyle = "#ffffff";
     completeCtx.strokeStyle = "#000000";
     completeCtx.textAlign = "center";
+    completeCtx.textBaseline = "top";
     completeCtx.lineWidth = 1;
     const descriptionLines = description.split('\n');
     for (let i = 0; i < descriptionLines.length; i++) {
