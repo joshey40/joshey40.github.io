@@ -19,6 +19,7 @@ function mainImageChange(event) {
     const imageFile = event.target.files[0];
     const reader = new FileReader();
     console.log(imageFile);
+    console.log(reader);
 
 
 }
