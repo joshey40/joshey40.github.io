@@ -112,6 +112,7 @@ for (const category in categories) {
     fetch(`${frameDir}${category}/`)
         .then(response => response.text())
         .then(data => {
+            console.log(data); // Debugging line to check the response
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(data, 'text/html');
             const images = htmlDoc.querySelectorAll('img');
