@@ -29,7 +29,7 @@ async function updateResult() {
         const zoom = document.getElementById('imageZoom').value / 100;
 
         // Update the card (hier wird das Signal weitergegeben)
-        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, signal, zoom);
+        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom);
 
         // Wenn der Aufruf abgebrochen wurde, nichts weiter tun
         if (signal.aborted) return;

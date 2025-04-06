@@ -28,7 +28,6 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         w = h * aspectRatio;
     }
     let scale = size / 1024;
-    console.log(w, h, scale, zoom);
     w *= scale * zoom;
     h *= scale * zoom;
     let x = (1024 - w) / 2 * scale;
