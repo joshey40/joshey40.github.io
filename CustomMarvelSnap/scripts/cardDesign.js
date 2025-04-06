@@ -125,19 +125,17 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         let titleWidth = ctx.measureText(name).width;
         let titleHeight = 300 * scale;
         let titleAspectRatio = titleWidth / titleHeight;
+        ctx.lineWidth = 10 * scale;
         if (titleWidth > 600 * scale) {
             titleWidth = 600 * scale;
             titleHeight = titleWidth / titleAspectRatio;
+            ctx.lineWidth = 10 * scale / titleAspectRatio;
             ctx.font = `${Math.round(titleHeight)}px 'HelveticaNeueBold'`;
         }
         let titleX = (1024 - titleWidth) / 2 * scale;
         let titleY = 850 * scale - titleHeight / 2;
         ctx.fillText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
         ctx.strokeStyle = "#000000";
-        ctx.lineWidth = 10 * scale;
-        ctx.strokeText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
-        ctx.lineWidth = 5 * scale;
-        ctx.strokeStyle = "#FFFFFF";
         ctx.strokeText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
     }
 
