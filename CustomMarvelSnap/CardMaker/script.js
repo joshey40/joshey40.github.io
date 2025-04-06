@@ -16,7 +16,11 @@ async function updateResult() {
 }
 
 function mainImageChange(event) {
-    console.log('mainImageChange');
+    const imageFile = event.target.files[0];
+    const reader = new FileReader();
+    console.log(imageFile);
+
+
 }
 
 function frameBreakImageChange(event) {
