@@ -29,6 +29,7 @@ async function updateResult() {
         const description = document.getElementById('description').value;
         const zoom = 1 + (document.getElementById('imageZoom').value / 100);
         const transparentBg = document.getElementById('transparentBg').value;
+        console.log('Transparent Background:', transparentBg);
         const backgroundColor = transparentBg === 'true' ? 'transparent' : document.getElementById('backgroundColor').value;
         console.log('Background Color:', backgroundColor);
 
