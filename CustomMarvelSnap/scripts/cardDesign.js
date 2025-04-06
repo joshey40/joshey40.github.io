@@ -1,4 +1,4 @@
-async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b") {
+async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor){
     // Create Canvas
     const canvas = document.createElement("canvas");
     canvas.width = size;
@@ -144,21 +144,21 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     completeCanvas.width = size;
     completeCanvas.height = 1318 * scale;
     const completeCtx = completeCanvas.getContext("2d");
-    if (backgroundColor) {
+    if (backgroundColor ) {
         completeCtx.fillStyle = backgroundColor;
         completeCtx.fillRect(0, 0, size, 1318 * scale);
     }
     completeCtx.drawImage(canvas, 0, 0, size, size);
     completeCtx.globalCompositeOperation = "source-over";
-    completeCtx.font = `${Math.round(40 * scale)}px 'HelveticaNeueBold'`;
+    completeCtx.font = `${Math.round(50 * scale)}px 'HelveticaNeueBold'`;
     completeCtx.fillStyle = "#ffffff";
     completeCtx.strokeStyle = "#000000";
     completeCtx.textAlign = "center";
     completeCtx.lineWidth = 1;
     const descriptionLines = description.split('\n');
     for (let i = 0; i < descriptionLines.length; i++) {
-        completeCtx.strokeText(descriptionLines[i], 512 * scale, 1024 * scale + (i * 50 * scale));
-        completeCtx.fillText(descriptionLines[i], 512 * scale, 1024 * scale + (i * 50 * scale));
+        completeCtx.strokeText(descriptionLines[i], 512 * scale, 1024 * scale + (i * 55 * scale));
+        completeCtx.fillText(descriptionLines[i], 512 * scale, 1024 * scale + (i * 55 * scale));
     }
 
     return completeCanvas;
