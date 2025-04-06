@@ -30,6 +30,7 @@ async function updateResult() {
         const zoom = 1 + (document.getElementById('imageZoom').value / 100);
         const transparentBg = document.getElementById('transparentBg').value;
         const backgroundColor = transparentBg === 'true' ? 'transparent' : document.getElementById('backgroundColor').value;
+        console.log('Background Color:', backgroundColor);
 
         // Update the card (hier wird das Signal weitergegeben)
         const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom, nameZoom, backgroundColor, signal);
