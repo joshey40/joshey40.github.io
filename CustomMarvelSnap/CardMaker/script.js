@@ -2,6 +2,7 @@ import {generatecard} from '../scripts/cardDesign.js';
 
 let imagesBase64 = {
     mainImage: null,
+    frameImage: null,
     frameBreakImage: null,
     titleImage: null
 };
@@ -100,19 +101,37 @@ export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange,
 const frameSelectDiv = document.getElementById('frameSelectDiv');
 const frameDir = '../res/img/frames/';
 const categories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon' };
+const frames = {
+    'basic': ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite'],
+    'cosmic': ['blue', 'green', 'red', 'purple', 'yellow', 'orange'],
+    'neon': ['blue', 'green', 'red', 'purple', 'yellow', 'white']
+};
+
 for (const category in categories) {
+    const categoryTitleDividerDiv = document.createElement('div');
+    categoryTitleDividerDiv.style.flex = '1 1 auto';
+    const categoryTitle = document.createElement('h2');
+    categoryTitle.textContent = categories[category];
+    categoryTitleDividerDiv.appendChild(categoryTitle);
     const categoryDiv = document.createElement('div');
     categoryDiv.className = 'frame-category';
-    const categoryTitle = document.createElement('h3');
-    categoryTitle.textContent = categories[category];
-    categoryDiv.appendChild(categoryTitle);
-    frameSelectDiv.appendChild(categoryDiv);
+    categoryTitleDividerDiv.appendChild(categoryDiv);
+    frameSelectDiv.appendChild(categoryTitleDividerDiv);
 
-    // Fetch the names of the images in the directory
-    const dir = frameDir + category + '/';
-    const response = await fetch(dir);
-    const files = await response.text();
-    const fileNames = files.match(/href="([^"]+)"/g).map(file => file.replace(/href="([^"]+)"/, '$1'));
-    console.log(fileNames);
+    const categoryFrames = frames[category];
+    for (const frame of categoryFrames) {
+        const frameImg = document.createElement('img');
+        frameImg.src = `${frameDir}${category}/${frame}.png`;
+        frameImg.alt = `${category} ${frame}`;
+        frameImg.className = 'frame-image';
+        frameImg.addEventListener('click', () => {
+            imagesBase64.frameImage = `${frameDir}${category}/${frame}.png`;
+            updateResult();
+            closeFrameSelectPopup();
+        });
+        categoryDiv.appendChild(frameImg);
+    }
     
 }
+
+
