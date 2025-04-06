@@ -64,6 +64,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     ctx.drawImage(powerImg, 0, 0, size, size);
     const numbersDir = "../res/img/numbers/";
     const numbersWidth = {'-':36, 0:65, 1:43, 2:67, 3:65, 4:61, 5:64, 6:65, 7:61, 8:65, 9:65};
+    const multiply = 1.2;
     // Cost number
     if (cost == null || cost == "") {
         cost = 0;
@@ -73,17 +74,19 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     for (let i = 0; i < costNumber.length; i++) {
         costWidth += numbersWidth[costNumber[i]] * scale;
     }
+    costWidth *= multiply;
     let costX = 240 * scale - costWidth / 2; 
     let costY = 75 * scale;
     for (let i = 0; i < costNumber.length; i++) {
         let numberImg = await getImg(numbersDir + "cost/" + costNumber[i] + ".png");
-        ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * scale);
+        ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * multiply * scale);
         costX += numbersWidth[costNumber[i]] * scale;
     }
     // Power number
     if (power != null && power != "") {
         let powerNumber = power.toString().split("");
         let powerWidth = 0;
+        powerWidth *= multiply;
         for (let i = 0; i < powerNumber.length; i++) {
             powerWidth += numbersWidth[powerNumber[i]] * scale;
         }
@@ -91,7 +94,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         let powerY = 75 * scale;
         for (let i = 0; i < powerNumber.length; i++) {
             let numberImg = await getImg(numbersDir + "power/" + powerNumber[i] + ".png");
-            ctx.drawImage(numberImg, powerX, powerY, numbersWidth[powerNumber[i]] * scale, 79 * scale);
+            ctx.drawImage(numberImg, powerX, powerY, numbersWidth[powerNumber[i]] * scale, 79 * multiply * scale);
             powerX += numbersWidth[powerNumber[i]] * scale;
         }
     }
@@ -125,16 +128,15 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         let titleWidth = ctx.measureText(name).width;
         let titleHeight = 300 * scale;
         let titleAspectRatio = titleWidth / titleHeight;
-        ctx.lineWidth = 10 * scale;
         if (titleWidth > 600 * scale) {
             titleWidth = 600 * scale;
             titleHeight = titleWidth / titleAspectRatio;
-            ctx.lineWidth = 10 * scale / titleAspectRatio;
             ctx.font = `${Math.round(titleHeight)}px 'HelveticaNeueBold'`;
         }
         let titleX = (1024 - titleWidth) / 2 * scale;
         let titleY = 850 * scale - titleHeight / 2;
         ctx.fillText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
+        ctx.lineWidth = 10 * scale;
         ctx.strokeStyle = "#000000";
         ctx.strokeText(name, titleX + titleWidth / 2, titleY + titleHeight / 2);
     }

@@ -7,19 +7,42 @@ let imagesBase64 = {
     titleImage: null
 };
 
+// AbortController für Abbruch von vorherigen Aufrufen
+let abortController = null;
+
 async function updateResult() {
-    const name = document.getElementById('name').value;
-    const colorName = document.getElementById('nameColor').value;
-    const cost = document.getElementById('cost').value;
-    const power = document.getElementById('power').value;
-    const description = document.getElementById('description').value;
+    // Vorherigen Aufruf abbrechen, falls vorhanden
+    if (abortController) {
+        abortController.abort();
+    }
 
-    // Update the card
-    const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64);
+    // Neuen AbortController erstellen
+    abortController = new AbortController();
+    const signal = abortController.signal;
 
-    // Update the card image
-    const cardImage = document.getElementById('cardImage');
-    cardImage.src = canvas.toDataURL();
+    try {
+        const name = document.getElementById('name').value;
+        const colorName = document.getElementById('nameColor').value;
+        const cost = document.getElementById('cost').value;
+        const power = document.getElementById('power').value;
+        const description = document.getElementById('description').value;
+
+        // Update the card (hier wird das Signal weitergegeben)
+        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, signal);
+
+        // Wenn der Aufruf abgebrochen wurde, nichts weiter tun
+        if (signal.aborted) return;
+
+        // Update the card image
+        const cardImage = document.getElementById('cardImage');
+        cardImage.src = canvas.toDataURL();
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            console.log('UpdateResult wurde abgebrochen.');
+        } else {
+            console.error('Fehler beim Aktualisieren der Karte:', error);
+        }
+    }
 }
 
 function mainImageChange(event) {
