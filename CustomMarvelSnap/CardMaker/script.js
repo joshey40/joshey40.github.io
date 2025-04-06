@@ -74,7 +74,12 @@ function selectFrame() {
     const frameSelectPopup = document.getElementById('frameSelectPopup');
     frameSelectPopup.style.visibility = 'visible';
     frameSelectPopup.style.opacity = '1';
-    
+}
+
+function closeFrameSelectPopup() {
+    const frameSelectPopup = document.getElementById('frameSelectPopup');
+    frameSelectPopup.style.visibility = 'hidden';
+    frameSelectPopup.style.opacity = '0';
 }
 
 // Attach to the global window object
@@ -87,5 +92,5 @@ window.clearFrameBreakImage = clearFrameBreakImage;
 window.clearTitleImage = clearTitleImage;
 window.selectFrame = selectFrame;
 
-export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame };
+export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup };
 
