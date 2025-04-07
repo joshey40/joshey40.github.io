@@ -90,7 +90,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         for (let i = 0; i < powerNumber.length; i++) {
             powerWidth += numbersWidth[powerNumber[i]] * scale;
         }
-        let powerX = 795 * scale - powerWidth / 2;
+        let powerX = 792 * scale - powerWidth / 2;
         let powerY = 65 * scale;
         for (let i = 0; i < powerNumber.length; i++) {
             let numberImg = await getImg(numbersDir + "power/" + powerNumber[i] + ".png");
