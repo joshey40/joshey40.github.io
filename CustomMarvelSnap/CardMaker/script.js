@@ -123,6 +123,11 @@ function closeEffectSelectPopup() {
     effectSelectPopup.style.visibility = 'hidden';
 }
 
+function clearEffect() {
+    imagesBase64.effectImage = null;
+    updateResult();
+}
+
 function clearBackground() {
     const backgroundColor = document.getElementById('backgroundColor');
     backgroundColor.value = '#10072b';
@@ -155,10 +160,11 @@ window.selectFrame = selectFrame;
 window.closeFrameSelectPopup = closeFrameSelectPopup;
 window.selectEffect = selectEffect;
 window.closeEffectSelectPopup = closeEffectSelectPopup;
+window.clearEffect = clearEffect;
 window.clearBackground = clearBackground;
 window.downloadCard = downloadCard;
 
-export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, selectEffect, closeEffectSelectPopup, clearBackground, downloadCard };
+export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, selectEffect, closeEffectSelectPopup, clearEffect, clearBackground, downloadCard };
 
 
 
