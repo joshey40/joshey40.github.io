@@ -213,11 +213,15 @@
                 </div>
                 <input type="range" id="imageZoom" name="imageZoom" min="0" max="100" value="0" class="default-slider" style="width: 200px;" oninput="updateResult()">
                 <div style="display: flex; justify-content: space-evenly;">
-                    <label for="titleImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Title Image</label>
+                    <label for="titleImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Name Image</label>
                     <input type="file" id="titleImage" name="titleImage" accept="image/*" style="display: none;" onchange="titleImageChange(event)">
                     <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearTitleImage()"></button>
                 </div>
                 <button id="selectFrameButton" class="default-button" style="width: 212px;" onclick="selectFrame()">Select Frame</button>
+                <div style="display: flex; justify-content: space-evenly;">
+                    <button id="selectEffectButton" class="default-button" style="width: 212px;" onclick="selectEffect()">Select Flare</button>
+                    <button id="clearEffectButton" class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearEffect()"></button>
+                </div>
                 <div style="display: flex; justify-content: space-evenly;">
                     <p style="margin: 0; margin-right: 8px;">Background:</p>
                     <input type="checkbox" id="transparentBg" name="transparentBg" class="default-input" style="width: 30px; height: 30px; padding: 1px; margin-right: 8px;" onchange="updateResult()">
@@ -234,6 +238,13 @@
             <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeFrameSelectPopup()"></button>
         </div>
         <div style="display: flex; flex-direction: column; justify-content: center; padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);" id="frameSelectDiv"></div>
+    </div>
+    <div class="default-popup" id="effectSelectPopup">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
+            <h1>Select Effect</h1>
+            <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeEffectSelectPopup()"></button>
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center; padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);" id="effectSelectDiv"></div>
     </div>
 </body>
 </html>

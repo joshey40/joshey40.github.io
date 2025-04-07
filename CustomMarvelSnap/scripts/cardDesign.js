@@ -140,8 +140,19 @@ async function generatecard(name, colorName, cost, power, description, size=1024
             ctx.strokeText(name[i], 512 * scale, titleY);
         }
     }
+    // Effect
+    ctx.globalCompositeOperation = "destination-over";
+    if (imagesBase64.effectImage) {
+        let effectImg = new Image();
+        effectImg.src = imagesBase64.effectImage;
+        effectImg = await new Promise((resolve, reject) => {
+            effectImg.onload = () => resolve(effectImg);
+            effectImg.onerror = reject;
+        });
+        ctx.drawImage(effectImg, 0, 0, size, size);
+    }
 
-    // Description
+    // Description and Background Color
     const completeCanvas = document.createElement("canvas");
     completeCanvas.width = size;
     completeCanvas.height = 1318 * scale;

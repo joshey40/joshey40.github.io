@@ -4,7 +4,8 @@ let imagesBase64 = {
     mainImage: null,
     frameImage: null,
     frameBreakImage: null,
-    titleImage: null
+    titleImage: null,
+    effectImage: null,
 };
 
 // AbortController für Abbruch von vorherigen Aufrufen
@@ -110,6 +111,18 @@ function closeFrameSelectPopup() {
     frameSelectPopup.style.visibility = 'hidden';
 }
 
+function selectEffect() {
+    const effectSelectPopup = document.getElementById('effectSelectPopup');
+    effectSelectPopup.style.visibility = 'visible';
+    effectSelectPopup.style.opacity = '1';
+}
+
+function closeEffectSelectPopup() {
+    const effectSelectPopup = document.getElementById('effectSelectPopup');
+    effectSelectPopup.style.opacity = '0';
+    effectSelectPopup.style.visibility = 'hidden';
+}
+
 function downloadCard() {
     const cardImage = document.getElementById('cardImage');
     const name = document.getElementById('name').value;
@@ -133,27 +146,29 @@ window.clearFrameBreakImage = clearFrameBreakImage;
 window.clearTitleImage = clearTitleImage;
 window.selectFrame = selectFrame;
 window.closeFrameSelectPopup = closeFrameSelectPopup;
+window.selectEffect = selectEffect;
+window.closeEffectSelectPopup = closeEffectSelectPopup;
 window.downloadCard = downloadCard;
 
-export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, downloadCard};
+export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, selectEffect, closeEffectSelectPopup, downloadCard };
 
 
 
 // Add Frames to frameSelectPopup
 const frameSelectDiv = document.getElementById('frameSelectDiv');
 const frameDir = '../res/img/frames/';
-const categories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon' };
+const frameCategories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon' };
 const frames = {
     'basic': ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite'],
     'cosmic': ['blue', 'green', 'red', 'pink', 'yellow', 'orange'],
     'neon': ['blue', 'green', 'red', 'pink', 'yellow', 'white']
 };
 
-for (const category in categories) {
+for (const category in frameCategories) {
     const categoryTitleDividerDiv = document.createElement('div');
     categoryTitleDividerDiv.style.flex = '1 1 auto';
     const categoryTitle = document.createElement('h2');
-    categoryTitle.textContent = categories[category];
+    categoryTitle.textContent = frameCategories[category];
     categoryTitleDividerDiv.appendChild(categoryTitle);
     const categoryDiv = document.createElement('div');
     categoryDiv.className = 'frame-category';
@@ -172,5 +187,40 @@ for (const category in categories) {
             closeFrameSelectPopup();
         });
         categoryDiv.appendChild(frameImg);
+    }
+}
+
+// Add Effects to effectSelectPopup
+const effectSelectDiv = document.getElementById('effectSelectDiv');
+const effectDir = '../res/img/effects/';
+const effectCategories = { 'krackle': 'Krackle', 'tone': 'Tone' };
+const effects = {
+    'krackle': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
+    'tone': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white']
+};
+
+for (const category in effectCategories) {
+    const categoryTitleDividerDiv = document.createElement('div');
+    categoryTitleDividerDiv.style.flex = '1 1 auto';
+    const categoryTitle = document.createElement('h2');
+    categoryTitle.textContent = effectCategories[category];
+    categoryTitleDividerDiv.appendChild(categoryTitle);
+    const categoryDiv = document.createElement('div');
+    categoryDiv.className = 'effect-category';
+    categoryTitleDividerDiv.appendChild(categoryDiv);
+    effectSelectDiv.appendChild(categoryTitleDividerDiv);
+
+    const categoryEffects = effects[category];
+    for (const effect of categoryEffects) {
+        const effectImg = document.createElement('img');
+        effectImg.src = `${effectDir}${category}/${effect}.png`;
+        effectImg.alt = `${category} ${effect}`;
+        effectImg.className = 'effect-image';
+        effectImg.addEventListener('click', () => {
+            imagesBase64.effectImage = `${effectDir}${category}/${effect}.png`;
+            updateResult();
+            closeEffectSelectPopup();
+        });
+        categoryDiv.appendChild(effectImg);
     }
 }
