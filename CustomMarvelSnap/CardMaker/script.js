@@ -155,9 +155,10 @@ window.selectFrame = selectFrame;
 window.closeFrameSelectPopup = closeFrameSelectPopup;
 window.selectEffect = selectEffect;
 window.closeEffectSelectPopup = closeEffectSelectPopup;
+window.clearBackground = clearBackground;
 window.downloadCard = downloadCard;
 
-export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, selectEffect, closeEffectSelectPopup, downloadCard };
+export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, selectEffect, closeEffectSelectPopup, clearBackground, downloadCard };
 
 
 
