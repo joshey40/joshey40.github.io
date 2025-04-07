@@ -178,10 +178,21 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     return completeCanvas;
 }
 
-function getImg (src) {
-    var img = new Image();
-    img.src = src;
+var imgCache = {};
+async function getImg (src) {
+    if (imgCache[src]) {
+        return imgCache[src];
+    } else {
+        const img = await loadImg(src);
+        imgCache[src] = img;
+        return img;
+    }
+}
+
+function loadImg (src) {
     return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
         img.onload = () => resolve(img);
         img.onerror = reject;
     });
