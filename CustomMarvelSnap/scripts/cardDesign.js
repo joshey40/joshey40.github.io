@@ -116,6 +116,8 @@ async function generatecard(name, colorName, cost, power, description, size=1024
             titleHeight = 300 * scale;
             titleWidth = titleHeight * titleAspectRatio;
         }
+        titleWidth *= nameZoom;
+        titleHeight *= nameZoom;
         let titleX = (1024 - titleWidth) / 2 * scale;
         let titleY = 850 * scale - titleHeight / 2;
         ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
