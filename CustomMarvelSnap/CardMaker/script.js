@@ -123,6 +123,13 @@ function closeEffectSelectPopup() {
     effectSelectPopup.style.visibility = 'hidden';
 }
 
+function clearBackground() {
+    const backgroundColor = document.getElementById('backgroundColor');
+    backgroundColor.value = '#10072b';
+    const transparentBg = document.getElementById('transparentBg');
+    transparentBg.checked = false;
+}
+
 function downloadCard() {
     const cardImage = document.getElementById('cardImage');
     const name = document.getElementById('name').value;
