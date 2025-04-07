@@ -215,7 +215,7 @@ for (const category in effectCategories) {
         const effectImg = document.createElement('img');
         effectImg.src = `${effectDir}${category}/${effect}.png`;
         effectImg.alt = `${category} ${effect}`;
-        effectImg.className = 'effect-image';
+        effectImg.className = 'frame-image';
         effectImg.addEventListener('click', () => {
             imagesBase64.effectImage = `${effectDir}${category}/${effect}.png`;
             updateResult();
