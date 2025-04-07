@@ -171,11 +171,12 @@ export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange,
 // Add Frames to frameSelectPopup
 const frameSelectDiv = document.getElementById('frameSelectDiv');
 const frameDir = '../res/img/frames/';
-const frameCategories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon' };
+const frameCategories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon', 'metallic': 'Metallic' };
 const frames = {
     'basic': ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite'],
     'cosmic': ['blue', 'green', 'red', 'pink', 'yellow', 'orange'],
-    'neon': ['blue', 'green', 'red', 'pink', 'yellow', 'white']
+    'neon': ['blue', 'green', 'red', 'purple', 'yellow', 'white'],
+    'metallic': ['copper', 'gold', 'silver']
 };
 
 for (const category in frameCategories) {
