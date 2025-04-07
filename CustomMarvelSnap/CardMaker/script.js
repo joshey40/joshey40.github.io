@@ -174,7 +174,7 @@ const frameDir = '../res/img/frames/';
 const frameCategories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon', 'metallic': 'Metallic' };
 const frames = {
     'basic': ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite'],
-    'cosmic': ['blue', 'green', 'red', 'pink', 'yellow', 'orange'],
+    'cosmic': ['black', 'blue', 'green', 'red', 'pink', 'yellow', 'orange'],
     'neon': ['blue', 'green', 'red', 'purple', 'yellow', 'white'],
     'metallic': ['copper', 'gold', 'silver']
 };
