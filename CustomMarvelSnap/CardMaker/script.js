@@ -12,6 +12,7 @@ let imagesBase64 = {
 let abortController = null;
 
 async function updateResult() {
+    console.log(imagesBase64);
     // Vorherigen Aufruf abbrechen, falls vorhanden
     if (abortController) {
         abortController.abort();
