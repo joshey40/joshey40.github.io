@@ -90,6 +90,18 @@
             min-width: 300px;
             
         }
+        .legals-div {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+            font: 1em 'Roboto', sans-serif;
+            text-align: center;
+            padding: 5px;
+        }
         .default-input {
             margin: 4px 0px;
             padding: 4px;
@@ -185,7 +197,6 @@
 <body>
     <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/background.png" class="background-img" alt="background">
     <div class="content-div">
-        <h1 onclick="window.location.href='https://www.reddit.com/r/CustomMarvelSnap/'" style="cursor: pointer;">CMS Card Maker</h1>
         <div class="divider-div">
             <div class="result-div" id="resultDiv">
                 <img id="cardImage" src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/default.png" alt="result" style="width: 100%;">
@@ -205,7 +216,7 @@
                     <input type="number" id="cost" name="cost" placeholder="Cost" class="default-input" style="width: 90px; margin-right: 8px;" oninput="updateResult()">
                     <input type="number" id="power" name="power" placeholder="Power" class="default-input" style="width: 90px;" oninput="updateResult()">
                 </div>
-                <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 80px; resize: none;" oninput="updateResult()"></textarea>
+                <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 80px; resize: vertical;" oninput="updateResult()"></textarea>
                 <div style="display: flex; justify-content: space-evenly;">
                     <label for="mainImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Image</label>
                     <input type="file" id="mainImage" name="mainImage" accept="image/*"style="display: none;" onchange="mainImageChange(event)">
@@ -232,6 +243,9 @@
                 <hr style="width: 200px; border: 2px solid #10072b; margin: 5px 0; border-radius: 5px;">
                 <button id="downloadButton" class="default-button" style="width: 212px;" onclick="downloadCard()">Download Card</button>
             </div>
+        </div>
+        <div id="legals-div" class="legals-div">
+            <p>All rights reserved. All art and/or graphic content is property of their respective artists and/or owners. This website is not produced, endorsed, supported, or affiliated with MARVEL, Nuverse and Second Dinner. Text and images are user-submitted and do not represent official endorsements of this site.</p>
         </div>
     </div>
     <div class="default-popup" id="frameSelectPopup">

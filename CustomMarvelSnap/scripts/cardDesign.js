@@ -179,6 +179,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
 }
 
 var imgCache = {};
+
 async function getImg (src) {
     if (imgCache[src]) {
         return imgCache[src];
