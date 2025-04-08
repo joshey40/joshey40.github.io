@@ -75,7 +75,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         costWidth += numbersWidth[costNumber[i]] * scale;
     }
     costWidth *= multiply;
-    let costX = 250 * scale - costWidth / 2; 
+    let costX = 248 * scale - costWidth / 2; 
     let costY = 65 * scale;
     for (let i = 0; i < costNumber.length; i++) {
         let numberImg = await getImg(numbersDir + "cost/" + costNumber[i] + ".png");
