@@ -33,7 +33,7 @@ async function updateResult() {
         const backgroundColor = transparentBg === false ? 'transparent' : document.getElementById('backgroundColor').value;
 
         // Update the card (hier wird das Signal weitergegeben)
-        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom, nameZoom, backgroundColor, (0,10), signal);
+        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom, nameZoom, backgroundColor, [0,100]);
 
         // Wenn der Aufruf abgebrochen wurde, nichts weiter tun
         if (signal.aborted) return;
