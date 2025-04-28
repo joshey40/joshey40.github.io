@@ -33,7 +33,7 @@ async function updateResult() {
         const backgroundColor = transparentBg === false ? 'transparent' : document.getElementById('backgroundColor').value;
 
         // Update the card (hier wird das Signal weitergegeben)
-        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom, nameZoom, backgroundColor, [0,100]);
+        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom, nameZoom, backgroundColor, [0,0]);
 
         // Wenn der Aufruf abgebrochen wurde, nichts weiter tun
         if (signal.aborted) return;
@@ -148,6 +148,32 @@ function downloadCard() {
     }
     link.click();
 }
+
+// Add event listeners to the image for offsets
+const cardImage = document.getElementById('cardImage');
+var offsetX = 0;
+var offsetY = 0;
+var isDragging = false;
+cardImage.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - cardImage.getBoundingClientRect().left;
+    offsetY = e.clientY - cardImage.getBoundingClientRect().top;
+});
+cardImage.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+        cardImage.style.transform = `translate(${x}px, ${y}px)`;
+        updateResult();
+    }
+});
+cardImage.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+cardImage.addEventListener('mouseleave', () => {
+    isDragging = false;
+});
+
 
 // Attach to the global window object
 window.updateResult = updateResult;
