@@ -155,6 +155,7 @@ function downloadCard() {
 
 // Add event listeners to the image for offsets
 const cardImage = document.getElementById('cardImage');
+cardImage.ondragstart = function() { return false; };
 var isDragging = false;
 var downPosition = { x: 0, y: 0 };
 cardImage.addEventListener('mousedown', (e) => {
