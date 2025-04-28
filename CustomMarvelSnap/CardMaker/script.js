@@ -156,16 +156,18 @@ function downloadCard() {
 // Add event listeners to the image for offsets
 const cardImage = document.getElementById('cardImage');
 var isDragging = false;
+var downPosition = { x: 0, y: 0 };
 cardImage.addEventListener('mousedown', (e) => {
     isDragging = true;
-    offsetX = e.clientX - cardImage.getBoundingClientRect().left;
-    offsetY = e.clientY - cardImage.getBoundingClientRect().top;
+    downPosition.x = e.clientX - offsetX;
+    downPosition.y = e.clientY - offsetY;
+    offsetX = e.clientX - downPosition.x;
+    offsetY = e.clientY - downPosition.y;
 });
 cardImage.addEventListener('mousemove', (e) => {
     if (isDragging) {
-        const x = e.clientX - offsetX;
-        const y = e.clientY - offsetY;
-        cardImage.style.transform = `translate(${x}px, ${y}px)`;
+        offsetX = e.clientX - downPosition.x;
+        offsetY = e.clientY - downPosition.y;
         updateResult();
     }
 });
