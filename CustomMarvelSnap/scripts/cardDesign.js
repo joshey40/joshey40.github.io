@@ -133,7 +133,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
             let titleY = 850 * scale;
             titleY -= titleHeight / 2;
             titleY += (i * fontSize * 0.9);
-            ctx.lineWidth = 10 * scale * nameZoom;
+            ctx.lineWidth = 50 * scale * nameZoom;
             ctx.strokeStyle = "#000000";
             ctx.strokeText(name[i], 512 * scale, titleY);
             ctx.fillStyle = colorName;
