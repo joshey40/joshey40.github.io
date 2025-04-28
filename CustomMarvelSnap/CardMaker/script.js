@@ -8,6 +8,9 @@ let imagesBase64 = {
     effectImage: null,
 };
 
+var offsetX = 0;
+var offsetY = 0;
+
 // AbortController für Abbruch von vorherigen Aufrufen
 let abortController = null;
 
@@ -31,9 +34,10 @@ async function updateResult() {
         const zoom = 1 + (document.getElementById('imageZoom').value / 100);
         const transparentBg = document.getElementById('transparentBg').checked;
         const backgroundColor = transparentBg === false ? 'transparent' : document.getElementById('backgroundColor').value;
+        const offset = [offsetX, offsetY];
 
         // Update the card (hier wird das Signal weitergegeben)
-        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom, nameZoom, backgroundColor, [0,0]);
+        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom, nameZoom, backgroundColor, offset);
 
         // Wenn der Aufruf abgebrochen wurde, nichts weiter tun
         if (signal.aborted) return;
@@ -151,8 +155,6 @@ function downloadCard() {
 
 // Add event listeners to the image for offsets
 const cardImage = document.getElementById('cardImage');
-var offsetX = 0;
-var offsetY = 0;
 var isDragging = false;
 cardImage.addEventListener('mousedown', (e) => {
     isDragging = true;
