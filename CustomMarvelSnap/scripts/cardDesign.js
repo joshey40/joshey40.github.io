@@ -1,4 +1,4 @@
-async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor, offset=(0, 100)) {
+async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor, offset=(0, 10)) {
     // Create Canvas
     const canvas = document.createElement("canvas");
     canvas.width = size;
@@ -30,8 +30,8 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     let scale = size / 1024;
     w *= scale * zoom;
     h *= scale * zoom;
-    let x = (1024 - w) / 2 * scale + offset[0] * scale;
-    let y = (1024 - h) / 2 * scale + 3 * scale + offset[1] * scale;
+    let x = (1024 - w) / 2 * scale + offset[0];
+    let y = (1024 - h) / 2 * scale + 3 * scale + offset[1];
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     let frameImg = await getImg("../res/img/frames/basic/common.png");
@@ -75,7 +75,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         costWidth += numbersWidth[costNumber[i]] * scale;
     }
     costWidth *= multiply;
-    let costX = 248 * scale - costWidth / 2; 
+    let costX = 246 * scale - costWidth / 2; 
     let costY = 65 * scale;
     for (let i = 0; i < costNumber.length; i++) {
         let numberImg = await getImg(numbersDir + "cost/" + costNumber[i] + ".png");
