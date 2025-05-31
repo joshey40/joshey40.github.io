@@ -8,7 +8,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     const artMask = await getImg("../res/img/default_cards/art_mask.png");
     ctx.drawImage(artMask, 0, 0, size, size);
     // Background
-    let backgroundImg = await getImg("../res/img/default_cards/ghost_rider.png");
+    let backgroundImg = await getImg("../res/img/default_cards/hulk.png");
     if (imagesBase64.mainImage) {
         const mainImg = new Image();
         mainImg.src = imagesBase64.mainImage;
