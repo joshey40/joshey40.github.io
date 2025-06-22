@@ -10,7 +10,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     // Background
     let backgroundImg;
     if (imagesBase64.mainImage) {
-        const mainImg = await getImg(imagesBase64.mainImage);
+        backgroundImg = await getImg(imagesBase64.mainImage);
     } else {
         backgroundImg = await getImg("../res/img/default_cards/hulk.png");
     }
@@ -42,11 +42,9 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     // Frame Break
     if (imagesBase64.frameBreakImage) {
         let frameBreakImg = await getImg(imagesBase64.frameBreakImage);
-        ctx.globalCompositeOperation = "source-over";
         ctx.drawImage(frameBreakImg, x, y, w, h);
     }
     // Cost and Power
-    ctx.globalCompositeOperation = "source-over";
     const costImg = await getImg("../res/img/frames/cost.png");
     ctx.drawImage(costImg, 0, 0, size, size);
     const powerImg = await getImg("../res/img/frames/power.png");
@@ -90,7 +88,6 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     // Title
     if (imagesBase64.titleImage) {
         let titleImg = await getImg(imagesBase64.titleImage);
-        ctx.globalCompositeOperation = "source-over";
         let titleWidth = titleImg.width;
         let titleHeight = titleImg.height;
         let titleAspectRatio = titleWidth / titleHeight;
@@ -108,19 +105,18 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     } else {
         const fontSize = Math.round(300 * scale * nameZoom);
         name = name.toUpperCase().split('\n');
-        ctx.globalCompositeOperation = "source-over";
         ctx.font = `${fontSize}px 'BadaBoom'`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
+        ctx.strokeStyle = "#000000";
+        ctx.fillStyle = colorName;
+        ctx.lineWidth = 15 * scale * nameZoom;
         for (let i = 0; i < name.length; i++) {
             let titleHeight = 300 * scale * nameZoom * name.length;
             let titleY = 850 * scale;
             titleY -= titleHeight / 2;
             titleY += (i * fontSize * 0.9);
-            ctx.lineWidth = 15 * scale * nameZoom;
-            ctx.strokeStyle = "#000000";
             ctx.strokeText(name[i], 512 * scale, titleY);
-            ctx.fillStyle = colorName;
             ctx.fillText(name[i], 512 * scale, titleY);
         }
     }
