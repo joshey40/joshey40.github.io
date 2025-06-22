@@ -10,12 +10,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     // Background
     let backgroundImg = await getImg("../res/img/default_cards/hulk.png");
     if (imagesBase64.mainImage) {
-        const mainImg = new Image();
-        mainImg.src = imagesBase64.mainImage;
-        backgroundImg = await new Promise((resolve, reject) => {
-            mainImg.onload = () => resolve(mainImg);
-            mainImg.onerror = reject;
-        });
+        const mainImg = await getImg(imagesBase64.mainImage);
     }
     ctx.globalCompositeOperation = "source-in";
     let w = backgroundImg.width;
