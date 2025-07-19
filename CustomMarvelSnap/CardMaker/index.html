@@ -185,30 +185,12 @@
         }
         /* Credits Button Styles */
         .credits-container {
-            position: sticky;
+            margin-top: 20px;
+            align-self: flex-end;
+            position: fixed;
             left: 20px;
             bottom: 20px;
             z-index: 2000;
-            width: fit-content;
-            margin-left: 20px;
-            margin-bottom: 20px;
-            /* Fallback for desktop */
-        }
-        @media (max-width: 800px) {
-            .credits-container {
-                position: sticky;
-                left: unset;
-                right: unset;
-                bottom: 0;
-                margin-left: auto;
-                margin-right: auto;
-                margin-bottom: 0;
-                width: 100vw;
-                display: flex;
-                justify-content: flex-start;
-                background: none;
-            }
-        }
         }
         .credits-button {
             background: #10072b;
@@ -220,7 +202,7 @@
             font-size: 1em;
             cursor: default;
             box-shadow: 2px 2px 8px #0006;
-            transition: background 0.2s;
+            transition: 0.2s;
             user-select: none;
         }
         .credits-popup {
@@ -295,8 +277,6 @@
                 <hr style="width: 200px; border: 2px solid #10072b; margin: 5px 0; border-radius: 5px;">
                 <button id="downloadButton" class="default-button" style="width: 212px;" onclick="downloadCard()">Download Card</button>
             </div>
-        </div>
-        <div>
             <div class="credits-container">
                 <div class="credits-button">@Credits</div>
                 <div class="credits-popup">
