@@ -24,8 +24,13 @@ Object.entries(frameTypes).forEach(([category, frames]) => {
     });
 });
 
+const allPaths = staticImagePaths.concat(numberImagePaths).concat(frameImagePaths);
+
 console.log("Preloading static images...");
 console.log("Static image paths:", staticImagePaths);
+console.log("Number image paths:", numberImagePaths);
+console.log("Frame image paths:", frameImagePaths);
+
 
 const preloadImageCache = {};
 function preloadImg(src) {
@@ -38,7 +43,6 @@ function preloadImg(src) {
 }
 
 async function preloadStaticImages() {
-    const allPaths = staticImagePaths.concat(numberImagePaths);
     await Promise.all(allPaths.map(async (src) => {
         preloadImageCache[src] = await preloadImg(src);
     }));
