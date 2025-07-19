@@ -82,10 +82,14 @@ async function renderCard() {
             const t3 = performance.now();
             console.log(`[Benchmark] generatecard: ${(t3 - t2).toFixed(2)} ms`);
             const cardImage = document.getElementById('cardImage');
-            cardImage.src = canvas.toDataURL();
-            const t4 = performance.now();
-            console.log(`[Benchmark] Bild-Update: ${(t4 - t3).toFixed(2)} ms`);
-            console.log(`[Benchmark] Gesamt: ${(t4 - t0).toFixed(2)} ms`);
+            canvas.toBlob(blob => {
+                const tBlobEnd = performance.now();
+                cardImage.src = URL.createObjectURL(blob);
+                const t4 = performance.now();
+                console.log(`[Benchmark] toBlob: ${(tBlobEnd - t3).toFixed(2)} ms`);
+                console.log(`[Benchmark] Bild-Update: ${(t4 - tBlobEnd).toFixed(2)} ms`);
+                console.log(`[Benchmark] Gesamt: ${(t4 - t0).toFixed(2)} ms`);
+            }, 'image/png');
         } catch (error) {
             console.error('Fehler beim Rendern der Karte:', error);
         }
