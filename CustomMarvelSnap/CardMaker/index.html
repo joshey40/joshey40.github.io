@@ -184,7 +184,7 @@
         }
         .credits-container {
             margin-top: 20px;
-            align-self: flex-end;
+            align-self: flex-start;
             z-index: 2000;
         }
         .credits-button {
@@ -216,7 +216,8 @@
             z-index: 2100;
             white-space: pre-line;
         }
-        .credits-container:hover .credits-popup {
+        .credits-container:hover .credits-popup,
+        .credits-popup:hover {
             display: block;
         }
     </style>
@@ -275,7 +276,7 @@
         </div>
         <div>
             <div class="credits-container">
-                <div class="credits-button">@Credits</div>
+                <div class="credits-button">Credits</div>
                 <div class="credits-popup">
                     <b>Credits:</b><br>
                     Card Maker by Joshey40<br>
