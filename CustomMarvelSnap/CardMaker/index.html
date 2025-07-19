@@ -185,10 +185,30 @@
         }
         /* Credits Button Styles */
         .credits-container {
-            position: fixed;
+            position: sticky;
             left: 20px;
             bottom: 20px;
             z-index: 2000;
+            width: fit-content;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            /* Fallback for desktop */
+        }
+        @media (max-width: 800px) {
+            .credits-container {
+                position: sticky;
+                left: unset;
+                right: unset;
+                bottom: 0;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 0;
+                width: 100vw;
+                display: flex;
+                justify-content: flex-start;
+                background: none;
+            }
+        }
         }
         .credits-button {
             background: #10072b;
@@ -277,14 +297,12 @@
             </div>
         </div>
         <div>
-            <!-- Credits -->
             <div class="credits-container">
                 <div class="credits-button">@Credits</div>
                 <div class="credits-popup">
                     <b>Credits:</b><br>
                     Card Maker by Joshey40<br>
-                    Marvel Snap assets © Nuverse/Second Dinner<br>
-                    Icons &amp; UI by Joshey40<br>
+                    Borders &amp; Art by Hritvik Nijhawan (<span style="color:#ffd700;">@theartist115</span> on Discord)<br>
                     <a href="https://github.com/joshey40" target="_blank" style="color:#ffd700;">GitHub</a>
                 </div>
             </div>
