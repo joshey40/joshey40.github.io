@@ -58,10 +58,14 @@ function requestRender() {
 
 async function renderCard() {
     isRendering = true;
+    const t0 = performance.now();
     const currentSettings = JSON.stringify(cardSettings);
+    const t1 = performance.now();
+    console.log(`[Benchmark] Settings-Vergleich: ${(t1 - t0).toFixed(2)} ms`);
     if (currentSettings !== lastRenderedSettings) {
         lastRenderedSettings = currentSettings;
         try {
+            const t2 = performance.now();
             const canvas = await generatecard(
                 cardSettings.name,
                 cardSettings.colorName,
@@ -75,8 +79,13 @@ async function renderCard() {
                 cardSettings.backgroundColor,
                 cardSettings.offset
             );
+            const t3 = performance.now();
+            console.log(`[Benchmark] generatecard: ${(t3 - t2).toFixed(2)} ms`);
             const cardImage = document.getElementById('cardImage');
             cardImage.src = canvas.toDataURL();
+            const t4 = performance.now();
+            console.log(`[Benchmark] Bild-Update: ${(t4 - t3).toFixed(2)} ms`);
+            console.log(`[Benchmark] Gesamt: ${(t4 - t0).toFixed(2)} ms`);
         } catch (error) {
             console.error('Fehler beim Rendern der Karte:', error);
         }
