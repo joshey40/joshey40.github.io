@@ -11,46 +11,80 @@ let imagesBase64 = {
 var offsetX = 0;
 var offsetY = 0;
 
-// AbortController für Abbruch von vorherigen Aufrufen
-let abortController = null;
+// Globaler State für Card Settings
+let cardSettings = {
+    name: '',
+    colorName: '',
+    nameZoom: 1,
+    cost: '',
+    power: '',
+    description: '',
+    zoom: 1,
+    transparentBg: false,
+    backgroundColor: 'transparent',
+    offset: [0, 0],
+    imagesBase64: imagesBase64,
+};
 
-async function updateResult() {
-    // Vorherigen Aufruf abbrechen, falls vorhanden
-    if (abortController) {
-        abortController.abort();
+// Für Change Detection
+let lastRenderedSettings = null;
+let isRendering = false;
+let pendingRender = false;
+
+function updateResult() {
+    // Nur Settings updaten
+    cardSettings.name = document.getElementById('name').value;
+    cardSettings.colorName = document.getElementById('nameColor').value;
+    cardSettings.nameZoom = 1 + ((document.getElementById('nameZoom').value - 100) / 100);
+    cardSettings.cost = document.getElementById('cost').value;
+    cardSettings.power = document.getElementById('power').value;
+    cardSettings.description = document.getElementById('description').value;
+    cardSettings.zoom = 1 + (document.getElementById('imageZoom').value / 100);
+    cardSettings.transparentBg = document.getElementById('transparentBg').checked;
+    cardSettings.backgroundColor = cardSettings.transparentBg === false ? 'transparent' : document.getElementById('backgroundColor').value;
+    cardSettings.offset = [offsetX, offsetY];
+    cardSettings.imagesBase64 = imagesBase64;
+
+    requestRender();
+}
+
+function requestRender() {
+    if (isRendering) {
+        pendingRender = true;
+        return;
     }
+    renderCard();
+}
 
-    // Neuen AbortController erstellen
-    abortController = new AbortController();
-    const signal = abortController.signal;
-
-    try {
-        const name = document.getElementById('name').value;
-        const colorName = document.getElementById('nameColor').value;
-        const nameZoom = 1 + ((document.getElementById('nameZoom').value - 100) / 100);
-        const cost = document.getElementById('cost').value;
-        const power = document.getElementById('power').value;
-        const description = document.getElementById('description').value;
-        const zoom = 1 + (document.getElementById('imageZoom').value / 100);
-        const transparentBg = document.getElementById('transparentBg').checked;
-        const backgroundColor = transparentBg === false ? 'transparent' : document.getElementById('backgroundColor').value;
-        const offset = [offsetX, offsetY];
-
-        // Update the card (hier wird das Signal weitergegeben)
-        const canvas = await generatecard(name, colorName, cost, power, description, 1024, imagesBase64, zoom, nameZoom, backgroundColor, offset);
-
-        // Wenn der Aufruf abgebrochen wurde, nichts weiter tun
-        if (signal.aborted) return;
-
-        // Update the card image
-        const cardImage = document.getElementById('cardImage');
-        cardImage.src = canvas.toDataURL();
-    } catch (error) {
-        if (error.name === 'AbortError') {
-            console.log('UpdateResult wurde abgebrochen.');
-        } else {
-            console.error('Fehler beim Aktualisieren der Karte:', error);
+async function renderCard() {
+    isRendering = true;
+    const currentSettings = JSON.stringify(cardSettings);
+    if (currentSettings !== lastRenderedSettings) {
+        lastRenderedSettings = currentSettings;
+        try {
+            const canvas = await generatecard(
+                cardSettings.name,
+                cardSettings.colorName,
+                cardSettings.cost,
+                cardSettings.power,
+                cardSettings.description,
+                1024,
+                cardSettings.imagesBase64,
+                cardSettings.zoom,
+                cardSettings.nameZoom,
+                cardSettings.backgroundColor,
+                cardSettings.offset
+            );
+            const cardImage = document.getElementById('cardImage');
+            cardImage.src = canvas.toDataURL();
+        } catch (error) {
+            console.error('Fehler beim Rendern der Karte:', error);
         }
+    }
+    isRendering = false;
+    if (pendingRender) {
+        pendingRender = false;
+        renderCard();
     }
 }
 
