@@ -28,12 +28,6 @@ Object.entries(frameTypes).forEach(([category, frames]) => {
 
 const allPaths = staticImagePaths.concat(numberImagePaths).concat(frameImagePaths);
 
-console.log("Preloading static images...");
-console.log("Static image paths:", staticImagePaths);
-console.log("Number image paths:", numberImagePaths);
-console.log("Frame image paths:", frameImagePaths);
-
-
 const preloadImageCache = {};
 function preloadImg(src) {
     return new Promise((resolve, reject) => {
@@ -74,7 +68,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     if (imagesBase64.mainImage) {
         backgroundImg = await getImg(imagesBase64.mainImage);
     } else {
-        backgroundImg = preloadImageCache["../res/img/default_cards/default.png"];
+        backgroundImg = preloadImageCache["../res/img/default_cards/hulk.png"];
     }
     ctx.globalCompositeOperation = "source-in";
     let w = backgroundImg.width;
