@@ -1,18 +1,71 @@
+// --- Static image preloading for performance ---
+const staticImagePaths = [
+    "../res/img/default_cards/art_mask.png",
+    "../res/img/default_cards/default.png",
+    "../res/img/default_cards/hulk.png",
+];
+const numbersDir = "../res/img/numbers/";
+const numbers = ['-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const numberImagePaths = [];
+numbers.forEach(n => numberImagePaths.push(numbersDir + "cost/" + n + ".png"));
+numbers.forEach(n => numberImagePaths.push(numbersDir + "power/" + n + ".png"));
+
+const framesDir = "../res/img/frames/";
+const frameTypes = {
+    basic: ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite'],
+    cosmic: ['black', 'blue', 'green', 'orange', 'pink', 'red', 'yellow'],
+    metallic: ['copper', 'gold', 'silver'],
+    neon: ['blue', 'green', 'purple', 'red', 'white', 'yellow']
+};
+const frameImagePaths = [];
+Object.entries(frameTypes).forEach(([category, frames]) => {
+    frames.forEach(frame => {
+        frameImagePaths.push(`${framesDir}${category}/${frame}.png`);
+    });
+});
+
+const preloadImageCache = {};
+function preloadImg(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+    });
+}
+
+async function preloadStaticImages() {
+    const allPaths = staticImagePaths.concat(numberImagePaths);
+    await Promise.all(allPaths.map(async (src) => {
+        preloadImageCache[src] = await preloadImg(src);
+    }));
+}
+
+let staticImagesLoaded = false;
+async function ensureStaticImagesLoaded() {
+    if (!staticImagesLoaded) {
+        await preloadStaticImages();
+        staticImagesLoaded = true;
+    }
+}
+
+// --- Card Generation Function ---
 async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor, offset=[0, 0]) {
+    await ensureStaticImagesLoaded();
     // Create Canvas
     const canvas = document.createElement("canvas");
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext("2d");
     // Art_Mask
-    const artMask = await getImg("../res/img/default_cards/art_mask.png");
+    const artMask = preloadImageCache["../res/img/default_cards/art_mask.png"];
     ctx.drawImage(artMask, 0, 0, size, size);
     // Background
     let backgroundImg;
     if (imagesBase64.mainImage) {
         backgroundImg = await getImg(imagesBase64.mainImage);
     } else {
-        backgroundImg = await getImg("../res/img/default_cards/hulk.png");
+        backgroundImg = preloadImageCache["../res/img/default_cards/default.png"];
     }
     ctx.globalCompositeOperation = "source-in";
     let w = backgroundImg.width;
@@ -35,7 +88,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     if (imagesBase64.frameImage) {
         frameImg = await getImg(imagesBase64.frameImage);
     } else {
-        frameImg = await getImg("../res/img/frames/basic/common.png");
+        frameImg = preloadImageCache["../res/img/frames/basic/common.png"];
     }
     ctx.globalCompositeOperation = "source-over";
     ctx.drawImage(frameImg, 0, 0, size, size);
@@ -45,9 +98,9 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         ctx.drawImage(frameBreakImg, x, y, w, h);
     }
     // Cost and Power
-    const costImg = await getImg("../res/img/frames/cost.png");
+    const costImg = preloadImageCache["../res/img/frames/cost.png"];
     ctx.drawImage(costImg, 0, 0, size, size);
-    const powerImg = await getImg("../res/img/frames/power.png");
+    const powerImg = preloadImageCache["../res/img/frames/power.png"];
     ctx.drawImage(powerImg, 0, 0, size, size);
     const numbersDir = "../res/img/numbers/";
     const numbersWidth = {'-':36, 0:65, 1:43, 2:67, 3:65, 4:61, 5:64, 6:65, 7:61, 8:65, 9:65};
@@ -65,7 +118,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
     let costX = 246 * scale - costWidth / 2; 
     let costY = 65 * scale;
     for (let i = 0; i < costNumber.length; i++) {
-        let numberImg = await getImg(numbersDir + "cost/" + costNumber[i] + ".png");
+        let numberImg = preloadImageCache[numbersDir + "cost/" + costNumber[i] + ".png"];
         ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * multiply * scale);
         costX += numbersWidth[costNumber[i]] * scale;
     }
@@ -80,7 +133,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         let powerX = 792 * scale - powerWidth / 2;
         let powerY = 65 * scale;
         for (let i = 0; i < powerNumber.length; i++) {
-            let numberImg = await getImg(numbersDir + "power/" + powerNumber[i] + ".png");
+            let numberImg = preloadImageCache[numbersDir + "power/" + powerNumber[i] + ".png"];
             ctx.drawImage(numberImg, powerX, powerY, numbersWidth[powerNumber[i]] * scale, 79 * multiply * scale);
             powerX += numbersWidth[powerNumber[i]] * scale;
         }
