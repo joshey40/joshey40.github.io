@@ -24,6 +24,9 @@ Object.entries(frameTypes).forEach(([category, frames]) => {
     });
 });
 
+console.log("Preloading static images...");
+console.log("Static image paths:", staticImagePaths);
+
 const preloadImageCache = {};
 function preloadImg(src) {
     return new Promise((resolve, reject) => {
