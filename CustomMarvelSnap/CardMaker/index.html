@@ -93,8 +93,6 @@
             align-items: center;
             align-self: center;
             min-width: 300px;
-            max-height: calc(100vh - 40px);
-            overflow-y: scroll;
         }
         .default-input {
             margin: 4px 0px;
@@ -245,7 +243,7 @@
                     <input type="number" id="cost" name="cost" placeholder="Cost" class="default-input" style="width: 90px; margin-right: 8px;" oninput="updateResult()">
                     <input type="number" id="power" name="power" placeholder="Power" class="default-input" style="width: 90px;" oninput="updateResult()">
                 </div>
-                <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 80px; resize: vertical;" oninput="updateResult()"></textarea>
+                <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 80px; resize: vertical; max-height: 140px;" oninput="updateResult()"></textarea>
                 <div style="display: flex; justify-content: space-evenly;">
                     <label for="mainImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Image</label>
                     <input type="file" id="mainImage" name="mainImage" accept="image/*"style="display: none;" onchange="mainImageChange(event)">
