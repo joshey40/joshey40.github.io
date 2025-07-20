@@ -35,6 +35,8 @@ function updateResult() {
     // Nur Settings updaten
     cardSettings.name = document.getElementById('name').value;
     cardSettings.colorName = document.getElementById('nameColor').value;
+    cardSettings.nameOutlineColor = document.getElementById('nameOutlineColor').value;
+    cardSettings.fontSelect = document.getElementById('fontSelect').value;
     cardSettings.nameZoom = 1 + ((document.getElementById('nameZoom').value - 100) / 100);
     cardSettings.cost = document.getElementById('cost').value;
     cardSettings.power = document.getElementById('power').value;
@@ -65,6 +67,8 @@ async function renderCard() {
             const canvas = await generatecard(
                 cardSettings.name,
                 cardSettings.colorName,
+                cardSettings.nameOutlineColor,
+                cardSettings.fontSelect,
                 cardSettings.cost,
                 cardSettings.power,
                 cardSettings.description,

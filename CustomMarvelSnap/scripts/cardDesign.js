@@ -53,7 +53,7 @@ async function ensureStaticImagesLoaded() {
 }
 
 // --- Card Generation Function ---
-async function generatecard(name, colorName, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor, offset=[0, 0]) {
+async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#000000", fontSelect, cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor, offset=[0, 0]) {
     await ensureStaticImagesLoaded();
     // Create Canvas
     const canvas = document.createElement("canvas");
@@ -164,7 +164,7 @@ async function generatecard(name, colorName, cost, power, description, size=1024
         ctx.font = `${fontSize}px 'BadaBoom'`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
-        ctx.strokeStyle = "#000000";
+        ctx.strokeStyle = nameOutlineColor;
         ctx.fillStyle = colorName;
         ctx.lineWidth = 15 * scale * nameZoom;
         for (let i = 0; i < name.length; i++) {
