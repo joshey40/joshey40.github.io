@@ -160,7 +160,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
     } else {
         const fontSize = Math.round(300 * scale * nameZoom);
-        name = name.split('\n');
+        name = name.toUpperCase().split('\n');
         ctx.font = `${fontSize}px '${fontSelect}'`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
