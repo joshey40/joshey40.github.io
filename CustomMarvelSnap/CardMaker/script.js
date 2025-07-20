@@ -366,3 +366,10 @@ for (const category in effectCategories) {
         categoryDiv.appendChild(effectImg);
     }
 }
+
+// Request Image Update every 1000ms
+setInterval(() => {
+    if (!isRendering) {
+        requestRender();
+    }
+}, 1000);
