@@ -172,6 +172,18 @@ function closeEffectSelectPopup() {
     effectSelectPopup.style.visibility = 'hidden';
 }
 
+function selectFinish() {
+    const finishSelectPopup = document.getElementById('finishSelectPopup');
+    finishSelectPopup.style.visibility = 'visible';
+    finishSelectPopup.style.opacity = '1';
+}
+
+function closeFinishSelectPopup() {
+    const finishSelectPopup = document.getElementById('finishSelectPopup');
+    finishSelectPopup.style.opacity = '0';
+    finishSelectPopup.style.visibility = 'hidden';
+}
+
 function clearEffect() {
     imagesBase64.effectImage = null;
     updateResult();
@@ -287,6 +299,8 @@ window.selectFrame = selectFrame;
 window.closeFrameSelectPopup = closeFrameSelectPopup;
 window.selectEffect = selectEffect;
 window.closeEffectSelectPopup = closeEffectSelectPopup;
+window.selectFinish = selectFinish;
+window.closeFinishSelectPopup = closeFinishSelectPopup;
 window.clearEffect = clearEffect;
 window.clearBackground = clearBackground;
 window.downloadCard = downloadCard;
