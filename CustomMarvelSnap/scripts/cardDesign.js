@@ -5,8 +5,8 @@ const staticImagePaths = [
     "../res/img/default_cards/hulk.png",
     "../res/img/frames/cost.png",
     "../res/img/frames/power.png",
-    "../res/img/finishes/goldFinish.png",
-    "../res/img/finishes/foilFinish.png",
+    "../res/img/finishes/goldFinish.jpg",
+    "../res/img/finishes/foilFinish.jpg",
 ];
 const numbersDir = "../res/img/numbers/";
 const numbers = ['-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
