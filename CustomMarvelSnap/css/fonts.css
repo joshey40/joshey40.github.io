@@ -47,3 +47,8 @@
     font-family: 'ComicSlim';
     src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/ComicReal.otf');
 }
+
+@font-face {
+    font-family: 'FeastOfFlesh';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/FeastOfFlesh.ttf');
+}
