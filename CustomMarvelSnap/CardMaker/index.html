@@ -277,10 +277,12 @@
                     <button id="selectEffectButton" class="default-button" style="width: 174px; margin-right: 8px;" onclick="selectEffect()">Select Flare</button>
                     <button id="clearEffectButton" class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearEffect()"></button>
                 </div>
+                <!--
                 <div style="display: flex; justify-content: space-evenly;">
                     <button id="selectFinishButton" class="default-button" style="width: 174px; margin-right: 8px;" onclick="selectFinish()">Select Finish</button>
                     <button id="clearFinishButton" class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearFinish()"></button>
                 </div>
+                -->
                 <div style="display: flex; justify-content: space-evenly;">
                     <h2 style="margin: 0; width: 96px; margin-right: 8px;">Background:</h2>
                     <input type="checkbox" id="transparentBg" name="transparentBg" class="default-input" style="width: 30px; height: 30px; padding: 1px; margin-right: 8px;" onchange="updateResult()" checked>
@@ -309,7 +311,6 @@
         </div>
         <div style="padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);" id="effectSelectDiv"></div>
     </div>
-    <!--
     <div class="default-popup" id="finishSelectPopup">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
             <h1>Select Finish</h1>
@@ -317,7 +318,6 @@
         </div>
         <div style="padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);" id="finishSelectDiv"></div>
     </div>
-    -->
     <div class="credits-popup" id="creditsPopup" onmouseover="showCreditsPopup(1)" onmouseout="hideCreditsPopup(1)">
         <b>Credits:</b><br>
         Card Maker by Joshey40
