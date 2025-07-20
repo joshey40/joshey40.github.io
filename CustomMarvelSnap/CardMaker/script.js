@@ -21,7 +21,7 @@ let cardSettings = {
     description: '',
     zoom: 1,
     transparentBg: false,
-    backgroundColor: 'transparent',
+    backgroundColor: '#10072b',
     offset: [0, 0],
     imagesBase64: imagesBase64,
 };
