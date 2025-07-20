@@ -37,3 +37,13 @@
     font-family: 'WakandaForever';
     src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/Wakanda4Ever.ttf');
 }
+
+@font-face {
+    font-family: 'ComicCraft';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/ComicCraft.ttf');
+}
+
+@font-face {
+    font-family: 'ComicSlim';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/ComicReal.otf');
+}
