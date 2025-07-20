@@ -17,3 +17,23 @@
     font-family: 'HelveticaNeueBold';
     src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/Helvetica Neue Bold.ttf');
 }
+
+@font-face {
+    font-family: 'AvengersRegular';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/AvengersRegular.ttf');
+}
+
+@font-face {
+    font-family: 'BlackWidowMovie';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/BlackWidowMovie.ttf');
+}
+
+@font-face {
+    font-family: 'MarvelRegular';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/MarvelRegular.ttf');
+}
+
+@font-face {
+    font-family: 'WakandaForever';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/Wakanda4Ever.ttf');
+}
