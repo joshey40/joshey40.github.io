@@ -232,6 +232,16 @@
                     <textarea id="name" name="name" placeholder="Name" class="default-input" style="width: 162px; height: 18px; margin-right: 8px; resize: none;" oninput="updateResult()"></textarea>
                     <input type="color" id="nameColor" name="nameColor" class="default-input" style="width: 30px; height: 30px; padding: 1px;" value="#ffffff" oninput="updateResult()">
                 </div>
+                <!-- Font selection -->
+                <div style="display: flex; justify-content: space-evenly;">
+                    <select id="fontSelect" name="fontSelect" class="default-input" style="width: 162px; margin-right: 8px;" onchange="updateResult()">
+                        <option value="Ultimatum-Bold">Ultimatum Bold</option>
+                        <option value="Ultimatum-Regular">Ultimatum Regular</option>
+                        <option value="Roboto-Bold">Roboto Bold</option>
+                        <option value="Roboto-Regular">Roboto Regular</option>
+                    </select>
+                    <input type="color" id="nameOutlineColor" name="nameOutlineColor" class="default-input" style="width: 30px; height: 30px; padding: 1px;" value="#000000" oninput="updateResult()">
+                </div>
                 <div style="display: flex; justify-content: space-evenly;">
                     <label for="titleImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Name Image</label>
                     <input type="file" id="titleImage" name="titleImage" accept="image/*" style="display: none;" onchange="titleImageChange(event)">
@@ -243,7 +253,7 @@
                     <input type="number" id="cost" name="cost" placeholder="Cost" class="default-input" style="width: 90px; margin-right: 8px;" oninput="updateResult()">
                     <input type="number" id="power" name="power" placeholder="Power" class="default-input" style="width: 90px;" oninput="updateResult()">
                 </div>
-                <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 80px; resize: vertical; max-height: 140px;" oninput="updateResult()"></textarea>
+                <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 80px; resize: vertical; max-height: 100px;" oninput="updateResult()"></textarea>
                 <div style="display: flex; justify-content: space-evenly;">
                     <label for="mainImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Image</label>
                     <input type="file" id="mainImage" name="mainImage" accept="image/*"style="display: none;" onchange="mainImageChange(event)">
