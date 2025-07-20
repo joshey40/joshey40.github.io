@@ -56,7 +56,6 @@ async function ensureStaticImagesLoaded() {
 
 // --- Card Generation Function ---
 async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#000000", fontSelect = "BadaBoom", cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b", offset=[0, 0], finish='none') {
-    imagesBase64 = await applyFinish(finish, imagesBase64);
     await ensureStaticImagesLoaded();
     // Create Canvas
     const canvas = document.createElement("canvas");
@@ -213,21 +212,6 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
 }
 
 var imgCache = {};
-
-async function applyFinish(finish, imagesBase64) {
-    if (!finish || finish === 'none') {
-        return imagesBase64;
-    }
-    switch (finish) {
-        case 'gold':
-            imagesBase64.mainImage = "../res/img/finishes/goldFinish.jpg";
-            break;
-        case 'foil':
-            imagesBase64.mainImage = "../res/img/finishes/foilFinish.jpg";
-            break;
-    }
-    return imagesBase64;
-}
 
 async function getImg (src) {
     if (imgCache[src]) {
