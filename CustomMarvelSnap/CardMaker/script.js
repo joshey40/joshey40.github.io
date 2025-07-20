@@ -243,6 +243,33 @@ cardImage.addEventListener('touchcancel', () => {
     isDragging = false;
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const creditsButton = document.querySelector('.credits-button');
+    const creditsPopup = document.querySelector('.credits-popup');
+    let overButton = false;
+    let overPopup = false;
+
+    function updatePopup() {
+        creditsPopup.style.display = (overButton || overPopup) ? 'block' : 'none';
+    }
+    creditsButton.addEventListener('mouseenter', function() {
+        overButton = true;
+        updatePopup();
+    });
+    creditsButton.addEventListener('mouseleave', function() {
+        overButton = false;
+        setTimeout(updatePopup, 50);
+    });
+    creditsPopup.addEventListener('mouseenter', function() {
+        overPopup = true;
+        updatePopup();
+    });
+    creditsPopup.addEventListener('mouseleave', function() {
+        overPopup = false;
+        setTimeout(updatePopup, 50);
+    });
+});
+
 
 // Attach to the global window object
 window.updateResult = updateResult;
