@@ -220,20 +220,10 @@ async function applyFinish(finish, imagesBase64) {
     }
     switch (finish) {
         case 'gold':
-            const goldImage = preloadImageCache[`../res/img/finishes/goldFinish.jpg`];
-            if (!goldImage) {
-                console.warn(`Finish image for 'gold' not found.`);
-                return imagesBase64;
-            }
-            imagesBase64.backgroundImage = goldImage.toDataURL();
+            imagesBase64.backgroundImage = "../res/img/finishes/goldFinish.jpg";
             break;
         case 'foil':
-            const foilImage = preloadImageCache[`../res/img/finishes/foilFinish.jpg`];
-            if (!foilImage) {
-                console.warn(`Finish image for 'foil' not found.`);
-                return imagesBase64;
-            }
-            imagesBase64.backgroundImage = foilImage.toDataURL();
+            imagesBase64.backgroundImage = "../res/img/finishes/foilFinish.jpg";
             break;
         }
     }
