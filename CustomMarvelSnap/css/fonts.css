@@ -39,6 +39,11 @@
 }
 
 @font-face {
+    font-family: 'ComebackHome';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/ComebackHomeRegular.ttf');
+}
+
+@font-face {
     font-family: 'ComicCraft';
     src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/ComicCraft.ttf');
 }
