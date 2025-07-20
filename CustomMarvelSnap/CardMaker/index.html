@@ -200,8 +200,7 @@
             align-self: flex-start;
         }
         .credits-popup {
-            display: none;
-            position: absolute;
+            position: fixed;
             bottom: 10px;
             left: 10px;
             background: rgba(16,7,43,1);
@@ -211,9 +210,12 @@
             padding: 12px 18px;
             font-size: 0.95em;
             min-width: 220px;
-            box-shadow: 2px 2px 12px #000a;
-            z-index: 2100;
+            max-width: 300px;
             white-space: pre-line;
+            background-clip: padding-box;
+            box-shadow: 2px 2px 12px #000a;
+            z-index: 1100;
+            visibility: hidden;
         }
     </style>
     <script async src="script.js" type="module"></script>

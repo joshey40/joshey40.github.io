@@ -202,7 +202,7 @@ function showCreditsPopup(source) {
         mouseOverCreditsPopup = true;
     }
     const creditsPopup = document.getElementById('creditsPopup');
-    creditsPopup.style.display = 'block';
+    creditsPopup.style.visibility = 'visible';
 }
 
 function hideCreditsPopup(source) {
@@ -215,7 +215,7 @@ function hideCreditsPopup(source) {
         return;
     }
     const creditsPopup = document.getElementById('creditsPopup');
-    creditsPopup.style.display = 'none';
+    creditsPopup.style.visibility = 'hidden';
 }
 
 // Add event listeners to the image for offsets
