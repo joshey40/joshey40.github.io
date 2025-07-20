@@ -14,9 +14,11 @@ var offsetY = 0;
 // Globaler State für Card Settings
 let cardSettings = {
     name: '',
-    colorName: '',
+    colorName: '#ffffff',
+    nameOutlineColor: '#000000',
+    fontSelect: 'BadaBoom',
     nameZoom: 1,
-    cost: '',
+    cost: '0',
     power: '',
     description: '',
     zoom: 1,
