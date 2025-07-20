@@ -192,6 +192,32 @@ function downloadCard() {
     link.click();
 }
 
+let mouseOverCreditsButton = false;
+let mouseOverCreditsPopup = false;
+
+function showCreditsPopup(source) {
+    if (source === 1) {
+        mouseOverCreditsButton = true;
+    } else {
+        mouseOverCreditsPopup = true;
+    }
+    const creditsPopup = document.getElementById('creditsPopup');
+    creditsPopup.style.display = 'block';
+}
+
+function hideCreditsPopup(source) {
+    if (source === 1) {
+        mouseOverCreditsButton = false;
+    } else {
+        mouseOverCreditsPopup = false;
+    }
+    if (mouseOverCreditsButton || mouseOverCreditsPopup) {
+        return;
+    }
+    const creditsPopup = document.getElementById('creditsPopup');
+    creditsPopup.style.display = 'none';
+}
+
 // Add event listeners to the image for offsets
 const cardImage = document.getElementById('cardImage');
 cardImage.ondragstart = function() { return false; };
@@ -243,34 +269,6 @@ cardImage.addEventListener('touchcancel', () => {
     isDragging = false;
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const creditsButton = document.querySelector('.credits-button');
-    const creditsPopup = document.querySelector('.credits-popup');
-    let overButton = false;
-    let overPopup = false;
-
-    function updatePopup() {
-        creditsPopup.style.display = (overButton || overPopup) ? 'block' : 'none';
-    }
-    creditsButton.addEventListener('mouseenter', function() {
-        overButton = true;
-        updatePopup();
-    });
-    creditsButton.addEventListener('mouseleave', function() {
-        overButton = false;
-        setTimeout(updatePopup, 50);
-    });
-    creditsPopup.addEventListener('mouseenter', function() {
-        overPopup = true;
-        updatePopup();
-    });
-    creditsPopup.addEventListener('mouseleave', function() {
-        overPopup = false;
-        setTimeout(updatePopup, 50);
-    });
-});
-
-
 // Attach to the global window object
 window.updateResult = updateResult;
 window.mainImageChange = mainImageChange;
@@ -286,6 +284,8 @@ window.closeEffectSelectPopup = closeEffectSelectPopup;
 window.clearEffect = clearEffect;
 window.clearBackground = clearBackground;
 window.downloadCard = downloadCard;
+window.showCreditsPopup = showCreditsPopup;
+window.hideCreditsPopup = hideCreditsPopup;
 
 export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, selectEffect, closeEffectSelectPopup, clearEffect, clearBackground, downloadCard };
 

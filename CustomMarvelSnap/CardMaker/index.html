@@ -183,12 +183,6 @@
             cursor: pointer;
             margin-bottom: 10px;
         }
-        .credits-container {
-            margin-top: 20px;
-            align-self: flex-start;
-            z-index: 2000;
-            width: fit-content;
-        }
         .credits-button {
             background: #10072b;
             color: #fff;
@@ -203,6 +197,7 @@
             margin: 10px;
             text-align: center;
             width: fit-content;
+            align-self: flex-start;
         }
         .credits-popup {
             display: none;
@@ -275,10 +270,7 @@
             </div>
         </div>
         <div>
-            <div class="credits-container">
-                <div class="credits-button">Credits</div>
-            </div>
-
+            <div class="credits-button" id="creditsPopup" onmouseover="showCreditsPopup(0)" onmouseout="hideCreditsPopup(0)">Credits</div>
         </div>
     </div>
     <div class="default-popup" id="frameSelectPopup">
@@ -295,7 +287,7 @@
         </div>
         <div style="padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);" id="effectSelectDiv"></div>
     </div>
-    <div class="credits-popup">
+    <div class="credits-popup" id="creditsPopup" onmouseover="showCreditsPopup(1)" onmouseout="hideCreditsPopup(1)">
         <b>Credits:</b><br>
         Card Maker by Joshey40<br>
         Borders &amp; Art by Hritvik Nijhawan <span style="color:#ffd700;">@theartist115<br>
