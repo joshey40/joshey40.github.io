@@ -220,13 +220,14 @@ async function applyFinish(finish, imagesBase64) {
     }
     switch (finish) {
         case 'gold':
-            imagesBase64.backgroundImage = "../res/img/finishes/goldFinish.jpg";
+            imagesBase64.mainImage = "../res/img/finishes/goldFinish.jpg";
             break;
         case 'foil':
-            imagesBase64.backgroundImage = "../res/img/finishes/foilFinish.jpg";
+            imagesBase64.mainImage = "../res/img/finishes/foilFinish.jpg";
             break;
-        }
     }
+    return imagesBase64;
+}
 
 async function getImg (src) {
     if (imgCache[src]) {
