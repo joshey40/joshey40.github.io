@@ -26,6 +26,7 @@ let cardSettings = {
     backgroundColor: '#10072b',
     offset: [0, 0],
     imagesBase64: imagesBase64,
+    finish: ''
 };
 
 // Für Change Detection
@@ -79,7 +80,8 @@ async function renderCard(skipCheck = false) {
                 cardSettings.zoom,
                 cardSettings.nameZoom,
                 cardSettings.backgroundColor,
-                cardSettings.offset
+                cardSettings.offset,
+                cardSettings.finish
             );
             const cardImage = document.getElementById('cardImage');
             await new Promise(resolve => {
@@ -381,6 +383,25 @@ for (const category in effectCategories) {
         });
         categoryDiv.appendChild(effectImg);
     }
+}
+
+// Add Finishes to finishSelectPopup
+const finishSelectDiv = document.getElementById('finishSelectDiv');
+const finishes = {
+    'gold': 'Gold',
+    'foil': 'Foil',
+};
+
+for (const finish in finishes) {
+    const finishButton = document.createElement('button');
+    finishButton.className = 'default-button';
+    finishButton.textContent = finishes[finish];
+    finishButton.addEventListener('click', () => {
+        cardSettings.finish = finish;
+        updateResult();
+        closeFinishSelectPopup();
+    });
+    finishSelectDiv.appendChild(finishButton);
 }
 
 // Request Image Update every 1000ms

@@ -5,6 +5,8 @@ const staticImagePaths = [
     "../res/img/default_cards/hulk.png",
     "../res/img/frames/cost.png",
     "../res/img/frames/power.png",
+    "../res/img/finishes/goldFinish.png",
+    "../res/img/finishes/foilFinish.png",
 ];
 const numbersDir = "../res/img/numbers/";
 const numbers = ['-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -53,7 +55,8 @@ async function ensureStaticImagesLoaded() {
 }
 
 // --- Card Generation Function ---
-async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#000000", fontSelect = "BadaBoom", cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b", offset=[0, 0]) {
+async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#000000", fontSelect = "BadaBoom", cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b", offset=[0, 0], finish='none') {
+    imagesBase64 = await applyFinish(finish, imagesBase64);
     await ensureStaticImagesLoaded();
     // Create Canvas
     const canvas = document.createElement("canvas");
@@ -210,6 +213,30 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
 }
 
 var imgCache = {};
+
+async function applyFinish(finish, imagesBase64) {
+    if (!finish || finish === 'none') {
+        return imagesBase64;
+    }
+    switch (finish) {
+        case 'gold':
+            const goldImage = preloadImageCache[`../res/img/finishes/goldFinish.png`];
+            if (!goldImage) {
+                console.warn(`Finish image for 'gold' not found.`);
+                return imagesBase64;
+            }
+            imagesBase64.backgroundImage = goldImage.toDataURL();
+            break;
+        case 'foil':
+            const foilImage = preloadImageCache[`../res/img/finishes/foilFinish.png`];
+            if (!foilImage) {
+                console.warn(`Finish image for 'foil' not found.`);
+                return imagesBase64;
+            }
+            imagesBase64.backgroundImage = foilImage.toDataURL();
+            break;
+        }
+    }
 
 async function getImg (src) {
     if (imgCache[src]) {
