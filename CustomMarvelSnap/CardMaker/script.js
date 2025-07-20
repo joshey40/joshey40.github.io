@@ -58,10 +58,10 @@ function requestRender() {
     renderCard();
 }
 
-async function renderCard() {
+async function renderCard(skipCheck = false) {
     isRendering = true;
     const currentSettings = JSON.stringify(cardSettings);
-    if (currentSettings !== lastRenderedSettings) {
+    if (currentSettings !== lastRenderedSettings || skipCheck) {
         lastRenderedSettings = currentSettings;
         try {
             const canvas = await generatecard(
@@ -370,6 +370,6 @@ for (const category in effectCategories) {
 // Request Image Update every 1000ms
 setInterval(() => {
     if (!isRendering) {
-        requestRender();
+        renderCard(true);
     }
 }, 1000);
