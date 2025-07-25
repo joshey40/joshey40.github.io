@@ -105,8 +105,10 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     // Cost and Power
     const costImg = preloadImageCache["../res/img/frames/cost.png"];
     ctx.drawImage(costImg, 0, 0, size, size);
-    const powerImg = preloadImageCache["../res/img/frames/power.png"];
-    ctx.drawImage(powerImg, 0, 0, size, size);
+    if (power != null && power != "") {
+        const powerImg = preloadImageCache["../res/img/frames/power.png"];
+        ctx.drawImage(powerImg, 0, 0, size, size);
+    }
     const numbersDir = "../res/img/numbers/";
     const numbersWidth = {'-':36, 0:65, 1:43, 2:67, 3:65, 4:61, 5:64, 6:65, 7:61, 8:65, 9:65};
     const multiply = 1.2;
