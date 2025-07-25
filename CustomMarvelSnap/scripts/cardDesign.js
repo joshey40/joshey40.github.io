@@ -105,7 +105,6 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     // Cost and Power
     const costImg = preloadImageCache["../res/img/frames/cost.png"];
     ctx.drawImage(costImg, 0, 0, size, size);
-    console.log("Power:", power);
     if (power != null && power != "") {
         const powerImg = preloadImageCache["../res/img/frames/power.png"];
         ctx.drawImage(powerImg, 0, 0, size, size);
