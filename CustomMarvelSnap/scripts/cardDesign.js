@@ -246,8 +246,8 @@ function loadImg (src) {
 
 function checkIfSpell(imagesBase64, power) {
     if (power == null || power == "") {
-        // Check if the frame has a spell variant
-        console.log (imagesBase64.frameImage);
+        if (!imagesBase64.frameImage)
+            imagesBase64.frameImage = "../res/img/frames/basic/common.png";
         const frameName = imagesBase64.frameImage;
         const frameSpellName = frameName.replace(/\.png$/, '_spell.png');
         if (frameSpellName in preloadImageCache) {
