@@ -182,13 +182,27 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         ctx.strokeStyle = nameOutlineColor;
         ctx.fillStyle = colorName;
         ctx.lineWidth = 15 * scale * nameZoom;
+        const letterSpacing = 5 * scale * nameZoom;
+
         for (let i = 0; i < name.length; i++) {
             let titleHeight = 300 * scale * nameZoom * name.length;
             let titleY = 850 * scale;
             titleY -= titleHeight / 2;
             titleY += (i * fontSize * 0.9);
-            ctx.strokeText(name[i], 512 * scale, titleY);
-            ctx.fillText(name[i], 512 * scale, titleY);
+
+            let text = name[i];
+            let totalWidth = 0;
+            for (let c = 0; c < text.length; c++) {
+                totalWidth += ctx.measureText(text[c]).width;
+                if (c < text.length - 1) totalWidth += letterSpacing;
+            }
+            let startX = 512 * scale - totalWidth / 2;
+
+            for (let c = 0; c < text.length; c++) {
+                ctx.strokeText(text[c], startX, titleY);
+                ctx.fillText(text[c], startX, titleY);
+                startX += ctx.measureText(text[c]).width + letterSpacing;
+            }
         }
     }
     // Effect
