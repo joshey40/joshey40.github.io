@@ -100,6 +100,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     let frameImg;
+    
     if (imagesBase64.frameImage) {
         frameImg = await getImg(imagesBase64.frameImage);
     } else {
@@ -245,13 +246,19 @@ function loadImg (src) {
 }
 
 function checkIfSpell(imagesBase64, power) {
+    if (!imagesBase64.frameImage)
+        imagesBase64.frameImage = "../res/img/frames/basic/common.png";
     if (power == null || power == "") {
-        if (!imagesBase64.frameImage)
-            imagesBase64.frameImage = "../res/img/frames/basic/common.png";
         const frameName = imagesBase64.frameImage;
         const frameSpellName = frameName.replace(/\.png$/, '_spell.png');
         if (frameSpellName in preloadImageCache) {
             imagesBase64.frameImage = frameSpellName;
+        }
+    } else {
+        const frameName = imagesBase64.frameImage;
+        const frameNormalName = frameName.replace(/_spell\.png$/, '.png');
+        if (frameNormalName in preloadImageCache) {
+            imagesBase64.frameImage = frameNormalName;
         }
     }
     return imagesBase64;
