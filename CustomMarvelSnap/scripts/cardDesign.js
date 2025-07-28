@@ -70,10 +70,9 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     canvas.height = size;
     const ctx = canvas.getContext("2d");
     // Art_Mask
-    if (imagesBase64.frameImage && imagesBase64.frameImage.includes('spell')) {
-        const artMask = preloadImageCache["../res/img/default_cards/art_mask_spell.png"];
-    } else {
         const artMask = preloadImageCache["../res/img/default_cards/art_mask.png"];
+    if (imagesBase64.frameImage && imagesBase64.frameImage.includes('spell')) {
+        artMask = preloadImageCache["../res/img/default_cards/art_mask_spell.png"];
     }
     ctx.drawImage(artMask, 0, 0, size, size);
     // Background
