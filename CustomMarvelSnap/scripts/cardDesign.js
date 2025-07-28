@@ -1,6 +1,7 @@
 // --- Static image preloading for performance ---
 const staticImagePaths = [
     "../res/img/default_cards/art_mask.png",
+    "../res/img/default_cards/art_mask_spell.png",
     "../res/img/default_cards/default.png",
     "../res/img/default_cards/hulk.png",
     "../res/img/frames/cost.png",
@@ -16,10 +17,15 @@ numbers.forEach(n => numberImagePaths.push(numbersDir + "power/" + n + ".png"));
 
 const framesDir = "../res/img/frames/";
 const frameTypes = {
-    basic: ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite'],
+    basic: ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite',
+        'common_spell', 'uncommon_spell', 'rare_spell', 'epic_spell', 'legendary_spell', 'ultra_spell', 'infinite_spell'
+    ],
     cosmic: ['black', 'blue', 'green', 'orange', 'pink', 'red', 'yellow'],
     metallic: ['copper', 'gold', 'silver'],
-    neon: ['blue', 'green', 'purple', 'red', 'white', 'yellow']
+    neon: ['blue', 'green', 'purple', 'red', 'white', 'yellow'],
+    mate: ['black', 'red',
+        'black_spell', 'red_spell'
+    ]
 };
 const frameImagePaths = [];
 Object.entries(frameTypes).forEach(([category, frames]) => {
@@ -56,6 +62,7 @@ async function ensureStaticImagesLoaded() {
 
 // --- Card Generation Function ---
 async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#000000", fontSelect = "BadaBoom", cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b", offset=[0, 0], finish='none') {
+    imagesBase64 = checkIfSpell(imagesBase64, power);
     await ensureStaticImagesLoaded();
     // Create Canvas
     const canvas = document.createElement("canvas");
@@ -63,7 +70,11 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     canvas.height = size;
     const ctx = canvas.getContext("2d");
     // Art_Mask
-    const artMask = preloadImageCache["../res/img/default_cards/art_mask.png"];
+    if (imagesBase64.frameImage && imagesBase64.frameImage.includes('spell')) {
+        const artMask = preloadImageCache["../res/img/default_cards/art_mask_spell.png"];
+    } else {
+        const artMask = preloadImageCache["../res/img/default_cards/art_mask.png"];
+    }
     ctx.drawImage(artMask, 0, 0, size, size);
     // Background
     let backgroundImg;
@@ -232,6 +243,18 @@ function loadImg (src) {
         img.onload = () => resolve(img);
         img.onerror = reject;
     });
+}
+
+function checkIfSpell(imagesBase64, power) {
+    if (power == null || power == "") {
+        // Check if the frame has a spell variant
+        const frameName = imagesBase64.frameImage;
+        const frameSpellName = frameName.replace(/\.png$/, '_spell.png');
+        if (frameSpellName in preloadImageCache) {
+            imagesBase64.frameImage = frameSpellName;
+        }
+    }
+    return imagesBase64;
 }
 
 export {generatecard};
