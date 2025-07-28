@@ -70,7 +70,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     canvas.height = size;
     const ctx = canvas.getContext("2d");
     // Art_Mask
-        const artMask = preloadImageCache["../res/img/default_cards/art_mask.png"];
+    const artMask = preloadImageCache["../res/img/default_cards/art_mask.png"];
     if (imagesBase64.frameImage && imagesBase64.frameImage.includes('spell')) {
         artMask = preloadImageCache["../res/img/default_cards/art_mask_spell.png"];
     }
@@ -247,6 +247,7 @@ function loadImg (src) {
 function checkIfSpell(imagesBase64, power) {
     if (power == null || power == "") {
         // Check if the frame has a spell variant
+        console.log (imagesBase64.frameImage);
         const frameName = imagesBase64.frameImage;
         const frameSpellName = frameName.replace(/\.png$/, '_spell.png');
         if (frameSpellName in preloadImageCache) {
