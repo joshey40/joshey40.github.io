@@ -23,7 +23,7 @@ const frameTypes = {
     cosmic: ['black', 'blue', 'green', 'orange', 'pink', 'red', 'yellow'],
     metallic: ['copper', 'gold', 'silver'],
     neon: ['blue', 'green', 'purple', 'red', 'white', 'yellow'],
-    mate: ['black', 'red',
+    matte: ['black', 'red',
         'black_spell', 'red_spell'
     ]
 };
