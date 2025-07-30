@@ -63,6 +63,12 @@
                 -3px -3px 3px #000;
             color: white;
         }
+        p {
+            font: 1em 'Roboto', sans-serif;
+            text-align: center;
+            margin: 10px;
+            color: white;
+        }
         .result-div {
             margin: 10px;
             padding: 10px;
@@ -333,16 +339,16 @@
             <p>These fields allow you to set the cost, power and description of the card. The description should be up to 5 lines long. Line breaks have to be done manually.</p>
             <h2>Image and Frame Break:</h2>
             <p>You can upload an image for the card and optionaly a frame break image. The frame break image should only include those parts of the original image that should be visible outside of the frame. I recommend using a tool like <a href="https://www.remove.bg" target="_blank" rel="noopener noreferrer">remove.bg</a> to remove the unwanted parts of the image.</p>
-            <div style="display: flex; flex-direction: row;">
-                <div>
+            <div style="display: flex; flex-direction: row; justify-content: space-evenly;">
+                <div style="align-items: center;">
                     <h2>Example Image</h2>
                     <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_main.png" alt="Example Image" style="height: 300px; width: auto; border-radius: 10px;">
                 </div>
-                <div style="margin-left: 10px;">
+                <div style="align-items: center;">
                     <h2>Frame Break</h2>
                     <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_framebreak.png" alt="Example Frame Break" style="height: 300px; width: auto; border-radius: 10px;">
                 </div>
-                <div style="margin-left: 10px;">
+                <div style="align-items: center;">
                     <h2>Result</h2>
                     <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_result.png" alt="Example Result" style="height: 300px; width: auto; border-radius: 10px;">
             </div>
