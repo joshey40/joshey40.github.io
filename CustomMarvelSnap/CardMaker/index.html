@@ -238,6 +238,14 @@
             z-index: 1100;
             visibility: hidden;
         }
+        .patreon-logo {
+            filter: invert(1);
+            transition: filter 0.2s;
+        }
+        a.default-button:hover .patreon-logo,
+        a.default-button:focus .patreon-logo {
+            filter: invert(0);
+        }
     </style>
     <script async src="script.js" type="module"></script>
 </html>
@@ -320,16 +328,8 @@
             <div class="credits-button" id="creditsButton" onmouseover="showCreditsPopup(0)" onmouseout="hideCreditsPopup(0)">Credits</div>
             <button class="default-button" style="width: fit-content; padding: 6px 10px; margin: 10px;" onclick="showTutorialPopup()">Info/Tutorial</button>
             <a href="https://www.patreon.com/theartist115" target="_blank" rel="noopener noreferrer" class="default-button" style="width: fit-content; padding: 6px 10px; margin: 10px; display: flex; align-items: center; gap: 8px; text-decoration: none;">
-                <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/patreon-icon.png" alt="Patreon" class="patreon-logo" style="height: 1.3em; width: auto; vertical-align: middle; margin-right: 4px;">Support theArtist
+                <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/patreon-icon.png" alt="Patreon" class="patreon-logo" style="height: 1.3em; width: auto; vertical-align: middle;">Support theArtist
             </a>
-        .patreon-logo {
-            filter: invert(1);
-            transition: filter 0.2s;
-        }
-        a.default-button:hover .patreon-logo,
-        a.default-button:focus .patreon-logo {
-            filter: invert(0);
-        }
         </div>
     </div>
     <div class="default-popup" id="frameSelectPopup">
