@@ -209,7 +209,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     }
     completeCtx.drawImage(canvas, 0, 0, size, size);
     completeCtx.globalCompositeOperation = "source-over";
-    completeCtx.font = `${Math.round(50 * scale)}px 'HelveticaNeueBold'`;
+    completeCtx.font = `${Math.round(45 * scale)}px 'HelveticaNeueMediumCondensed'`;
     completeCtx.fillStyle = "#ffffff";
     completeCtx.strokeStyle = "#000000";
     completeCtx.textAlign = "center";

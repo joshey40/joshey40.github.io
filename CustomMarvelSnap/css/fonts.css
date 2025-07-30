@@ -57,3 +57,18 @@
     font-family: 'FeastOfFlesh';
     src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/FeastOfFlesh.ttf');
 }
+
+@font-face {
+    font-family: 'HelveticaNeueHeavyCondensed';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/HelveticaNeue-HeavyCond.otf');
+}
+
+@font-face {
+    font-family: 'HelveticaNeueMediumCondensed';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/HelveticaNeue-MediumCond.otf');
+}
+
+@font-face {
+    font-family: 'HelveticaNeueMediumCondensedOblique';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/HelveticaNeue-MediumCondObl.otf');
+}
