@@ -63,11 +63,31 @@
                 -3px -3px 3px #000;
             color: white;
         }
-        p {
-            font: 1em 'Roboto', sans-serif;
+        h3 {
+            font-family: 'Ultimatum-Bold', sans-serif;
+            font-size: 1.1rem;
             text-align: center;
             margin: 10px;
+            display: block;
+            text-shadow: 
+                3px 3px 3px #000,
+                -3px 3px 3px #000,
+                3px -3px 3px #000,
+                -3px -3px 3px #000;
             color: white;
+        }
+        p {
+            font: 1em 'Roboto', sans-serif;
+            margin: 10px;
+            color: white;
+        }
+        a {
+            color: #4fc3ff;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        a:hover, a:focus {
+            color: #b3e0ff;
         }
         .result-div {
             margin: 10px;
@@ -341,15 +361,15 @@
             <p>You can upload an image for the card and optionaly a frame break image. The frame break image should only include those parts of the original image that should be visible outside of the frame. I recommend using a tool like <a href="https://www.remove.bg" target="_blank" rel="noopener noreferrer">remove.bg</a> to remove the unwanted parts of the image.</p>
             <div style="display: flex; flex-direction: row; justify-content: space-evenly;">
                 <div style="align-items: center;">
-                    <h2>Example Image</h2>
+                    <h3>Example Image</h3>
                     <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_main.png" alt="Example Image" style="height: 300px; width: auto; border-radius: 10px;">
                 </div>
                 <div style="align-items: center;">
-                    <h2>Frame Break</h2>
+                    <h3>Frame Break</h3>
                     <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_framebreak.png" alt="Example Frame Break" style="height: 300px; width: auto; border-radius: 10px;">
                 </div>
                 <div style="align-items: center;">
-                    <h2>Result</h2>
+                    <h3>Result</h3>
                     <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_result.png" alt="Example Result" style="height: 300px; width: auto; border-radius: 10px;">
             </div>
         </div>
