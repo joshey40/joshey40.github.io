@@ -368,11 +368,12 @@ for (const category in frameCategories) {
 // Add Effects to effectSelectPopup
 const effectSelectDiv = document.getElementById('effectSelectDiv');
 const effectDir = '../res/img/effects/';
-const effectCategories = { 'krackle': 'Krackle', 'tone': 'Tone' };
+const effectCategories = { 'krackle': 'Krackle', 'tone': 'Tone', 'glimmer': 'Glimmer' };
 const effects = {
     'krackle': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
     'tone': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
-    'glimmer': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white']
+    'glimmer': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
+    'special': ['neontrails']
 };
 
 for (const category in effectCategories) {
