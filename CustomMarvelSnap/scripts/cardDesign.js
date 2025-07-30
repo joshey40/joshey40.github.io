@@ -25,7 +25,8 @@ const frameTypes = {
     neon: ['blue', 'green', 'purple', 'red', 'white', 'yellow'],
     matte: ['black', 'red',
         'black_spell', 'red_spell'
-    ]
+    ],
+    special: ['tokyo2099'],
 };
 const frameImagePaths = [];
 Object.entries(frameTypes).forEach(([category, frames]) => {
