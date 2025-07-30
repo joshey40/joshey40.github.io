@@ -337,7 +337,7 @@ const frames = {
     'neon': ['blue', 'green', 'red', 'purple', 'yellow', 'white'],
     'metallic': ['copper', 'gold', 'silver'],
     'matte': ['black', 'red'],
-    'special': ['tokyo2099']
+    'special': ['tokyo2099', 'chains']
 };
 
 for (const category in frameCategories) {
@@ -374,7 +374,7 @@ const effects = {
     'krackle': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
     'tone': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
     'glimmer': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
-    'special': ['neontrails', 'chains']
+    'special': ['neontrails']
 };
 
 for (const category in effectCategories) {
