@@ -20,7 +20,7 @@ const frameTypes = {
     basic: ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite',
         'common_spell', 'uncommon_spell', 'rare_spell', 'epic_spell', 'legendary_spell', 'ultra_spell', 'infinite_spell'
     ],
-    cosmic: ['black', 'blue', 'green', 'orange', 'pink', 'red', 'yellow'],
+    cosmic: ['black', 'blue', 'green', 'orange', 'pink', 'red', 'yellow','purple','rainbow'],
     metallic: ['copper', 'gold', 'silver'],
     neon: ['blue', 'green', 'purple', 'red', 'white', 'yellow'],
     matte: ['black', 'red',
