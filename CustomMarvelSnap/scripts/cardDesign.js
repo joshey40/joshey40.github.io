@@ -26,7 +26,7 @@ const frameTypes = {
     matte: ['black', 'red',
         'black_spell', 'red_spell'
     ],
-    special: ['tokyo2099'],
+    special: ['tokyo2099','chain'],
 };
 const frameImagePaths = [];
 Object.entries(frameTypes).forEach(([category, frames]) => {
