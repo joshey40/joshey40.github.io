@@ -108,11 +108,6 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     }
     ctx.globalCompositeOperation = "source-over";
     ctx.drawImage(frameImg, 0, 0, size, size);
-    // Frame Break
-    if (imagesBase64.frameBreakImage) {
-        let frameBreakImg = await getImg(imagesBase64.frameBreakImage);
-        ctx.drawImage(frameBreakImg, x, y, w, h);
-    }
     // Cost and Power
     const costImg = preloadImageCache["../res/img/frames/cost.png"];
     ctx.drawImage(costImg, 0, 0, size, size);
@@ -155,6 +150,11 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
             ctx.drawImage(numberImg, powerX, powerY, numbersWidth[powerNumber[i]] * scale, 79 * multiply * scale);
             powerX += numbersWidth[powerNumber[i]] * scale;
         }
+    }
+    // Frame Break
+    if (imagesBase64.frameBreakImage) {
+        let frameBreakImg = await getImg(imagesBase64.frameBreakImage);
+        ctx.drawImage(frameBreakImg, x, y, w, h);
     }
     // Title
     if (imagesBase64.titleImage) {
