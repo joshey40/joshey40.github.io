@@ -371,7 +371,8 @@ const effectDir = '../res/img/effects/';
 const effectCategories = { 'krackle': 'Krackle', 'tone': 'Tone' };
 const effects = {
     'krackle': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
-    'tone': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white']
+    'tone': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
+    'glimmer': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white']
 };
 
 for (const category in effectCategories) {
