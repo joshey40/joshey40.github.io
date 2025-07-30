@@ -295,7 +295,7 @@
                 <button id="downloadButton" class="default-button" style="width: 212px;" onclick="downloadCard()">Download Card</button>
             </div>
         </div>
-        <div>
+        <div style="flex-direction: row;">
             <div class="credits-button" id="creditsButton" onmouseover="showCreditsPopup(0)" onmouseout="hideCreditsPopup(0)">Credits</div>
             <button class="default-button" style="width: 212px; margin: 10px;" onclick="showTutorialPopup()">Info</button>
         </div>
@@ -324,7 +324,7 @@
     <div class="default-popup" id="tutorialPopup">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
             <h1>Info</h1>
-            <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeFinishSelectPopup()"></button>
+            <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeTutorialPopup()"></button>
         </div>
         <div style="padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);">
             <h2>How to use:</h2>
@@ -333,7 +333,7 @@
             <p>3. Customize the card's name, cost, power, and description.</p>
             <p>4. Optionally, upload a title image and frame break image.</p>
             <p>5. Choose a flare effect for the card.</p>
-            <p>6. Adjust the zoom levels for the name and main image as needed.</p>
+            <p>6. Adjust the zoom levels for the name and image as needed.</p>
             <p>7. Click "Download Card" to save your custom card.</p>
         </div>
     </div>
