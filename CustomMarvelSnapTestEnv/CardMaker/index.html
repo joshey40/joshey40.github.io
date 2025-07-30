@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Card Maker</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://joshey40.github.io/CustomMarvelSnap/favicon.ico"/>
+    <link href="https://joshey40.github.io/CustomMarvelSnap/css/fonts.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            align-items: center;
+        }
+        .background-img {
+            z-index: -1;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            overflow: hidden;
+        }
+        .content-div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            width: 100vw;
+            height: 100vh;
+            overflow-y: scroll;
+            justify-content: space-between;
+            display: flex;
+            flex-direction: column;
+
+        }
+        h1 {
+            font-family: 'Ultimatum-Bold', sans-serif;
+            font-size: 5rem;
+            text-align: center;
+            margin: 10px;
+            display: block;
+            text-shadow: 
+                3px 3px 3px #000,
+                -3px 3px 3px #000,
+                3px -3px 3px #000,
+                -3px -3px 3px #000;
+            color: white;
+        }
+        h2 {
+            font-family: 'Ultimatum-Bold', sans-serif;
+            font-size: 1.3rem;
+            text-align: center;
+            margin: 10px;
+            display: block;
+            text-shadow: 
+                3px 3px 3px #000,
+                -3px 3px 3px #000,
+                3px -3px 3px #000,
+                -3px -3px 3px #000;
+            color: white;
+        }
+        h3 {
+            font-family: 'Ultimatum-Bold', sans-serif;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 10px;
+            display: block;
+            color: white;
+        }
+        p {
+            font: 1em 'Roboto', sans-serif;
+            margin: 10px;
+            color: white;
+        }
+        a {
+            color: #4fc3ff;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        a:hover, a:focus {
+            color: #b3e0ff;
+        }
+        .result-div {
+            margin: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            max-width: 500px;
+            min-width: 300px;
+        }
+        .divider-div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+        @media (max-width: 900px) {
+            .divider-div {
+                flex-direction: column;
+                align-items: center;
+                width: inherit;
+            }
+        }
+        .editor-div {
+            margin: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-self: center;
+            min-width: 300px;
+        }
+        .default-input {
+            margin: 4px 0px;
+            padding: 4px;
+            font: 1em 'Roboto', sans-serif;
+            border-radius: 5px;
+            border: 2px solid #10072b;
+            background-color: rgba(255, 255, 255);
+            color: rgb(0, 0, 0);
+        }
+        .default-slider {
+            margin: 4px 0px;
+            padding: 4px;
+            font: 1em 'Roboto', sans-serif;
+            border-radius: 5px;
+            border: 2px solid #10072b;
+            background-color: rgba(255, 255, 255);
+            color: rgb(0, 0, 0);
+        }
+        .default-button {
+            margin: 4px 0px;
+            padding: 4px;
+            font: 1em 'Roboto', sans-serif;
+            border-radius: 5px;
+            border: 2px solid #10072b;
+            background-color: rgba(255, 255, 255);
+            color: rgb(0, 0, 0);
+            cursor: pointer;
+        }
+        .default-button:hover {
+            background-color: #10072b;
+            color: rgb(255, 255, 255);
+        }
+        .default-button:active {
+            border: 2px solid rgb(255, 255, 255);
+            background-color: #10072b;
+            color: rgb(255, 255, 255);
+        }
+        .default-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.90);
+            border-radius: 10px;
+            border: 4px solid #10072b;
+            padding: 20px;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.1s ease-in-out;
+            width: 90vw;
+            height: 90vh;
+        }
+        .default-popup h1 {
+            font-family: 'Ultimatum-Bold', sans-serif;
+            font-size: 2rem;
+            text-align: left;
+            margin: 10px;
+            display: block;
+            text-shadow: 
+                3px 3px 3px #000,
+                -3px 3px 3px #000,
+                3px -3px 3px #000,
+                -3px -3px 3px #000;
+            color: white;
+        }
+        .default-popup h2 {
+            font-family: 'Ultimatum-Bold', sans-serif;
+            font-size: 1.5rem;
+            text-align: left;
+            margin: 10px;
+            display: block;
+            text-shadow: 
+                3px 3px 3px #000,
+                -3px 3px 3px #000,
+                3px -3px 3px #000,
+                -3px -3px 3px #000;
+            color: white;
+        }
+        .frame-category {
+            width: 100%;
+        }
+        .frame-image {
+            width: 125px;
+            height: auto;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .credits-button {
+            background: #10072b;
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            padding: 6px 18px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1em;
+            cursor: default;
+            box-shadow: 2px 2px 8px #0006;
+            user-select: none;
+            margin: 10px;
+            text-align: center;
+            width: fit-content;
+            align-self: flex-start;
+        }
+        .credits-popup {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(16,7,43,1);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 0.95em;
+            width: fit-content;
+            min-width: 200px;
+            max-width: 300px;
+            white-space: pre-line;
+            background-clip: padding-box;
+            box-shadow: 2px 2px 12px #000a;
+            z-index: 1100;
+            visibility: hidden;
+        }
+    </style>
+    <script async src="script.js" type="module"></script>
+</html>
+<body>
+    <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/background.png" class="background-img" alt="background">
+    <div class="content-div">
+        <div>
+        </div>
+        <div class="divider-div">
+            <div class="result-div" id="resultDiv">
+                <img id="cardImage" src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/default.png" alt="result" style="width: 100%;">
+            </div>
+            <div class="editor-div">
+                <div style="display: flex; justify-content: space-evenly;">
+                    <textarea id="name" name="name" placeholder="Name" class="default-input" style="width: 162px; height: 18px; margin-right: 8px; resize: none;" oninput="updateResult()"></textarea>
+                    <input type="color" id="nameColor" name="nameColor" class="default-input" style="width: 30px; height: 30px; padding: 1px;" value="#ffffff" oninput="updateResult()">
+                </div>
+                <div style="display: flex; justify-content: space-evenly;">
+                    <select id="fontSelect" name="fontSelect" class="default-input" style="width: 173.2px; margin-right: 8px;" onchange="updateResult()">
+                        <option value="BadaBoom">BadaBoom</option>
+                        <option value="Ultimatum-Bold">Ultimatum</option>
+                        <option value="HelveticaNeueBold">Helvetica</option>
+                        <option value="ComicSlim">Comic Slim</option>
+                        <option value="ComicCraft">Comic Craft</option>
+                        <option value="FeastOfFlesh">Feast Of Flesh</option>
+                        <option value="AvengersRegular">Avengers</option>
+                        <option value="BlackWidowMovie">Black Widow</option>
+                        <option value="MarvelRegular">MarvelRegular</option>
+                        <option value="WakandaForever">Wakanda</option>
+                        <option value="ComebackHome">Comeback Home</option>
+                    </select>
+                    <input type="color" id="nameOutlineColor" name="nameOutlineColor" class="default-input" style="width: 30px; height: 30px; padding: 1px;" value="#000000" oninput="updateResult()">
+                </div>
+                <div style="display: flex; justify-content: space-evenly;">
+                    <label for="titleImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Name Image</label>
+                    <input type="file" id="titleImage" name="titleImage" accept="image/*" style="display: none;" onchange="titleImageChange(event)">
+                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearTitleImage()"></button>
+                </div>
+                <input type="range" id="nameZoom" name="nameZoom" min="0" max="200" value="100" class="default-slider" style="width: 200px;" oninput="updateResult()">
+                <hr style="width: 200px; border: 2px solid #10072b; margin: 5px 0; border-radius: 5px;">
+                <div style="display: flex; justify-content: space-evenly;">
+                    <input type="number" id="cost" name="cost" placeholder="Cost" class="default-input" style="width: 90px; margin-right: 8px;" value="1" oninput="updateResult()">
+                    <input type="number" id="power" name="power" placeholder="Power" class="default-input" style="width: 90px;" value="2" oninput="updateResult()">
+                </div>
+                <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 80px; resize: vertical; max-height: 100px;" oninput="updateResult()"></textarea>
+                <div style="display: flex; justify-content: space-evenly;">
+                    <label for="mainImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Image</label>
+                    <input type="file" id="mainImage" name="mainImage" accept="image/*"style="display: none;" onchange="mainImageChange(event)">
+                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearMainImage()"></button>
+                </div>
+                <div style="display: flex; justify-content: space-evenly;">
+                    <label for="frameBreakImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Frame Break</label>
+                    <input type="file" id="frameBreakImage" name="frameBreakImage" accept="image/*" style="display: none;" onchange="frameBreakImageChange(event)">
+                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearFrameBreakImage()"></button>
+                </div>
+                <input type="range" id="imageZoom" name="imageZoom" min="0" max="150" value="0" class="default-slider" style="width: 200px;" oninput="updateResult()">
+                <hr style="width: 200px; border: 2px solid #10072b; margin: 5px 0; border-radius: 5px;">
+                <button id="selectFrameButton" class="default-button" style="width: 212px;" onclick="selectFrame()">Select Frame</button>
+                <div style="display: flex; justify-content: space-evenly;">
+                    <button id="selectEffectButton" class="default-button" style="width: 174px; margin-right: 8px;" onclick="selectEffect()">Select Flare</button>
+                    <button id="clearEffectButton" class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearEffect()"></button>
+                </div>
+                <!--
+                <div style="display: flex; justify-content: space-evenly;">
+                    <button id="selectFinishButton" class="default-button" style="width: 174px; margin-right: 8px;" onclick="selectFinish()">Select Finish</button>
+                    <button id="clearFinishButton" class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearFinish()"></button>
+                </div>
+                -->
+                <div style="display: flex; justify-content: space-evenly;">
+                    <h2 style="margin: 0; width: 96px; margin-right: 8px;">Background:</h2>
+                    <input type="checkbox" id="transparentBg" name="transparentBg" class="default-input" style="width: 30px; height: 30px; padding: 1px; margin-right: 8px;" onchange="updateResult()" checked>
+                    <input type="color" id="backgroundColor" name="backgroundColor" class="default-input" style="width: 30px; height: 30px; padding: 1px; margin-right: 8px;" value="#10072b" oninput="updateResult()">
+                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearBackground()"></button>
+                </div>
+                <hr style="width: 200px; border: 2px solid #10072b; margin: 5px 0; border-radius: 5px;">
+                <button id="downloadButton" class="default-button" style="width: 212px;" onclick="downloadCard()">Download Card</button>
+            </div>
+        </div>
+        <div style="flex-direction: row; display: flex;">
+            <div class="credits-button" id="creditsButton" onmouseover="showCreditsPopup(0)" onmouseout="hideCreditsPopup(0)">Credits</div>
+            <button class="default-button" style="width: fit-content; padding-left: 10px; padding-right: 10px; margin: 10px;" onclick="showTutorialPopup()">Info/Tutorial</button>
+        </div>
+    </div>
+    <div class="default-popup" id="frameSelectPopup">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
+            <h1>Select Frame</h1>
+            <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeFrameSelectPopup()"></button>
+        </div>
+        <div style="padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);" id="frameSelectDiv"></div>
+    </div>
+    <div class="default-popup" id="effectSelectPopup">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
+            <h1>Select Flare</h1>
+            <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeEffectSelectPopup()"></button>
+        </div>
+        <div style="padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);" id="effectSelectDiv"></div>
+    </div>
+    <div class="default-popup" id="finishSelectPopup">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
+            <h1>Select Finish</h1>
+            <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeFinishSelectPopup()"></button>
+        </div>
+        <div style="padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);" id="finishSelectDiv"></div>
+    </div>
+    <div class="default-popup" id="tutorialPopup">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
+            <h1>Info</h1>
+            <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeTutorialPopup()"></button>
+        </div>
+        <div style="padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);">
+            <h2>Name:</h2>
+            <p>You can either type a name or upload an image for the name. In case you type a name, you can also change the font, color and outline color of the name. The zoom slider allows you to adjust the size of the name.</p>
+            <h2>Cost, Power and Description:</h2>
+            <p>These fields allow you to set the cost, power and description of the card. The description should be up to 5 lines long. Line breaks have to be done manually.</p>
+            <h2>Image and Frame Break:</h2>
+            <p>You can upload an image for the card and optionaly a frame break image. The frame break image should only include those parts of the original image that should be visible outside of the frame. I recommend using a tool like <a href="https://www.remove.bg" target="_blank" rel="noopener noreferrer">remove.bg</a> to remove the unwanted parts of the image.</p>
+            <div style="display: flex; flex-direction: row; justify-content: space-evenly; flex-wrap: wrap; margin: 10px;">
+                <div style="align-items: center;">
+                    <h3>Example Image</h3>
+                    <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_main.png" alt="Example Image" style="height: 300px; width: auto; border-radius: 10px;">
+                </div>
+                <div style="align-items: center;">
+                    <h3>Frame Break</h3>
+                    <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_framebreak.png" alt="Example Frame Break" style="height: 300px; width: auto; border-radius: 10px;">
+                </div>
+                <div style="align-items: center;">
+                    <h3>Result</h3>
+                    <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_result.png" alt="Example Result" style="height: 300px; width: auto; border-radius: 10px;">
+                </div>
+            </div>
+            <h2>Frame and Flare:</h2>
+            <p>Here you can select a frame and a flare for the card. More frames and flares will be added in the future aswell as diferent finishes.</p>
+            <h2>Feedback</h2>
+            <p>Thanks for using the Card Maker! If you have any feedback or suggestions, feel free to reach out to me on <a href="https://www.reddit.com/u/joshey40" target="_blank" rel="noopener noreferrer">Reddit</a> or as @joshey40 on Discord. You can also find me on the <a href="https://www.reddit.com/r/CustomMarvelSnap" target="_blank" rel="noopener noreferrer">Custom Marvel Snap Subreddit</a>, where I hope to see your creations!</p>
+            <p>Have fun creating your cards!</p>
+        </div>
+    </div>
+    <div class="credits-popup" id="creditsPopup" onmouseover="showCreditsPopup(1)" onmouseout="hideCreditsPopup(1)">
+        <b>Credits:</b><br>
+        Card Maker by Joshey
+        <span style="display:block; line-height:0.2; margin-top:2px;">
+            <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/reddit-icon.png" alt="Reddit" style="height:1em;vertical-align:middle;margin-right:4px;">u/joshey40 <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/discord-icon.png" alt="Discord" style="height:1em;vertical-align:middle;margin-right:4px;">@joshey40
+        </span>
+        Art by Hritvik Nijhawan
+        <span style="display:block; line-height:0.2; margin-top:2px;">
+            <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/discord-icon.png" alt="Discord" style="height:1em;vertical-align:middle;margin-right:4px;">@theartist115
+        </span>
+    </div>
+</body>
+</html>
