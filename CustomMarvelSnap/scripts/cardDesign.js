@@ -200,9 +200,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     }
 
     // Description and Background Color
-    // Parse the whole description for bold/non-bold segments, then split by \n for line rendering
     function parseDescriptionSegments(desc) {
-        // Returns an array of {text, bold} for the whole description
         const segments = [];
         let regex = /<b>([\s\S]*?)<\/b>/gi;
         let lastIndex = 0;
@@ -236,10 +234,8 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     completeCtx.lineWidth = 1;
     const normalFont = `${Math.round(50 * scale)}px 'HelveticaNeueMediumCondensed'`;
     const boldFont = `${Math.round(50 * scale)}px 'HelveticaNeueHeavyCondensed'`;
-    // Parse the description into segments (bold/non-bold)
     const allSegments = parseDescriptionSegments(description);
-    // Now, split into lines, preserving bold state
-    let lines = [[]]; // array of array of segments
+    let lines = [[]];
     allSegments.forEach(seg => {
         const parts = seg.text.split('\n');
         for (let i = 0; i < parts.length; i++) {
@@ -250,7 +246,6 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     for (let i = 0; i < lines.length; i++) {
         const y = 1024 * scale + (i * 55 * scale);
         const segments = lines[i];
-        // Calculate total width for center alignment
         let totalWidth = 0;
         segments.forEach(seg => {
             completeCtx.font = seg.bold ? boldFont : normalFont;
