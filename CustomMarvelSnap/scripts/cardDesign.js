@@ -78,7 +78,7 @@ async function ensureStaticImagesLoaded() {
 }
 
 // --- Card Generation Function ---
-async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#000000", fontSelect = "BadaBoom", cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b", offset=[0, 0], finish='none') {
+async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#000000", fontSelect = "BadaBoom", cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b", offset=[0, 0, 0], finish='none') {
     imagesBase64 = checkIfSpell(imagesBase64, power);
     await ensureStaticImagesLoaded();
     // Create Canvas
@@ -112,8 +112,8 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     let scale = size / 1024;
     w *= scale * zoom;
     h *= scale * zoom;
-    let x = (1024 - w) / 2 * scale + offset[0];
-    let y = (1024 - h) / 2 * scale + 3 * scale + offset[1];
+    let x = (1024 - w) / 2 * scale + offset[0] * scale;
+    let y = (1024 - h) / 2 * scale + 3 * scale + offset[1] * scale;
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     let frameImg;
@@ -188,6 +188,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         titleHeight *= nameZoom;
         let titleX = (1024 - titleWidth) / 2 * scale;
         let titleY = 850 * scale - titleHeight / 2;
+        titleY += offset[2] * scale;
         ctx.drawImage(titleImg, titleX, titleY, titleWidth, titleHeight);
     } else {
         const fontSize = Math.round(300 * scale * nameZoom);

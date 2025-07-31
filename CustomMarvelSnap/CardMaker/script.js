@@ -47,7 +47,8 @@ function updateResult() {
     cardSettings.zoom = 1 + (document.getElementById('imageZoom').value / 100);
     cardSettings.transparentBg = document.getElementById('transparentBg').checked;
     cardSettings.backgroundColor = cardSettings.transparentBg === false ? 'transparent' : document.getElementById('backgroundColor').value;
-    cardSettings.offset = [offsetX, offsetY];
+    const nameOffsetY = document.getElementById('nameOffsetY').value;
+    cardSettings.offset = [offsetX, offsetY, nameOffsetY];
     cardSettings.imagesBase64 = imagesBase64;
 
     requestRender();
