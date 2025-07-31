@@ -200,29 +200,25 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     }
 
     // Description and Background Color
-    // Improved: Split only inside <b>...</b> on \n, preserving normal text and line breaks
-    function splitBoldTagsAcrossLines(desc) {
-        // This will split only the content inside <b>...</b> on \n, and preserve normal text and line breaks
-        let result = '';
+    // Parse the whole description for bold/non-bold segments, then split by \n for line rendering
+    function parseDescriptionSegments(desc) {
+        // Returns an array of {text, bold} for the whole description
+        const segments = [];
+        let regex = /<b>([\s\S]*?)<\/b>/gi;
         let lastIndex = 0;
-        const regex = /<b>([\s\S]*?)<\/b>/g;
         let match;
         while ((match = regex.exec(desc)) !== null) {
-            // Add text before <b>
-            result += desc.substring(lastIndex, match.index);
-            // Split bold content on \n
-            const boldLines = match[1].split('\n');
-            for (let i = 0; i < boldLines.length; i++) {
-                result += `<b>${boldLines[i]}</b>`;
-                if (i < boldLines.length - 1) result += '\n';
+            if (match.index > lastIndex) {
+                segments.push({ text: desc.substring(lastIndex, match.index), bold: false });
             }
+            segments.push({ text: match[1], bold: true });
             lastIndex = regex.lastIndex;
         }
-        // Add any remaining text after last <b>
-        result += desc.substring(lastIndex);
-        return result;
+        if (lastIndex < desc.length) {
+            segments.push({ text: desc.substring(lastIndex), bold: false });
+        }
+        return segments;
     }
-    description = splitBoldTagsAcrossLines(description);
     const completeCanvas = document.createElement("canvas");
     completeCanvas.width = size;
     completeCanvas.height = 1318 * scale;
@@ -240,29 +236,20 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     completeCtx.lineWidth = 1;
     const normalFont = `${Math.round(50 * scale)}px 'HelveticaNeueMediumCondensed'`;
     const boldFont = `${Math.round(50 * scale)}px 'HelveticaNeueHeavyCondensed'`;
-    // Helper to parse <b>...</b> and return array of {text, bold}
-    function parseBoldSegments(line) {
-        const segments = [];
-        let regex = /<b>(.*?)<\/b>/gi;
-        let lastIndex = 0;
-        let match;
-        while ((match = regex.exec(line)) !== null) {
-            if (match.index > lastIndex) {
-                segments.push({ text: line.substring(lastIndex, match.index), bold: false });
-            }
-            segments.push({ text: match[1], bold: true });
-            lastIndex = regex.lastIndex;
+    // Parse the description into segments (bold/non-bold)
+    const allSegments = parseDescriptionSegments(description);
+    // Now, split into lines, preserving bold state
+    let lines = [[]]; // array of array of segments
+    allSegments.forEach(seg => {
+        const parts = seg.text.split('\n');
+        for (let i = 0; i < parts.length; i++) {
+            if (i > 0) lines.push([]);
+            if (parts[i].length > 0) lines[lines.length - 1].push({ text: parts[i], bold: seg.bold });
         }
-        if (lastIndex < line.length) {
-            segments.push({ text: line.substring(lastIndex), bold: false });
-        }
-        return segments;
-    }
-    const descriptionLines = description.split('\n');
-    for (let i = 0; i < descriptionLines.length; i++) {
+    });
+    for (let i = 0; i < lines.length; i++) {
         const y = 1024 * scale + (i * 55 * scale);
-        const line = descriptionLines[i];
-        const segments = parseBoldSegments(line);
+        const segments = lines[i];
         // Calculate total width for center alignment
         let totalWidth = 0;
         segments.forEach(seg => {
@@ -272,7 +259,6 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         let x = 512 * scale - totalWidth / 2;
         segments.forEach(seg => {
             completeCtx.font = seg.bold ? boldFont : normalFont;
-            // Stroke and fill each segment
             completeCtx.strokeText(seg.text, x + completeCtx.measureText(seg.text).width / 2, y);
             completeCtx.fillText(seg.text, x + completeCtx.measureText(seg.text).width / 2, y);
             x += completeCtx.measureText(seg.text).width;
