@@ -201,7 +201,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         ctx.lineWidth = 15 * scale * nameZoom;
         for (let i = 0; i < name.length; i++) {
             let titleHeight = 300 * scale * nameZoom * name.length;
-            let titleY = 850 * scale;
+            let titleY = 850 * scale + offset[2] * scale;
             titleY -= titleHeight / 2;
             titleY += (i * fontSize * 0.9);
             ctx.strokeText(name[i], 512 * scale, titleY);
