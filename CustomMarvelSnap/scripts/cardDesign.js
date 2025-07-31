@@ -35,7 +35,21 @@ Object.entries(frameTypes).forEach(([category, frames]) => {
     });
 });
 
-const allPaths = staticImagePaths.concat(numberImagePaths).concat(frameImagePaths);
+const effectDir = '../res/img/effects/';
+const effectTypes = {
+    krackle: ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
+    tone: ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
+    glimmer: ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
+    special: ['neontrails']
+}
+const effectImagePaths = [];
+Object.entries(effectTypes).forEach(([category, effects]) => {
+    effects.forEach(effect => {
+        effectImagePaths.push(`${effectDir}${category}/${effect}.png`);
+    });
+});
+
+const allPaths = staticImagePaths.concat(numberImagePaths).concat(frameImagePaths).concat(effectImagePaths);
 
 const preloadImageCache = {};
 function preloadImg(src) {
@@ -103,7 +117,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     let frameImg;
     
     if (imagesBase64.frameImage) {
-        frameImg = await getImg(imagesBase64.frameImage);
+        frameImg = preloadImageCache[imagesBase64.frameImage];
     } else {
         frameImg = preloadImageCache["../res/img/frames/basic/common.png"];
     }
