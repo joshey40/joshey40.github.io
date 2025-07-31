@@ -337,7 +337,7 @@ const frames = {
     'neon': ['blue', 'green', 'red', 'purple', 'yellow', 'white'],
     'metallic': ['copper', 'gold', 'silver'],
     'matte': ['black', 'red'],
-    'special': ['tokyo2099', 'chains']
+    'special': ['tokyo2099', 'chains', 'champion']
 };
 
 for (const category in frameCategories) {
