@@ -210,16 +210,50 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     }
     completeCtx.drawImage(canvas, 0, 0, size, size);
     completeCtx.globalCompositeOperation = "source-over";
-    completeCtx.font = `${Math.round(50 * scale)}px 'HelveticaNeueMediumCondensed'`;
     completeCtx.fillStyle = "#ffffff";
     completeCtx.strokeStyle = "#000000";
     completeCtx.textAlign = "center";
     completeCtx.textBaseline = "top";
     completeCtx.lineWidth = 1;
+    const normalFont = `${Math.round(50 * scale)}px 'HelveticaNeueMediumCondensed'`;
+    const boldFont = `${Math.round(50 * scale)}px 'HelveticaNeueHeavyCondensed'`;
+    // Helper to parse <b>...</b> and return array of {text, bold}
+    function parseBoldSegments(line) {
+        const segments = [];
+        let regex = /<b>(.*?)<\/b>/gi;
+        let lastIndex = 0;
+        let match;
+        while ((match = regex.exec(line)) !== null) {
+            if (match.index > lastIndex) {
+                segments.push({ text: line.substring(lastIndex, match.index), bold: false });
+            }
+            segments.push({ text: match[1], bold: true });
+            lastIndex = regex.lastIndex;
+        }
+        if (lastIndex < line.length) {
+            segments.push({ text: line.substring(lastIndex), bold: false });
+        }
+        return segments;
+    }
     const descriptionLines = description.split('\n');
     for (let i = 0; i < descriptionLines.length; i++) {
-        completeCtx.strokeText(descriptionLines[i], 512 * scale, 1024 * scale + (i * 55 * scale));
-        completeCtx.fillText(descriptionLines[i], 512 * scale, 1024 * scale + (i * 55 * scale));
+        const y = 1024 * scale + (i * 55 * scale);
+        const line = descriptionLines[i];
+        const segments = parseBoldSegments(line);
+        // Calculate total width for center alignment
+        let totalWidth = 0;
+        segments.forEach(seg => {
+            completeCtx.font = seg.bold ? boldFont : normalFont;
+            totalWidth += completeCtx.measureText(seg.text).width;
+        });
+        let x = 512 * scale - totalWidth / 2;
+        segments.forEach(seg => {
+            completeCtx.font = seg.bold ? boldFont : normalFont;
+            // Stroke and fill each segment
+            completeCtx.strokeText(seg.text, x + completeCtx.measureText(seg.text).width / 2, y);
+            completeCtx.fillText(seg.text, x + completeCtx.measureText(seg.text).width / 2, y);
+            x += completeCtx.measureText(seg.text).width;
+        });
     }
 
     return completeCanvas;
