@@ -124,9 +124,9 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         cost = 0;
     }
     let costNumber = cost.toString().split("");
-    let costWidth = 0;
-    for (let i = 0; i < costNumber.length; i++) {
-        costWidth += numbersWidth[costNumber[i]] * scale;
+    let costWidth = numbersWidth[costNumber[0]] * multiply * scale;
+    for (let i = 1; i < costNumber.length; i++) {
+        costWidth += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
     }
     costWidth *= multiply;
     let costX = 246 * scale - costWidth / 2; 
@@ -134,22 +134,22 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     for (let i = 0; i < costNumber.length; i++) {
         let numberImg = preloadImageCache[numbersDir + "cost/" + costNumber[i] + ".png"];
         ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * multiply * scale);
-        costX += numbersWidth[costNumber[i]] * scale;
+        costX += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
     }
     // Power number
     if (power != null && power != "") {
         let powerNumber = power.toString().split("");
-        let powerWidth = 0;
+        let powerWidth = numbersWidth[powerNumber[0]] * multiply * scale
         powerWidth *= multiply;
-        for (let i = 0; i < powerNumber.length; i++) {
-            powerWidth += numbersWidth[powerNumber[i]] * scale;
+        for (let i = 1; i < powerNumber.length; i++) {
+            powerWidth += (numbersWidth[powerNumber[i]] - 14) * multiply * scale;
         }
-        let powerX = 792 * scale - powerWidth / 2;
+        let powerX = 783 * scale - powerWidth / 2;
         let powerY = 65 * scale;
         for (let i = 0; i < powerNumber.length; i++) {
             let numberImg = preloadImageCache[numbersDir + "power/" + powerNumber[i] + ".png"];
             ctx.drawImage(numberImg, powerX, powerY, numbersWidth[powerNumber[i]] * multiply * scale, 79 * multiply * scale);
-            powerX += numbersWidth[powerNumber[i]] * scale;
+            powerX += (numbersWidth[powerNumber[i]] - 14) * multiply * scale;
         }
     }
     // Frame Break
