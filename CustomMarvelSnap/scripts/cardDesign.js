@@ -129,7 +129,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         costWidth += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
     }
     costWidth *= multiply;
-    let costX = 253 * scale - costWidth / 2; 
+    let costX = 249 * scale - costWidth / 2; 
     let costY = 65 * scale;
     for (let i = 0; i < costNumber.length; i++) {
         let numberImg = preloadImageCache[numbersDir + "cost/" + costNumber[i] + ".png"];
