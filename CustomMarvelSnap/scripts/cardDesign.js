@@ -129,7 +129,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         costWidth += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
     }
     costWidth *= multiply;
-    let costX = 246 * scale - costWidth / 2; 
+    let costX = 253 * scale - costWidth / 2; 
     let costY = 65 * scale;
     for (let i = 0; i < costNumber.length; i++) {
         let numberImg = preloadImageCache[numbersDir + "cost/" + costNumber[i] + ".png"];
@@ -144,7 +144,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         for (let i = 1; i < powerNumber.length; i++) {
             powerWidth += (numbersWidth[powerNumber[i]] - 14) * multiply * scale;
         }
-        let powerX = 783 * scale - powerWidth / 2;
+        let powerX = 796 * scale - powerWidth / 2;
         let powerY = 65 * scale;
         for (let i = 0; i < powerNumber.length; i++) {
             let numberImg = preloadImageCache[numbersDir + "power/" + powerNumber[i] + ".png"];
