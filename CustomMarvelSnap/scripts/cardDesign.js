@@ -266,13 +266,14 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
 var imgCache = {};
 
 async function getImg (src) {
+    let img;
     if (imgCache[src]) {
-        return imgCache[src];
+        img = imgCache[src];
     } else {
-        const img = await loadImg(src);
+        img = await loadImg(src);
         imgCache[src] = img;
-        return img;
     }
+    return img;
 }
 
 function loadImg (src) {
