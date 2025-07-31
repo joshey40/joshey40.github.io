@@ -133,7 +133,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     let costY = 65 * scale;
     for (let i = 0; i < costNumber.length; i++) {
         let numberImg = preloadImageCache[numbersDir + "cost/" + costNumber[i] + ".png"];
-        ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * scale, 79 * multiply * scale);
+        ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * multiply * scale, 79 * multiply * scale);
         costX += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
     }
     // Power number
