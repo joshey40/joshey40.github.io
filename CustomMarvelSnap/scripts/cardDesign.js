@@ -115,7 +115,6 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     let frameImg;
-    
     if (imagesBase64.frameImage) {
         frameImg = preloadImageCache[imagesBase64.frameImage];
     } else {
@@ -209,7 +208,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     // Effect
     ctx.globalCompositeOperation = "destination-over";
     if (imagesBase64.effectImage) {
-        let effectImg =  await getImg(imagesBase64.effectImage);
+        let effectImg =  preloadImageCache[imagesBase64.effectImage];
         ctx.drawImage(effectImg, 0, 0, size, size);
     }
 
