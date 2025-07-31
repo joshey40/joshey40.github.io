@@ -200,6 +200,29 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     }
 
     // Description and Background Color
+    // Improved: Split only inside <b>...</b> on \n, preserving normal text and line breaks
+    function splitBoldTagsAcrossLines(desc) {
+        // This will split only the content inside <b>...</b> on \n, and preserve normal text and line breaks
+        let result = '';
+        let lastIndex = 0;
+        const regex = /<b>([\s\S]*?)<\/b>/g;
+        let match;
+        while ((match = regex.exec(desc)) !== null) {
+            // Add text before <b>
+            result += desc.substring(lastIndex, match.index);
+            // Split bold content on \n
+            const boldLines = match[1].split('\n');
+            for (let i = 0; i < boldLines.length; i++) {
+                result += `<b>${boldLines[i]}</b>`;
+                if (i < boldLines.length - 1) result += '\n';
+            }
+            lastIndex = regex.lastIndex;
+        }
+        // Add any remaining text after last <b>
+        result += desc.substring(lastIndex);
+        return result;
+    }
+    description = splitBoldTagsAcrossLines(description);
     const completeCanvas = document.createElement("canvas");
     completeCanvas.width = size;
     completeCanvas.height = 1318 * scale;
