@@ -232,8 +232,8 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     completeCtx.textAlign = "center";
     completeCtx.textBaseline = "top";
     completeCtx.lineWidth = 1;
-    const normalFont = `${Math.round(50 * scale)}px 'HelveticaNeueMediumCondensed'`;
-    const boldFont = `${Math.round(50 * scale)}px 'HelveticaNeueHeavyCondensed'`;
+    const normalFont = `${Math.round(52 * scale)}px 'HelveticaNeueMediumCondensed'`;
+    const boldFont = `${Math.round(52 * scale)}px 'HelveticaNeueHeavyCondensed'`;
     const allSegments = parseDescriptionSegments(description);
     let lines = [[]];
     allSegments.forEach(seg => {
