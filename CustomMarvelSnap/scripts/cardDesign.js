@@ -95,7 +95,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     // Background
     let backgroundImg;
     if (imagesBase64.mainImage) {
-        backgroundImg = await getImg(imagesBase64.mainImage);
+        backgroundImg = await getImg(imagesBase64.mainImage, finish, 'background');
     } else {
         backgroundImg = preloadImageCache["../res/img/default_cards/hulk.png"];
     }
@@ -114,7 +114,6 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     h *= scale * zoom;
     let x = (1024 - w) / 2 * scale + offset[0] * scale;
     let y = (1024 - h) / 2 * scale + 3 * scale + offset[1] * scale;
-    backgroundImg = applyFinish(backgroundImg, finish, 'background');
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     let frameImg;
@@ -170,13 +169,12 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     }
     // Frame Break
     if (imagesBase64.frameBreakImage) {
-        let frameBreakImg = await getImg(imagesBase64.frameBreakImage);
-        frameBreakImg = applyFinish(frameBreakImg, finish, 'frameBreak');
+        let frameBreakImg = await getImg(imagesBase64.frameBreakImage, finish, 'frameBreak');
         ctx.drawImage(frameBreakImg, x, y, w, h);
     }
     // Title
     if (imagesBase64.titleImage) {
-        let titleImg = await getImg(imagesBase64.titleImage);
+        let titleImg = await getImg(imagesBase64.titleImage, 'none', 'title');
         let titleWidth = titleImg.width;
         let titleHeight = titleImg.height;
         let titleAspectRatio = titleWidth / titleHeight;
@@ -283,13 +281,15 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
 
 var imgCache = {};
 
-async function getImg (src) {
+async function getImg (src, finish, layer) {
     let img;
-    if (imgCache[src]) {
-        img = imgCache[src];
+    if (imgCache[src] && imgCache[src][finish]) {
+        img = imgCache[src][finish];
     } else {
         img = await loadImg(src);
-        imgCache[src] = img;
+        img = applyFinish(img, finish, layer);
+        imgCache[src] = imgCache[src] || {};
+        imgCache[src][finish] = img;
     }
     return img;
 }
@@ -326,6 +326,7 @@ function applyFinish(img, finish, layer) {
     if (finish === 'none') {
         return img;
     }
+
     if (finish === 'inked') {
         // Black and white effect whith high contrast
         const canvas = document.createElement('canvas');
