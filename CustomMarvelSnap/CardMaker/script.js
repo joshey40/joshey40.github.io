@@ -181,6 +181,11 @@ function selectFinish() {
     finishSelectPopup.style.opacity = '1';
 }
 
+function clearFinish() {
+    cardSettings.finish = '';
+    updateResult();
+}
+
 function closeFinishSelectPopup() {
     const finishSelectPopup = document.getElementById('finishSelectPopup');
     finishSelectPopup.style.opacity = '0';
@@ -315,6 +320,7 @@ window.closeFrameSelectPopup = closeFrameSelectPopup;
 window.selectEffect = selectEffect;
 window.closeEffectSelectPopup = closeEffectSelectPopup;
 window.selectFinish = selectFinish;
+window.clearFinish = clearFinish;
 window.closeFinishSelectPopup = closeFinishSelectPopup;
 window.showTutorialPopup = showTutorialPopup;
 window.closeTutorialPopup = closeTutorialPopup;
