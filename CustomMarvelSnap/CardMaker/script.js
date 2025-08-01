@@ -407,8 +407,7 @@ for (const category in effectCategories) {
 // Add Finishes to finishSelectPopup
 const finishSelectDiv = document.getElementById('finishSelectDiv');
 const finishes = {
-    'gold': 'Gold',
-    'foil': 'Foil',
+    'inked': 'Inked',
 };
 
 for (const finish in finishes) {

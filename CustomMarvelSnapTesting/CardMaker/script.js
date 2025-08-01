@@ -47,7 +47,8 @@ function updateResult() {
     cardSettings.zoom = 1 + (document.getElementById('imageZoom').value / 100);
     cardSettings.transparentBg = document.getElementById('transparentBg').checked;
     cardSettings.backgroundColor = cardSettings.transparentBg === false ? 'transparent' : document.getElementById('backgroundColor').value;
-    cardSettings.offset = [offsetX, offsetY];
+    const nameOffsetY = document.getElementById('nameOffsetY').value * -1;
+    cardSettings.offset = [offsetX, offsetY, nameOffsetY];
     cardSettings.imagesBase64 = imagesBase64;
 
     requestRender();
@@ -330,13 +331,14 @@ export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange,
 // Add Frames to frameSelectPopup
 const frameSelectDiv = document.getElementById('frameSelectDiv');
 const frameDir = '../res/img/frames/';
-const frameCategories = { 'basic': 'Basic', /*'cosmic': 'Cosmic',*/ 'neon': 'Neon', 'metallic': 'Metallic', 'mate': 'Mate' };
+const frameCategories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon', 'metallic': 'Metallic', 'matte': 'Matte', 'special': 'Special' };
 const frames = {
     'basic': ['common', 'uncommon', 'rare', 'epic', 'legendary', 'ultra', 'infinite'],
-    'cosmic': ['black', 'blue', 'green', 'red', 'pink', 'yellow', 'orange'],
+    'cosmic': ['black', 'blue', 'green', 'red', 'pink', 'yellow', 'orange', 'purple', 'rainbow'],
     'neon': ['blue', 'green', 'red', 'purple', 'yellow', 'white'],
     'metallic': ['copper', 'gold', 'silver'],
-    'mate': ['black', 'red']
+    'matte': ['black', 'red'],
+    'special': ['tokyo2099', 'chains', 'champion']
 };
 
 for (const category in frameCategories) {
@@ -368,10 +370,12 @@ for (const category in frameCategories) {
 // Add Effects to effectSelectPopup
 const effectSelectDiv = document.getElementById('effectSelectDiv');
 const effectDir = '../res/img/effects/';
-const effectCategories = { 'krackle': 'Krackle', 'tone': 'Tone' };
+const effectCategories = { 'krackle': 'Krackle', 'tone': 'Tone', 'glimmer': 'Glimmer', 'special': 'Special' };
 const effects = {
     'krackle': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
-    'tone': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white']
+    'tone': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
+    'glimmer': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
+    'special': ['neontrails']
 };
 
 for (const category in effectCategories) {
@@ -403,8 +407,7 @@ for (const category in effectCategories) {
 // Add Finishes to finishSelectPopup
 const finishSelectDiv = document.getElementById('finishSelectDiv');
 const finishes = {
-    'gold': 'Gold',
-    'foil': 'Foil',
+    'inked': 'Inked',
 };
 
 for (const finish in finishes) {
