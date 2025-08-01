@@ -432,7 +432,7 @@ for (const finish in finishes) {
         updateResult();
         closeFinishSelectPopup();
     });
-    const finishSelectName = document.createElement('span');
+    const finishSelectName = document.createElement('h3');
     finishSelectName.textContent = finishes[finish];
     finishSelectButton.appendChild(finishImg);
     finishSelectButton.appendChild(finishSelectName);
@@ -440,6 +440,12 @@ for (const finish in finishes) {
     finishSelectButton.style.alignItems = 'center';
     finishSelectButton.style.flexDirection = 'column';
     finishSelectButton.style.cursor = 'pointer';
+    finishSelectButton.style.margin = '5px';
+    finishSelectButton.style.padding = '5px';
+    finishSelectButton.style.border = '1px solid #ccc';
+    finishSelectButton.style.borderRadius = '5px';
+    finishSelectButton.style.width = '100px';
+    finishSelectButton.style.textAlign = 'center';
     finishSelectDiv.appendChild(finishSelectButton);
 }
 
