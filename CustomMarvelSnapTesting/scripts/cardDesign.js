@@ -339,8 +339,8 @@ function applyFinish(img, finish, layer) {
         for (let i = 0; i < data.length; i += 4) {
             let avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
             // Increase contrast
-            const n1 = 1.4;
-            const n2 = 1.6
+            const n1 = 1.5;
+            const n2 = 1.9;
             avg /= 255;
             avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
             avg = Math.round(avg * 255);

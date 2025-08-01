@@ -417,17 +417,20 @@ const finishSelectDiv = document.getElementById('finishSelectDiv');
 const finishes = {
     'inked': 'Inked',
 };
+const finshesButtonImage = {
+    'inked': 'https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/Ink.webp',
+}
 
 for (const finish in finishes) {
-    const finishButton = document.createElement('button');
-    finishButton.className = 'default-button';
-    finishButton.textContent = finishes[finish];
-    finishButton.addEventListener('click', () => {
+    const finishImg = document.createElement('img');
+    finishImg.src = finshesButtonImage[finish];
+    finishImg.alt = finishes[finish];
+    finishImg.className = 'frame-image';
+    finishImg.addEventListener('click', () => {
         cardSettings.finish = finish;
         updateResult();
         closeFinishSelectPopup();
     });
-    finishSelectDiv.appendChild(finishButton);
 }
 
 // Request Image Update every 1000ms
