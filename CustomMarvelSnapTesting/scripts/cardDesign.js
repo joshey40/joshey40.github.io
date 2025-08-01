@@ -338,6 +338,10 @@ function applyFinish(img, finish, layer) {
         const data = imageData.data;
         for (let i = 0; i < data.length; i += 4) {
             const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            // Increase contrast
+            avg = (avg / 255 - 0.5) * Math.PI
+            avg = Math.sin(avg) / 2 + 0.5;
+            avg *= 255; // Scale back to 0-255
             data[i] = avg;     // Red
             data[i + 1] = avg; // Green
             data[i + 2] = avg; // Blue
