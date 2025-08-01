@@ -324,7 +324,9 @@ window.downloadCard = downloadCard;
 window.showCreditsPopup = showCreditsPopup;
 window.hideCreditsPopup = hideCreditsPopup;
 
-export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, clearTitleImage, selectFrame, closeFrameSelectPopup, selectEffect, closeEffectSelectPopup, clearEffect, clearBackground, downloadCard };
+export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange, clearMainImage, clearFrameBreakImage, 
+    clearTitleImage, selectFrame, closeFrameSelectPopup, selectEffect, closeEffectSelectPopup, selectFinish, closeFinishSelectPopup,
+    showTutorialPopup, closeTutorialPopup, showCreditsPopup, hideCreditsPopup,  clearEffect, clearBackground, downloadCard };
 
 
 
