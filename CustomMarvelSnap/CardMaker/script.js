@@ -409,17 +409,37 @@ const finishSelectDiv = document.getElementById('finishSelectDiv');
 const finishes = {
     'inked': 'Inked',
 };
+const finshesButtonImage = {
+    'inked': 'https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/Ink.webp',
+}
 
 for (const finish in finishes) {
-    const finishButton = document.createElement('button');
-    finishButton.className = 'default-button';
-    finishButton.textContent = finishes[finish];
-    finishButton.addEventListener('click', () => {
+    const finishImg = document.createElement('img');
+    finishImg.src = finshesButtonImage[finish];
+    finishImg.alt = finishes[finish];
+    finishImg.className = 'frame-image';
+    const finishSelectButton = document.createElement('div');
+    finishSelectButton.addEventListener('click', () => {
         cardSettings.finish = finish;
         updateResult();
         closeFinishSelectPopup();
     });
-    finishSelectDiv.appendChild(finishButton);
+    const finishSelectName = document.createElement('h3');
+    finishSelectName.textContent = finishes[finish];
+    finishSelectName.style.margin = '0';
+    finishSelectButton.appendChild(finishImg);
+    finishSelectButton.appendChild(finishSelectName);
+    finishSelectButton.style.display = 'flex';
+    finishSelectButton.style.alignItems = 'center';
+    finishSelectButton.style.flexDirection = 'column';
+    finishSelectButton.style.cursor = 'pointer';
+    finishSelectButton.style.margin = '5px';
+    finishSelectButton.style.padding = '5px';
+    finishSelectButton.style.border = '1px solid #ccc';
+    finishSelectButton.style.borderRadius = '5px';
+    finishSelectButton.style.width = '125px';
+    finishSelectButton.style.textAlign = 'center';
+    finishSelectDiv.appendChild(finishSelectButton);
 }
 
 // Request Image Update every 1000ms

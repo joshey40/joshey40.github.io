@@ -114,6 +114,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     h *= scale * zoom;
     let x = (1024 - w) / 2 * scale + offset[0] * scale;
     let y = (1024 - h) / 2 * scale + 3 * scale + offset[1] * scale;
+    backgroundImg = applyFinish(backgroundImg, finish, 'background');
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     let frameImg;
@@ -170,6 +171,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     // Frame Break
     if (imagesBase64.frameBreakImage) {
         let frameBreakImg = await getImg(imagesBase64.frameBreakImage);
+        frameBreakImg = applyFinish(frameBreakImg, finish, 'frameBreak');
         ctx.drawImage(frameBreakImg, x, y, w, h);
     }
     // Title
@@ -318,6 +320,47 @@ function checkIfSpell(imagesBase64, power) {
         }
     }
     return imagesBase64;
+}
+
+function applyFinish(img, finish, layer) {
+    if (finish === 'none') {
+        return img;
+    }
+    if (finish === 'inked') {
+        // Black and white effect whith high contrast
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        ctx.globalCompositeOperation = 'source-over';
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+            let avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            // Increase contrast
+            const n1 = 1.5;
+            const n2 = 1.9;
+            avg /= 255;
+            avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
+            avg = Math.round(avg * 255);
+            data[i] = avg;     // Red
+            data[i + 1] = avg; // Green
+            data[i + 2] = avg; // Blue
+        }
+        ctx.putImageData(imageData, 0, 0);
+        img = canvas;
+        return img;
+    }
+    if (finish === 'foil') {
+        if (layer !== 'background') {
+            return img;
+        }
+        // Apply foil effect
+        // TODO: Implement foil effect
+        return img;
+    }
+    return img;
 }
 
 export {generatecard};
