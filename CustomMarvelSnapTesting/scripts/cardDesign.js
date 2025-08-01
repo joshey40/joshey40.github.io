@@ -337,7 +337,7 @@ function applyFinish(img, finish, layer) {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const data = imageData.data;
         for (let i = 0; i < data.length; i += 4) {
-            const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            let avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
             // Increase contrast
             avg = (avg / 255 - 0.5) * Math.PI
             avg = Math.sin(avg) / 2 + 0.5;
