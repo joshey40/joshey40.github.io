@@ -114,6 +114,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     h *= scale * zoom;
     let x = (1024 - w) / 2 * scale + offset[0] * scale;
     let y = (1024 - h) / 2 * scale + 3 * scale + offset[1] * scale;
+    backgroundImg = applyFinish(backgroundImg, finish, 'background');
     ctx.drawImage(backgroundImg, x, y, w, h);
     // Frame
     let frameImg;
@@ -170,6 +171,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     // Frame Break
     if (imagesBase64.frameBreakImage) {
         let frameBreakImg = await getImg(imagesBase64.frameBreakImage);
+        frameBreakImg = applyFinish(frameBreakImg, finish, 'frameBreak');
         ctx.drawImage(frameBreakImg, x, y, w, h);
     }
     // Title
