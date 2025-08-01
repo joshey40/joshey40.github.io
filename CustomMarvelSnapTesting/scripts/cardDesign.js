@@ -320,4 +320,41 @@ function checkIfSpell(imagesBase64, power) {
     return imagesBase64;
 }
 
+function applyFinish(img, finish, layer) {
+    if (finish === 'none') {
+        return img;
+    }
+    if (finish === 'inked') {
+        // Black and white effect whith high contrast
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        ctx.globalCompositeOperation = 'source-in';
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'source-over';
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+            const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            data[i] = avg;     // Red
+            data[i + 1] = avg; // Green
+            data[i + 2] = avg; // Blue
+        }
+        ctx.putImageData(imageData, 0, 0);
+        img = canvas;
+        return img;
+    }
+    if (finish === 'foil') {
+        if (layer !== 'background') {
+            return img;
+        }
+        // Apply foil effect
+        // TODO: Implement foil effect
+        return img;
+    }
+}
+
 export {generatecard};
