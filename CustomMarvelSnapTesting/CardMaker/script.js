@@ -431,6 +431,7 @@ for (const finish in finishes) {
         updateResult();
         closeFinishSelectPopup();
     });
+    finishSelectDiv.appendChild(finishImg);
 }
 
 // Request Image Update every 1000ms
