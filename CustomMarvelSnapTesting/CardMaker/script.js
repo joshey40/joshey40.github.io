@@ -426,12 +426,21 @@ for (const finish in finishes) {
     finishImg.src = finshesButtonImage[finish];
     finishImg.alt = finishes[finish];
     finishImg.className = 'frame-image';
-    finishImg.addEventListener('click', () => {
+    const finishSelectButton = document.createElement('div');
+    finishSelectButton.addEventListener('click', () => {
         cardSettings.finish = finish;
         updateResult();
         closeFinishSelectPopup();
     });
-    finishSelectDiv.appendChild(finishImg);
+    const finishSelectName = document.createElement('span');
+    finishSelectName.textContent = finishes[finish];
+    finishSelectButton.appendChild(finishImg);
+    finishSelectButton.appendChild(finishSelectName);
+    finishSelectButton.style.display = 'flex';
+    finishSelectButton.style.alignItems = 'center';
+    finishSelectButton.style.flexDirection = 'column';
+    finishSelectButton.style.cursor = 'pointer';
+    finishSelectDiv.appendChild(finishSelectButton);
 }
 
 // Request Image Update every 1000ms
