@@ -94,11 +94,10 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     ctx.drawImage(artMask, 0, 0, size, size);
     // Background
     let backgroundImg;
-    if (imagesBase64.mainImage) {
-        backgroundImg = await getImg(imagesBase64.mainImage, finish, 'background');
-    } else {
-        backgroundImg = preloadImageCache["../res/img/default_cards/hulk.png"];
+    if (!imagesBase64.mainImage) {
+        imagesBase64.mainImage = "../res/img/default_cards/hulk.png";
     }
+    backgroundImg = await getImg(imagesBase64.mainImage, finish, 'background');
     ctx.globalCompositeOperation = "source-in";
     let w = backgroundImg.width;
     let h = backgroundImg.height;
