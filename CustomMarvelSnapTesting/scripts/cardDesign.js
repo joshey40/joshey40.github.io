@@ -333,9 +333,6 @@ function applyFinish(img, finish, layer) {
         canvas.height = img.height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
-        ctx.globalCompositeOperation = 'source-in';
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.globalCompositeOperation = 'source-over';
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const data = imageData.data;
@@ -357,6 +354,7 @@ function applyFinish(img, finish, layer) {
         // TODO: Implement foil effect
         return img;
     }
+    return img;
 }
 
 export {generatecard};
