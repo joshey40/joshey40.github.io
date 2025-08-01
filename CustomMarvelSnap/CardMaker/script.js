@@ -383,6 +383,7 @@ const effects = {
     'krackle': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
     'tone': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
     'glimmer': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
+    'sparkle': ['black', 'blue', 'gold', 'green', 'purple', 'rainbow', 'red', 'white'],
     'special': ['neontrails']
 };
 
