@@ -342,7 +342,9 @@ function checkIfSpell(imagesBase64, power) {
         imagesBase64.frameImage = "../res/img/frames/basic/common.png";
     if (power == null || power == "") {
         const frameName = imagesBase64.frameImage;
-        const frameSpellName = frameName.replace(/\.png$/, '_spell.png');
+        if (!frameName.includes('_spell')) {
+            const frameSpellName = frameName.replace(/\.png$/, '_spell.png');
+        }
         imagesBase64.frameImage = frameSpellName;
     } else {
         const frameName = imagesBase64.frameImage;
