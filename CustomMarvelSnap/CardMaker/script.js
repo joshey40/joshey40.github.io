@@ -461,9 +461,9 @@ placeholderImage.onload = () => {
     ctx.drawImage(placeholderImage, 0, 0, cardCanvas.width, cardCanvas.height);
 };
 
-// Request image update every 1000ms
+// Request image update every 2000ms
 setInterval(() => {
     if (!isRendering) {
         renderCard(true);
     }
-}, 1000);
+}, 2000);
