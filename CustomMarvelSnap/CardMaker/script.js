@@ -11,7 +11,7 @@ let imagesBase64 = {
 var offsetX = 0;
 var offsetY = 0;
 
-// Globaler State für Card Settings
+// Global state for card settings
 let cardSettings = {
     name: '',
     colorName: '#ffffff',
@@ -29,13 +29,13 @@ let cardSettings = {
     finish: ''
 };
 
-// Für Change Detection
+// For change detection
 let lastRenderedSettings = null;
 let isRendering = false;
 let pendingRender = false;
 
 function updateResult() {
-    // Nur Settings updaten
+    // Only update settings
     cardSettings.name = document.getElementById('name').value;
     cardSettings.colorName = document.getElementById('nameColor').value;
     cardSettings.nameOutlineColor = document.getElementById('nameOutlineColor').value;
@@ -64,14 +64,10 @@ function requestRender() {
 
 async function renderCard(skipCheck = false) {
     isRendering = true;
-    const benchmarks = {};
-    const t0 = performance.now();
     const currentSettings = JSON.stringify(cardSettings);
-    benchmarks.settingsStringify = performance.now() - t0;
     if (currentSettings !== lastRenderedSettings || skipCheck) {
         lastRenderedSettings = currentSettings;
         try {
-            const t1 = performance.now();
             const canvas = await generatecard(
                 cardSettings.name,
                 cardSettings.colorName,
@@ -88,19 +84,13 @@ async function renderCard(skipCheck = false) {
                 cardSettings.offset,
                 cardSettings.finish
             );
-            benchmarks.generatecard = performance.now() - t1;
-            const t2 = performance.now();
             const cardCanvas = document.getElementById('cardImage');
-            // Canvas-Inhalt ersetzen
+            // Replace canvas content
             const ctx = cardCanvas.getContext('2d');
             ctx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
             ctx.drawImage(canvas, 0, 0);
-            benchmarks.toCanvasAndSet = performance.now() - t2;
-            const t3 = performance.now();
-            benchmarks.total = t3 - t0;
-            console.log('[renderCard] Benchmarks:', benchmarks);
         } catch (error) {
-            console.error('Fehler beim Rendern der Karte:', error);
+            console.error('Error rendering card:', error);
         }
     }
     isRendering = false;
@@ -348,7 +338,7 @@ export { updateResult, mainImageChange, frameBreakImageChange, titleImageChange,
 
 
 
-// Add Frames to frameSelectPopup
+// Add frames to frameSelectPopup
 const frameSelectDiv = document.getElementById('frameSelectDiv');
 const frameDir = '../res/img/frames/';
 const frameCategories = { 'basic': 'Basic', 'cosmic': 'Cosmic', 'neon': 'Neon', 'metallic': 'Metallic', 'matte': 'Matte', 'special': 'Special' };
@@ -387,7 +377,7 @@ for (const category in frameCategories) {
     }
 }
 
-// Add Effects to effectSelectPopup
+// Add effects to effectSelectPopup
 const effectSelectDiv = document.getElementById('effectSelectDiv');
 const effectDir = '../res/img/effects/';
 const effectCategories = { 'krackle': 'Krackle', 'tone': 'Tone', 'glimmer': 'Glimmer', 'sparkle': 'Sparkle', 'special': 'Special' };
@@ -425,7 +415,7 @@ for (const category in effectCategories) {
     }
 }
 
-// Add Finishes to finishSelectPopup
+// Add finishes to finishSelectPopup
 const finishSelectDiv = document.getElementById('finishSelectDiv');
 const finishes = {
     'inked': 'Inked',
@@ -463,7 +453,7 @@ for (const finish in finishes) {
     finishSelectDiv.appendChild(finishSelectButton);
 }
 
-// Request Image Update every 1000ms
+// Request image update every 1000ms
 setInterval(() => {
     if (!isRendering) {
         renderCard(true);

@@ -54,12 +54,9 @@ Object.entries(effectTypes).forEach(([category, effects]) => {
 
 const allPaths = staticImagePaths.concat(numberImagePaths).concat(frameImagePaths).concat(effectImagePaths);
 
-
-// Neuer asynchroner Image-Cache
 const preloadImageCache = {};
 
 function preloadImg(src) {
-    // Liefert ein Promise, das das Bild lädt
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.src = src;
@@ -86,7 +83,6 @@ function startPreloadingImages() {
 function getPreloadedImage(src) {
     const entry = preloadImageCache[src];
     if (!entry) {
-        // Noch nicht vorgeladen, jetzt laden
         const promise = preloadImg(src).then(img => {
             preloadImageCache[src] = { status: 'loaded', img };
             return img;
@@ -102,7 +98,6 @@ function getPreloadedImage(src) {
     if (entry.status === 'loading') {
         return entry.promise;
     }
-    // Fehlerfall: nochmal versuchen
     const promise = preloadImg(src).then(img => {
         preloadImageCache[src] = { status: 'loaded', img };
         return img;
@@ -113,13 +108,12 @@ function getPreloadedImage(src) {
     return promise;
 }
 
-// Direkt beim Laden der Seite starten
+// Start preloading images
 startPreloadingImages();
 
 // --- Card Generation Function ---
 async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#000000", fontSelect = "BadaBoom", cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b", offset=[0, 0, 0], finish='none') {
     imagesBase64 = checkIfSpell(imagesBase64, power);
-    // Bilder asynchron laden, falls noch nicht geladen
     // Art_Mask
     let artMask;
     if (imagesBase64.frameImage && imagesBase64.frameImage.includes('spell')) {
