@@ -252,14 +252,17 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     // Description and Background Color
     function parseDescriptionSegments(desc) {
         const segments = [];
-        let regex = /<b>([\s\S]*?)<\/b>/gi;
+        // Kombinierte Regex für <b>...</b> und **...**
+        let regex = /<b>([\s\S]*?)<\/b>|\*\*([\s\S]*?)\*\*/gi;
         let lastIndex = 0;
         let match;
         while ((match = regex.exec(desc)) !== null) {
             if (match.index > lastIndex) {
                 segments.push({ text: desc.substring(lastIndex, match.index), bold: false });
             }
-            segments.push({ text: match[1], bold: true });
+            // match[1] ist für <b>...</b>, match[2] für **...**
+            const boldText = match[1] !== undefined ? match[1] : match[2];
+            segments.push({ text: boldText, bold: true });
             lastIndex = regex.lastIndex;
         }
         if (lastIndex < desc.length) {
