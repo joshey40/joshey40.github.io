@@ -453,6 +453,15 @@ for (const finish in finishes) {
     finishSelectDiv.appendChild(finishSelectButton);
 }
 
+// Set Placeholder image for canvas while loading
+const cardCanvas = document.getElementById('cardImage');
+const ctx = cardCanvas.getContext('2d');
+const placeholderImage = new Image();
+placeholderImage.src = '../res/img/default_cards/default.png';
+placeholderImage.onload = () => {
+    ctx.drawImage(placeholderImage, 0, 0, cardCanvas.width, cardCanvas.height);
+};
+
 // Request image update every 1000ms
 setInterval(() => {
     if (!isRendering) {
