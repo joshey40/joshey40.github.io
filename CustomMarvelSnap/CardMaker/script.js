@@ -454,7 +454,6 @@ for (const finish in finishes) {
 }
 
 // Set Placeholder image for canvas while loading
-const cardCanvas = document.getElementById('cardImage');
 const ctx = cardCanvas.getContext('2d');
 const placeholderImage = new Image();
 placeholderImage.src = '../res/img/default_cards/default.png';
