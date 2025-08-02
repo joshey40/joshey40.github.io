@@ -54,8 +54,12 @@ Object.entries(effectTypes).forEach(([category, effects]) => {
 
 const allPaths = staticImagePaths.concat(numberImagePaths).concat(frameImagePaths).concat(effectImagePaths);
 
+
+// Neuer asynchroner Image-Cache
 const preloadImageCache = {};
+
 function preloadImg(src) {
+    // Liefert ein Promise, das das Bild lädt
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.src = src;
@@ -64,34 +68,70 @@ function preloadImg(src) {
     });
 }
 
-async function preloadStaticImages() {
-    await Promise.all(allPaths.map(async (src) => {
-        preloadImageCache[src] = await preloadImg(src);
-    }));
+function startPreloadingImages() {
+    allPaths.forEach(src => {
+        if (!preloadImageCache[src]) {
+            // Status: loading
+            const promise = preloadImg(src).then(img => {
+                preloadImageCache[src] = { status: 'loaded', img };
+                return img;
+            }).catch(() => {
+                preloadImageCache[src] = { status: 'error', img: null };
+            });
+            preloadImageCache[src] = { status: 'loading', promise };
+        }
+    });
 }
 
-let staticImagesLoaded = false;
-async function ensureStaticImagesLoaded() {
-    if (!staticImagesLoaded) {
-        await preloadStaticImages();
-        staticImagesLoaded = true;
+function getPreloadedImage(src) {
+    const entry = preloadImageCache[src];
+    if (!entry) {
+        // Noch nicht vorgeladen, jetzt laden
+        const promise = preloadImg(src).then(img => {
+            preloadImageCache[src] = { status: 'loaded', img };
+            return img;
+        }).catch(() => {
+            preloadImageCache[src] = { status: 'error', img: null };
+        });
+        preloadImageCache[src] = { status: 'loading', promise };
+        return promise;
     }
+    if (entry.status === 'loaded') {
+        return Promise.resolve(entry.img);
+    }
+    if (entry.status === 'loading') {
+        return entry.promise;
+    }
+    // Fehlerfall: nochmal versuchen
+    const promise = preloadImg(src).then(img => {
+        preloadImageCache[src] = { status: 'loaded', img };
+        return img;
+    }).catch(() => {
+        preloadImageCache[src] = { status: 'error', img: null };
+    });
+    preloadImageCache[src] = { status: 'loading', promise };
+    return promise;
 }
+
+// Direkt beim Laden der Seite starten
+startPreloadingImages();
 
 // --- Card Generation Function ---
 async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#000000", fontSelect = "BadaBoom", cost, power, description, size=1024, imagesBase64, zoom=1, nameZoom=1, backgroundColor = "#10072b", offset=[0, 0, 0], finish='none') {
     imagesBase64 = checkIfSpell(imagesBase64, power);
-    await ensureStaticImagesLoaded();
+    // Bilder asynchron laden, falls noch nicht geladen
+    // Art_Mask
+    let artMask;
+    if (imagesBase64.frameImage && imagesBase64.frameImage.includes('spell')) {
+        artMask = await getPreloadedImage("../res/img/default_cards/art_mask_spell.png");
+    } else {
+        artMask = await getPreloadedImage("../res/img/default_cards/art_mask.png");
+    }
     // Create Canvas
     const canvas = document.createElement("canvas");
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext("2d");
-    // Art_Mask
-    let artMask = preloadImageCache["../res/img/default_cards/art_mask.png"];
-    if (imagesBase64.frameImage && imagesBase64.frameImage.includes('spell')) {
-        artMask = preloadImageCache["../res/img/default_cards/art_mask_spell.png"];
-    }
     ctx.drawImage(artMask, 0, 0, size, size);
     // Background
     let backgroundImg;
@@ -118,17 +158,17 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     // Frame
     let frameImg;
     if (imagesBase64.frameImage) {
-        frameImg = preloadImageCache[imagesBase64.frameImage];
+        frameImg = await getPreloadedImage(imagesBase64.frameImage);
     } else {
-        frameImg = preloadImageCache["../res/img/frames/basic/common.png"];
+        frameImg = await getPreloadedImage("../res/img/frames/basic/common.png");
     }
     ctx.globalCompositeOperation = "source-over";
     ctx.drawImage(frameImg, 0, 0, size, size);
     // Cost and Power
-    const costImg = preloadImageCache["../res/img/frames/cost.png"];
+    const costImg = await getPreloadedImage("../res/img/frames/cost.png");
     ctx.drawImage(costImg, 0, 0, size, size);
     if (power != null && power != "") {
-        const powerImg = preloadImageCache["../res/img/frames/power.png"];
+        const powerImg = await getPreloadedImage("../res/img/frames/power.png");
         ctx.drawImage(powerImg, 0, 0, size, size);
     }
     const numbersDir = "../res/img/numbers/";
@@ -147,7 +187,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     let costX = 249 * scale - costWidth / 2; 
     let costY = 65 * scale;
     for (let i = 0; i < costNumber.length; i++) {
-        let numberImg = preloadImageCache[numbersDir + "cost/" + costNumber[i] + ".png"];
+        let numberImg = await getPreloadedImage(numbersDir + "cost/" + costNumber[i] + ".png");
         ctx.drawImage(numberImg, costX, costY, numbersWidth[costNumber[i]] * multiply * scale, 79 * multiply * scale);
         costX += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
     }
@@ -162,7 +202,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         let powerX = 796 * scale - powerWidth / 2;
         let powerY = 65 * scale;
         for (let i = 0; i < powerNumber.length; i++) {
-            let numberImg = preloadImageCache[numbersDir + "power/" + powerNumber[i] + ".png"];
+            let numberImg = await getPreloadedImage(numbersDir + "power/" + powerNumber[i] + ".png");
             ctx.drawImage(numberImg, powerX, powerY, numbersWidth[powerNumber[i]] * multiply * scale, 79 * multiply * scale);
             powerX += (numbersWidth[powerNumber[i]] - 14) * multiply * scale;
         }
@@ -211,7 +251,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
     // Effect
     ctx.globalCompositeOperation = "destination-over";
     if (imagesBase64.effectImage) {
-        let effectImg =  preloadImageCache[imagesBase64.effectImage];
+        let effectImg = await getPreloadedImage(imagesBase64.effectImage);
         ctx.drawImage(effectImg, 0, 0, size, size);
     }
 
@@ -309,15 +349,11 @@ function checkIfSpell(imagesBase64, power) {
     if (power == null || power == "") {
         const frameName = imagesBase64.frameImage;
         const frameSpellName = frameName.replace(/\.png$/, '_spell.png');
-        if (frameSpellName in preloadImageCache) {
-            imagesBase64.frameImage = frameSpellName;
-        }
+        imagesBase64.frameImage = frameSpellName;
     } else {
         const frameName = imagesBase64.frameImage;
         const frameNormalName = frameName.replace(/_spell\.png$/, '.png');
-        if (frameNormalName in preloadImageCache) {
-            imagesBase64.frameImage = frameNormalName;
-        }
+        imagesBase64.frameImage = frameNormalName;
     }
     return imagesBase64;
 }
