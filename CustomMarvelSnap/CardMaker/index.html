@@ -98,11 +98,13 @@
             border-radius: 10px;
             max-width: 500px;
             min-width: 300px;
+            max-height: fit-content;
         }
         .divider-div {
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
+            align-items: center;
         }
         @media (max-width: 900px) {
             .divider-div {
@@ -304,7 +306,7 @@
                     <input type="number" id="cost" name="cost" placeholder="Cost" class="default-input" style="width: 90px; margin-right: 8px;" value="1" oninput="updateResult()">
                     <input type="number" id="power" name="power" placeholder="Power" class="default-input" style="width: 90px;" value="2" oninput="updateResult()">
                 </div>
-                <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 75px; resize: vertical; max-height: 75px;" oninput="updateResult()"></textarea>
+                <textarea id="description" name="description" placeholder="Description" class="default-input" style="width: 200px; height: 100px; resize: vertical; max-height: 150px;" oninput="updateResult()"></textarea>
                 <div style="display: flex; justify-content: space-evenly;">
                     <label for="mainImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Image</label>
                     <input type="file" id="mainImage" name="mainImage" accept="image/*"style="display: none;" onchange="mainImageChange(event)">
@@ -374,7 +376,7 @@
             <h2>Name:</h2>
             <p>You can either type a name or upload an image for the name. If you type a name, you can also change the font, color and outline color. The zoom slider allows you to adjust the size of the name and the hight slider allows you to adjust the vertical position of the name.</p>
             <h2>Cost, Power and Description:</h2>
-            <p>These fields allow you to set the cost, power and description of the card. If nothing is set in the Power field, the frame automatically turns into a Spell/Skill card (see Frame section for more details). The description should be up to 5 lines long. Line breaks must be done manually. You can use <b>bold</b> text in the description by wrapping the text in <code>&lt;b&gt;</code> and <code>&lt;/b&gt;</code> tags. Example: <code>&lt;b&gt;</code><b>bold text</b><code>&lt;/b&gt;</code></p>
+            <p>These fields allow you to set the cost, power and description of the card. If nothing is set in the Power field, the frame automatically turns into a Spell/Skill card (see Frame section for more details). The description should be up to 5 lines long. Line breaks must be done manually. You can use <b>bold</b> text in the description by wrapping the text in <code>&lt;b&gt;</code>This is bold<code>&lt;/b&gt;</code> or **This is bold**.</p>
             <h2>Image and Frame Break:</h2>
             <p>You can upload an image for the card and optionally a frame break image. The frame break image should only include those parts of the original image that should be visible outside the frame. I recommend using a tool like <a href="https://www.remove.bg" target="_blank" rel="noopener noreferrer">remove.bg</a> to remove the unwanted parts of the image.</p>
             <div style="display: flex; flex-direction: row; justify-content: space-evenly; flex-wrap: wrap; margin: 10px;">
