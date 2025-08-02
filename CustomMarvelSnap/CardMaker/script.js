@@ -90,14 +90,12 @@ async function renderCard(skipCheck = false) {
             );
             benchmarks.generatecard = performance.now() - t1;
             const t2 = performance.now();
-            const cardImage = document.getElementById('cardImage');
-            await new Promise(resolve => {
-                canvas.toBlob(blob => {
-                    cardImage.src = URL.createObjectURL(blob);
-                    resolve();
-                }, 'image/png');
-            });
-            benchmarks.toBlobAndSet = performance.now() - t2;
+            const cardCanvas = document.getElementById('cardImage');
+            // Canvas-Inhalt ersetzen
+            const ctx = cardCanvas.getContext('2d');
+            ctx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
+            ctx.drawImage(canvas, 0, 0);
+            benchmarks.toCanvasAndSet = performance.now() - t2;
             const t3 = performance.now();
             benchmarks.total = t3 - t0;
             console.log('[renderCard] Benchmarks:', benchmarks);
@@ -228,16 +226,19 @@ function clearBackground() {
 }
 
 function downloadCard() {
-    const cardImage = document.getElementById('cardImage');
+    const cardCanvas = document.getElementById('cardImage');
     const name = document.getElementById('name').value;
-    const link = document.createElement('a');
-    link.href = cardImage.src;
-    if (!name) {
-        link.download = 'custom_card.png';
-    } else {
-        link.download = `${name.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
-    }
-    link.click();
+    cardCanvas.toBlob(blob => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        if (!name) {
+            link.download = 'custom_card.png';
+        } else {
+            link.download = `${name.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+        }
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    }, 'image/png');
 }
 
 let mouseOverCreditsButton = false;
@@ -266,34 +267,35 @@ function hideCreditsPopup(source) {
     creditsPopup.style.visibility = 'hidden';
 }
 
-// Add event listeners to the image for offsets
-const cardImage = document.getElementById('cardImage');
-cardImage.ondragstart = function() { return false; };
+
+// Add event listeners to the canvas for offsets
+const cardCanvas = document.getElementById('cardImage');
+cardCanvas.ondragstart = function() { return false; };
 var isDragging = false;
 var downPosition = { x: 0, y: 0 };
 
 // Mouse events
-cardImage.addEventListener('mousedown', (e) => {
+cardCanvas.addEventListener('mousedown', (e) => {
     isDragging = true;
     downPosition.x = e.clientX - offsetX;
     downPosition.y = e.clientY - offsetY;
 });
-cardImage.addEventListener('mousemove', (e) => {
+cardCanvas.addEventListener('mousemove', (e) => {
     if (isDragging) {
         offsetX = e.clientX - downPosition.x;
         offsetY = e.clientY - downPosition.y;
         updateResult();
     }
 });
-cardImage.addEventListener('mouseup', () => {
+cardCanvas.addEventListener('mouseup', () => {
     isDragging = false;
 });
-cardImage.addEventListener('mouseleave', () => {
+cardCanvas.addEventListener('mouseleave', () => {
     isDragging = false;
 });
 
 // Touch events for mobile
-cardImage.addEventListener('touchstart', (e) => {
+cardCanvas.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) {
         isDragging = true;
         const touch = e.touches[0];
@@ -301,7 +303,7 @@ cardImage.addEventListener('touchstart', (e) => {
         downPosition.y = touch.clientY - offsetY;
     }
 });
-cardImage.addEventListener('touchmove', (e) => {
+cardCanvas.addEventListener('touchmove', (e) => {
     if (isDragging && e.touches.length === 1) {
         const touch = e.touches[0];
         offsetX = touch.clientX - downPosition.x;
@@ -310,10 +312,10 @@ cardImage.addEventListener('touchmove', (e) => {
         e.preventDefault(); // Prevent scrolling while dragging
     }
 }, { passive: false });
-cardImage.addEventListener('touchend', () => {
+cardCanvas.addEventListener('touchend', () => {
     isDragging = false;
 });
-cardImage.addEventListener('touchcancel', () => {
+cardCanvas.addEventListener('touchcancel', () => {
     isDragging = false;
 });
 
