@@ -294,7 +294,7 @@ async function generatecard(name, colorName = "#ffffff", nameOutlineColor = "#00
         }
     });
     for (let i = 0; i < lines.length; i++) {
-        const y = 1024 * scale + (i * 55 * scale);
+        const y = (1024 + 10) * scale + (i * 55 * scale);
         const segments = lines[i];
         let totalWidth = 0;
         segments.forEach(seg => {
