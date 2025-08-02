@@ -264,6 +264,10 @@
         <div class="divider-div">
             <div class="result-div" id="resultDiv">
                 <canvas id="cardImage" width="1024" height="1318" style="width: 100%; background: transparent;"></canvas>
+                <div id="loadingOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(16,7,43,0.85); z-index: 10;">
+                    <img src="../res/img/loading.gif" alt="Loading..." style="width: 96px; height: 96px; margin-bottom: 16px;" />
+                    <span style="color: #fff; font-family: 'Ultimatum-Bold', sans-serif; font-size: 1.3rem; text-shadow: 2px 2px 6px #000;">Loading assets...</span>
+                </div>
             </div>
             <div class="editor-div">
                 <div style="display: flex; justify-content: space-evenly;">
@@ -410,6 +414,12 @@
         </span>
     </div>
 </body>
-</html>
+<script type="module">
+import { getPreloadedImage } from '../scripts/cardDesign.js';
+getPreloadedImage("../res/img/default_cards/art_mask.png").then(() => {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.style.display = 'none';
+});
+</script>
 
 
