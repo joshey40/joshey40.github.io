@@ -64,10 +64,14 @@ function requestRender() {
 
 async function renderCard(skipCheck = false) {
     isRendering = true;
+    const benchmarks = {};
+    const t0 = performance.now();
     const currentSettings = JSON.stringify(cardSettings);
+    benchmarks.settingsStringify = performance.now() - t0;
     if (currentSettings !== lastRenderedSettings || skipCheck) {
         lastRenderedSettings = currentSettings;
         try {
+            const t1 = performance.now();
             const canvas = await generatecard(
                 cardSettings.name,
                 cardSettings.colorName,
@@ -84,6 +88,8 @@ async function renderCard(skipCheck = false) {
                 cardSettings.offset,
                 cardSettings.finish
             );
+            benchmarks.generatecard = performance.now() - t1;
+            const t2 = performance.now();
             const cardImage = document.getElementById('cardImage');
             await new Promise(resolve => {
                 canvas.toBlob(blob => {
@@ -91,6 +97,10 @@ async function renderCard(skipCheck = false) {
                     resolve();
                 }, 'image/png');
             });
+            benchmarks.toBlobAndSet = performance.now() - t2;
+            const t3 = performance.now();
+            benchmarks.total = t3 - t0;
+            console.log('[renderCard] Benchmarks:', benchmarks);
         } catch (error) {
             console.error('Fehler beim Rendern der Karte:', error);
         }
