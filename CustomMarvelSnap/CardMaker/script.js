@@ -235,6 +235,168 @@ function downloadCard() {
   }, "image/png");
 }
 
+// --- Export / Import helpers ---
+async function exportCard() {
+  try {
+    const IMAGE_DIR = "images/";
+    const safeNum = (v, d) => {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : d;
+    };
+    const val = (id, fallback = "") => document.getElementById(id)?.value ?? fallback;
+    const chk = (id) => !!document.getElementById(id)?.checked;
+
+    const data = {
+      version: 1,
+      meta: { app: "CMS Card Maker", exportedAt: new Date().toISOString() },
+      card: {
+        name: {
+          text: val("name", ""),
+          font: val("fontSelect", "BadaBoom"),
+          color: val("nameColor", "#ffffff"),
+          outlineColor: val("nameOutlineColor", "#000000"),
+          zoom: safeNum(val("nameZoom", 100), 100),
+          offsetY: safeNum(val("nameOffsetY", 0), 0),
+          imageFile: imagesBase64.titleImage && imagesBase64.titleImage.startsWith("data:") ? IMAGE_DIR + "title.png" : null,
+        },
+        stats: {
+          cost: (() => { const v = val("cost", ""); return v === "" ? null : safeNum(v, null); })(),
+          power: (() => { const v = val("power", ""); return v === "" ? null : safeNum(v, null); })(),
+        },
+        description: { raw: val("description", "") },
+        frame: { id: imagesBase64.frameImage || null },
+        effect: { id: imagesBase64.effectImage || null },
+        finish: { id: cardSettings.finish || null },
+        images: {
+          main: {
+            file: imagesBase64.mainImage && imagesBase64.mainImage.startsWith("data:") ? IMAGE_DIR + "main.png" : null,
+            zoom: safeNum(val("imageZoom", 0), 0),
+            offsetX: safeNum(offsetX, 0),
+            offsetY: safeNum(offsetY, 0),
+          },
+          frameBreak: {
+            file: imagesBase64.frameBreakImage && imagesBase64.frameBreakImage.startsWith("data:") ? IMAGE_DIR + "framebreak.png" : null,
+          },
+        },
+        background: { transparent: chk("transparentBg"), color: val("backgroundColor", "#10072b") },
+      },
+    };
+
+    const zip = new JSZip();
+    zip.file("card.json", JSON.stringify(data, null, 2));
+    const addBase64 = (b64, path) => {
+      if (!b64 || typeof b64 !== "string" || !b64.startsWith("data:")) return;
+      const comma = b64.indexOf(",");
+      if (comma === -1) return;
+      const base64Part = b64.slice(comma + 1);
+      try {
+        const binary = atob(base64Part);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        zip.file(path, bytes);
+      } catch (_) { /* ignore malformed */ }
+    };
+    addBase64(imagesBase64.titleImage, IMAGE_DIR + "title.png");
+    addBase64(imagesBase64.mainImage, IMAGE_DIR + "main.png");
+    addBase64(imagesBase64.frameBreakImage, IMAGE_DIR + "framebreak.png");
+
+    const blob = await zip.generateAsync({ type: "blob" });
+    const safeName = (data.card.name.text || "card").replace(/[^a-zA-Z0-9_-]+/g, "_");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = safeName + ".zip";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 800);
+  } catch (e) {
+    alert("Export failed: " + e.message);
+    console.error(e);
+  }
+}
+
+function importCard() {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".zip";
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const zip = await JSZip.loadAsync(file);
+      const jsonEntry = zip.file("card.json");
+      if (!jsonEntry) throw new Error("card.json missing");
+      const jsonText = await jsonEntry.async("string");
+      let data;
+      try { data = JSON.parse(jsonText); } catch { throw new Error("card.json invalid JSON"); }
+      if (typeof data.version !== "number") throw new Error("Invalid version");
+      if (data.version > 1) console.warn("Newer file version", data.version);
+
+      const card = data.card || {};
+      const nameObj = card.name || {};
+      const stats = card.stats || {};
+      const desc = card.description || {};
+      const images = card.images || {};
+      const mainImg = images.main || {};
+      const frameBreakImg = images.frameBreak || {};
+      const background = card.background || {};
+
+      // finish can be {id} or string
+      let finishId = "";
+      if (card.finish) {
+        if (typeof card.finish === "string") finishId = card.finish; else if (card.finish.id) finishId = card.finish.id;
+      }
+
+      const setVal = (id, value) => { const el = document.getElementById(id); if (el) el.value = value; };
+      setVal("name", nameObj.text || "");
+      setVal("fontSelect", nameObj.font || "BadaBoom");
+      setVal("nameColor", nameObj.color || "#ffffff");
+      setVal("nameOutlineColor", nameObj.outlineColor || "#000000");
+      setVal("nameZoom", nameObj.zoom ?? 100);
+      setVal("nameOffsetY", nameObj.offsetY ?? 0);
+      setVal("cost", stats.cost ?? "");
+      setVal("power", stats.power ?? "");
+      setVal("description", desc.raw || "");
+      setVal("imageZoom", mainImg.zoom ?? 0);
+      const bgChk = document.getElementById("transparentBg"); if (bgChk) bgChk.checked = !!background.transparent;
+      setVal("backgroundColor", background.color || "#10072b");
+
+      offsetX = typeof mainImg.offsetX === "number" ? mainImg.offsetX : 0;
+      offsetY = typeof mainImg.offsetY === "number" ? mainImg.offsetY : 0;
+
+      imagesBase64.frameImage = (card.frame && card.frame.id) || null;
+      imagesBase64.effectImage = (card.effect && card.effect.id) || null;
+      cardSettings.finish = finishId || null;
+
+      imagesBase64.titleImage = null;
+      imagesBase64.mainImage = null;
+      imagesBase64.frameBreakImage = null;
+
+      const loadImageFile = async (path, assign) => {
+        if (!path) return;
+        let entry = zip.file(path);
+        if (!entry) { const simple = path.split('/').pop(); entry = zip.file(simple); }
+        if (!entry) return;
+        const blob = await entry.async("blob");
+        const fr = new FileReader();
+        await new Promise((res, rej) => { fr.onerror = () => rej(new Error("Failed reading " + path)); fr.onload = () => res(); fr.readAsDataURL(blob); });
+        assign(fr.result);
+      };
+
+      await loadImageFile(nameObj.imageFile, (b64) => imagesBase64.titleImage = b64);
+      await loadImageFile(mainImg.file, (b64) => imagesBase64.mainImage = b64);
+      await loadImageFile(frameBreakImg.file, (b64) => imagesBase64.frameBreakImage = b64);
+
+      updateResult && updateResult();
+      renderCard && renderCard(true);
+    } catch (err) {
+      alert("Import failed: " + err.message);
+      console.error(err);
+    }
+  };
+  input.click();
+}
+
 let mouseOverCreditsButton = false;
 let mouseOverCreditsPopup = false;
 
@@ -340,6 +502,8 @@ window.clearBackground = clearBackground;
 window.downloadCard = downloadCard;
 window.showCreditsPopup = showCreditsPopup;
 window.hideCreditsPopup = hideCreditsPopup;
+window.exportCard = exportCard;
+window.importCard = importCard;
 
 export {
   updateResult,
@@ -356,6 +520,8 @@ export {
   clearEffect,
   clearBackground,
   downloadCard,
+  exportCard,
+  importCard,
   selectFinish,
   clearFinish,
   closeFinishSelectPopup,

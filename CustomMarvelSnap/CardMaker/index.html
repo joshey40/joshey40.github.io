@@ -5,6 +5,7 @@
     <title>CMS Card Maker</title>
     <link rel="shortcut icon" type="image/x-icon" href="https://joshey40.github.io/CustomMarvelSnap/favicon.ico"/>
     <link href="https://joshey40.github.io/CustomMarvelSnap/css/fonts.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -333,6 +334,11 @@
                     <input type="checkbox" id="transparentBg" name="transparentBg" class="default-input" style="width: 30px; height: 30px; padding: 1px; margin-right: 8px;" onchange="updateResult()" checked>
                     <input type="color" id="backgroundColor" name="backgroundColor" class="default-input" style="width: 30px; height: 30px; padding: 1px; margin-right: 8px;" value="#10072b" oninput="updateResult()">
                     <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearBackground()"></button>
+                </div>
+                <hr style="width: 200px; border: 2px solid #10072b; margin: 5px 0; border-radius: 5px;">
+                <div style="display:flex; justify-content: space-between; width:212px;">
+                    <button class="default-button" style="flex:1; margin-right:8px;" onclick="importCard()">Import</button>
+                    <button class="default-button" style="flex:1;" onclick="exportCard()">Export</button>
                 </div>
                 <hr style="width: 200px; border: 2px solid #10072b; margin: 5px 0; border-radius: 5px;">
                 <button id="downloadButton" class="default-button" style="width: 212px;" onclick="downloadCard()">Download Card</button>
