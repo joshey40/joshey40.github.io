@@ -226,9 +226,9 @@ function downloadCard() {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     if (!name) {
-      link.download = "custom_card.png";
+      link.download = "CustomCard.png";
     } else {
-      link.download = `${name.replace(/[^a-zA-Z0-9]/g, "_")}.png`;
+      link.download = `CustomCard-${name.replace(/[^a-zA-Z0-9]/g, "_")}.png`;
     }
     link.click();
     setTimeout(() => URL.revokeObjectURL(link.href), 1000);
