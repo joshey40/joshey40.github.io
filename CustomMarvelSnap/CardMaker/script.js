@@ -236,6 +236,8 @@ function downloadCard() {
 }
 
 // --- Export / Import helpers ---
+// Custom card archive file extension (still just a ZIP container under the hood)
+const CARD_FILE_EXT = ".cmscard"; // keep backward compatibility with .zip when importing
 async function exportCard() {
   try {
     const IMAGE_DIR = "images/";
@@ -304,7 +306,8 @@ async function exportCard() {
     const safeName = (data.card.name.text || "card").replace(/[^a-zA-Z0-9_-]+/g, "_");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = safeName + ".zip";
+  // Use custom extension so users can recognize card bundle files. They can rename to .zip to inspect.
+  a.download = safeName + CARD_FILE_EXT;
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -318,11 +321,14 @@ async function exportCard() {
 function importCard() {
   const input = document.createElement("input");
   input.type = "file";
-  input.accept = ".zip";
+  input.accept = CARD_FILE_EXT;
   input.onchange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     try {
+      if (!file.name.toLowerCase().endsWith(CARD_FILE_EXT)) {
+        throw new Error("Unsupported file type. Please select a " + CARD_FILE_EXT + " file.");
+      }
       const zip = await JSZip.loadAsync(file);
       const jsonEntry = zip.file("card.json");
       if (!jsonEntry) throw new Error("card.json missing");
