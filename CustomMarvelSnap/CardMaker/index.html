@@ -100,6 +100,7 @@
             max-width: 500px;
             min-width: 300px;
             max-height: fit-content;
+            position: relative; /* allow absolutely positioned drop zones */
         }
         .divider-div {
             display: flex;
@@ -125,6 +126,9 @@
             align-self: center;
             min-width: 300px;
         }
+    /* Drag & drop highlight styles (inlined here to keep script.js logic minimal) */
+    .editor-div.drop-target { outline: 3px dashed #4fc3ff; outline-offset: -3px; position: relative; }
+    .editor-div.drop-target::after { content: "Drop .cmscard to import"; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.75); padding:8px 14px; border:1px solid #4fc3ff; border-radius:6px; font:600 0.85rem 'Roboto', sans-serif; color:#fff; text-align:center; pointer-events:none; box-shadow:0 0 8px #4fc3ff66; }
         .default-input {
             margin: 4px 0px;
             padding: 4px;
@@ -256,6 +260,33 @@
         a.default-button:focus .patreon-logo {
             filter: invert(0);
         }
+        /* Preview (canvas) drag & drop zones */
+        .preview-drop-zone {
+            position: absolute;
+            left: 10px; /* inside padding */
+            right: 10px;
+            border: 2px dashed #4fc3ffAA;
+            border-radius: 8px;
+            color: #ffffffcc;
+            font: 600 0.9rem 'Roboto', sans-serif;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* default off so canvas interactions unaffected */
+            opacity: 0; /* hidden until drag */
+            transition: opacity 0.15s;
+            backdrop-filter: blur(2px);
+        }
+    .preview-drop-zone.active { opacity: 1; }
+    /* Frame break at very top, title at bottom, main fills center */
+    #frameBreakDropZone { top: 10px; height: 120px; }
+    #titleImageDropZone { height: 120px; bottom: 10px; }
+    /* Main zone stretches between the two fixed-height zones */
+    #mainImageDropZone { top: 130px; bottom: 130px; }
+        /* When user is dragging files, enable pointer so drops register */
+        .drop-mode .preview-drop-zone { pointer-events: auto; }
+        .preview-drop-zone.highlight { background: rgba(79,195,255,0.15); border-color:#b3e0ff; color:#fff; }
     </style>
     <script async src="script.js" type="module"></script>
 </html>
@@ -267,6 +298,10 @@
         <div class="divider-div">
             <div class="result-div" id="resultDiv">
                 <canvas id="cardImage" width="1024" height="1318" style="width: 100%; background: transparent;"></canvas>
+                <!-- Drag & Drop overlays for images (z-order based on DOM order) -->
+                <div id="frameBreakDropZone" class="preview-drop-zone">Drop Frame Break Image Here</div>
+                <div id="mainImageDropZone" class="preview-drop-zone">Drop Main Image Here</div>
+                <div id="titleImageDropZone" class="preview-drop-zone">Drop Title Image Here</div>
             </div>
             <div class="editor-div">
                 <div style="display: flex; justify-content: space-evenly;">
@@ -343,14 +378,14 @@
                 <hr style="width: 200px; border: 2px solid #10072b; margin: 5px 0; border-radius: 5px;">
                 <button id="downloadButton" class="default-button" style="width: 212px;" onclick="downloadCard()">Download Card</button>
             </div>
-        </div>
+    </div>
         <div style="flex-direction: row; display: flex;">
             <div class="credits-button" id="creditsButton" onmouseover="showCreditsPopup(0)" onmouseout="hideCreditsPopup(0)">Credits</div>
             <button class="default-button" style="width: fit-content; padding: 6px 10px; margin: 10px;" onclick="showTutorialPopup()">Tutorial</button>
             <a href="https://www.patreon.com/TheArtist115" target="_blank" rel="noopener noreferrer" class="default-button" style="width: fit-content; padding: 6px 10px; margin: 10px; display: flex; align-items: center; gap: 8px; text-decoration: none;">
                 <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/patreon-icon.png" alt="Patreon" class="patreon-logo" style="height: 1.3em; width: auto; vertical-align: middle;">Support @TheArtist115
             </a>
-        </div>
+            </div>
     </div>
     <div class="default-popup" id="frameSelectPopup">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
@@ -417,6 +452,10 @@
         <span style="display:block; line-height:0.2; margin-top:2px;">
             <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/discord-icon.png" alt="Discord" style="height:1em;vertical-align:middle;margin-right:4px;">@theartist115
         </span>
+            Import/Export Feature by AvgBlue
+            <span style="display:block; line-height:0.2; margin-top:2px;">
+                <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/reddit-icon.png" alt="Reddit" style="height:1em;vertical-align:middle;margin-right:4px;">u/AvgBlue <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/discord-icon.png" alt="Discord" style="height:1em;vertical-align:middle;margin-right:4px;">@avgblue
+            </span>
     </div>
 </body>
 
