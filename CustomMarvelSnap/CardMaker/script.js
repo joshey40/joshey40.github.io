@@ -400,6 +400,7 @@ async function importCardFile(file) {
     setVal("nameOffsetY", nameObj.offsetY ?? 0);
     setVal("cost", stats.cost ?? "");
     setVal("power", stats.power ?? "");
+    console.log(stats.showCostPower, stats);
     setVal("showCostPower", stats.showCostPower ?? true);
     setVal("description", desc.raw || "");
     setVal("imageZoom", mainImg.zoom ?? 0);
