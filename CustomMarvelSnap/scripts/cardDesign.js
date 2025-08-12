@@ -257,29 +257,28 @@ async function generatecard(
   };
   const multiply = 1.2;
   // Cost number
-  if (cost == null || cost == "") {
-    cost = 0;
-  }
-  let costNumber = cost.toString().split("");
-  let costWidth = numbersWidth[costNumber[0]] * multiply * scale;
-  for (let i = 1; i < costNumber.length; i++) {
-    costWidth += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
-  }
-  costWidth *= multiply;
-  let costX = 249 * scale - costWidth / 2;
-  let costY = 65 * scale;
-  for (let i = 0; i < costNumber.length; i++) {
-    let numberImg = await getPreloadedImage(
-      numbersDir + "cost/" + costNumber[i] + ".png"
-    );
-    ctx.drawImage(
-      numberImg,
-      costX,
-      costY,
-      numbersWidth[costNumber[i]] * multiply * scale,
-      79 * multiply * scale
-    );
-    costX += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
+  if (cost != null && cost != "") {
+    let costNumber = cost.toString().split("");
+    let costWidth = numbersWidth[costNumber[0]] * multiply * scale;
+    for (let i = 1; i < costNumber.length; i++) {
+      costWidth += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
+    }
+    costWidth *= multiply;
+    let costX = 249 * scale - costWidth / 2;
+    let costY = 65 * scale;
+    for (let i = 0; i < costNumber.length; i++) {
+      let numberImg = await getPreloadedImage(
+        numbersDir + "cost/" + costNumber[i] + ".png"
+      );
+      ctx.drawImage(
+        numberImg,
+        costX,
+        costY,
+        numbersWidth[costNumber[i]] * multiply * scale,
+        79 * multiply * scale
+      );
+      costX += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
+    }
   }
   // Power number
   if (power != null && power != "") {
