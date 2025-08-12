@@ -225,6 +225,15 @@ function clearBackground() {
 function downloadCard() {
   const cardCanvas = document.getElementById("cardImage");
   const name = document.getElementById("name").value;
+  // If description is empty and background is transparent download a cut image to 1024x1024
+  if (document.getElementById("description").value === "" && document.getElementById("transparentBg").checked) {
+    const cutCanvas = document.createElement("canvas");
+    cutCanvas.width = 1024;
+    cutCanvas.height = 1024;
+    const cutCtx = cutCanvas.getContext("2d");
+    cutCtx.drawImage(cardCanvas, 0, 0, 1024, 1024);
+    cardCanvas = cutCanvas;
+  }
   cardCanvas.toBlob((blob) => {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
