@@ -20,6 +20,7 @@ let cardSettings = {
   nameZoom: 1,
   cost: "1",
   power: "2",
+  showCostPower: true,
   description: "",
   zoom: 1,
   transparentBg: false,
@@ -45,6 +46,7 @@ function updateResult() {
     1 + (document.getElementById("nameZoom").value - 100) / 100;
   cardSettings.cost = document.getElementById("cost").value;
   cardSettings.power = document.getElementById("power").value;
+  cardSettings.showCostPower = document.getElementById("showCostPower").checked;
   cardSettings.description = document.getElementById("description").value;
   cardSettings.zoom = 1 + document.getElementById("imageZoom").value / 100;
   cardSettings.transparentBg = document.getElementById("transparentBg").checked;
@@ -80,6 +82,7 @@ async function renderCard(skipCheck = false) {
         cardSettings.fontSelect,
         cardSettings.cost,
         cardSettings.power,
+        cardSettings.showCostPower,
         cardSettings.description,
         1024,
         cardSettings.imagesBase64,
@@ -280,6 +283,7 @@ async function exportCard() {
           // Empty string becomes null (so consumers can distinguish unset vs 0)
           cost: (() => { const v = val("cost", ""); return v === "" ? null : safeNum(v, null); })(),
           power: (() => { const v = val("power", ""); return v === "" ? null : safeNum(v, null); })(),
+          showCostPower: chk("showCostPower"),
         },
         description: { raw: val("description", "") },
         frame: { id: imagesBase64.frameImage || null },
@@ -396,6 +400,7 @@ async function importCardFile(file) {
     setVal("nameOffsetY", nameObj.offsetY ?? 0);
     setVal("cost", stats.cost ?? "");
     setVal("power", stats.power ?? "");
+    setVal("showCostPower", stats.showCostPower ?? true);
     setVal("description", desc.raw || "");
     setVal("imageZoom", mainImg.zoom ?? 0);
     const bgChk = document.getElementById("transparentBg"); if (bgChk) bgChk.checked = !!background.transparent;

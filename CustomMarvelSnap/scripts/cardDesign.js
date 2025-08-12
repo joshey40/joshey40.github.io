@@ -178,6 +178,7 @@ async function generatecard(
   fontSelect = "BadaBoom",
   cost,
   power,
+  showCostPower = true,
   description,
   size = 1024,
   imagesBase64,
@@ -257,7 +258,10 @@ async function generatecard(
   };
   const multiply = 1.2;
   // Cost number
-  if (cost != null && cost != "") {
+  if (cost != null || cost != "") {
+    cost = 0;
+  }
+  if (showCostPower) {
     let costNumber = cost.toString().split("");
     let costWidth = numbersWidth[costNumber[0]] * multiply * scale;
     for (let i = 1; i < costNumber.length; i++) {
@@ -281,7 +285,7 @@ async function generatecard(
     }
   }
   // Power number
-  if (power != null && power != "") {
+  if (power != null && power != "" && showCostPower) {
     let powerNumber = power.toString().split("");
     let powerWidth = numbersWidth[powerNumber[0]] * multiply * scale;
     powerWidth *= multiply;
