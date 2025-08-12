@@ -236,32 +236,32 @@ async function generatecard(
   ctx.globalCompositeOperation = "source-over";
   ctx.drawImage(frameImg, 0, 0, size, size);
   // Cost and Power
-  const costImg = await getPreloadedImage("../res/img/frames/cost.png");
-  ctx.drawImage(costImg, 0, 0, size, size);
-  if (power != null && power != "") {
-    const powerImg = await getPreloadedImage("../res/img/frames/power.png");
-    ctx.drawImage(powerImg, 0, 0, size, size);
-  }
-  const numbersDir = "../res/img/numbers/";
-  const numbersWidth = {
-    "-": 36,
-    0: 65,
-    1: 43,
-    2: 67,
-    3: 65,
-    4: 61,
-    5: 64,
-    6: 65,
-    7: 61,
-    8: 65,
-    9: 65,
-  };
-  const multiply = 1.2;
-  // Cost number
-  if (cost != null || cost != "") {
-    cost = 0;
-  }
   if (showCostPower) {
+    const costImg = await getPreloadedImage("../res/img/frames/cost.png");
+    ctx.drawImage(costImg, 0, 0, size, size);
+    if (power != null && power != "") {
+      const powerImg = await getPreloadedImage("../res/img/frames/power.png");
+      ctx.drawImage(powerImg, 0, 0, size, size);
+    }
+    const numbersDir = "../res/img/numbers/";
+    const numbersWidth = {
+      "-": 36,
+      0: 65,
+      1: 43,
+      2: 67,
+      3: 65,
+      4: 61,
+      5: 64,
+      6: 65,
+      7: 61,
+      8: 65,
+      9: 65,
+    };
+    const multiply = 1.2;
+    // Cost number
+    if (cost != null || cost != "") {
+      cost = 0;
+    }
     let costNumber = cost.toString().split("");
     let costWidth = numbersWidth[costNumber[0]] * multiply * scale;
     for (let i = 1; i < costNumber.length; i++) {
@@ -283,29 +283,29 @@ async function generatecard(
       );
       costX += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
     }
-  }
-  // Power number
-  if (power != null && power != "" && showCostPower) {
-    let powerNumber = power.toString().split("");
-    let powerWidth = numbersWidth[powerNumber[0]] * multiply * scale;
-    powerWidth *= multiply;
-    for (let i = 1; i < powerNumber.length; i++) {
-      powerWidth += (numbersWidth[powerNumber[i]] - 14) * multiply * scale;
-    }
-    let powerX = 796 * scale - powerWidth / 2;
-    let powerY = 65 * scale;
-    for (let i = 0; i < powerNumber.length; i++) {
-      let numberImg = await getPreloadedImage(
-        numbersDir + "power/" + powerNumber[i] + ".png"
-      );
-      ctx.drawImage(
-        numberImg,
-        powerX,
-        powerY,
-        numbersWidth[powerNumber[i]] * multiply * scale,
-        79 * multiply * scale
-      );
-      powerX += (numbersWidth[powerNumber[i]] - 14) * multiply * scale;
+    // Power number
+    if (power != null && power != "") {
+      let powerNumber = power.toString().split("");
+      let powerWidth = numbersWidth[powerNumber[0]] * multiply * scale;
+      powerWidth *= multiply;
+      for (let i = 1; i < powerNumber.length; i++) {
+        powerWidth += (numbersWidth[powerNumber[i]] - 14) * multiply * scale;
+      }
+      let powerX = 796 * scale - powerWidth / 2;
+      let powerY = 65 * scale;
+      for (let i = 0; i < powerNumber.length; i++) {
+        let numberImg = await getPreloadedImage(
+          numbersDir + "power/" + powerNumber[i] + ".png"
+        );
+        ctx.drawImage(
+          numberImg,
+          powerX,
+          powerY,
+          numbersWidth[powerNumber[i]] * multiply * scale,
+          79 * multiply * scale
+        );
+        powerX += (numbersWidth[powerNumber[i]] - 14) * multiply * scale;
+      }
     }
   }
   // Frame Break
