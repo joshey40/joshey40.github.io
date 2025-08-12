@@ -259,7 +259,7 @@ async function generatecard(
     };
     const multiply = 1.2;
     // Cost number
-    if (cost != null || cost != "") {
+    if (cost == null || cost == "") {
       cost = 0;
     }
     let costNumber = cost.toString().split("");
