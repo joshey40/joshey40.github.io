@@ -3,16 +3,11 @@ const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&sear
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 
 async function getOfficialCards() {
-    return fetch(CARDS_API_URL)
-        .then(response => response.json())
-        .then(data => {
-            var cards = data.success.cards;
-            return cards;
-        });
+    console.log(fetch(CARDS_API_URL, { mode: 'no-cors' }));
 }
 
 async function getOfficialLocations() {
-    return fetch(LOCATIONS_API_URL)
+    return fetch(LOCATIONS_API_URL, { mode: 'no-cors' })
         .then(response => response.json())
         .then(data => {
             var locations = data.success.locations;
