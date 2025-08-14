@@ -76,7 +76,7 @@ async function fetchOfficials(type, url) {
         const text = await response.text();
         try {
             const parsed = JSON.parse(text);
-            return parsed.success?.cards || [];
+            return parsed.success?.[type] || [];
         } catch (jsonError) {
             console.error("Response is not a valid json:", text);
             return [];
