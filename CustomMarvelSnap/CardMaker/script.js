@@ -1,59 +1,65 @@
+// Import the function to generate the card graphic
 import { generatecard } from "../scripts/cardDesign.js";
 
+
+// Stores the Base64 data of the different image types for the card
 let imagesBase64 = {
-  mainImage: null,
-  frameImage: null,
-  frameBreakImage: null,
-  titleImage: null,
-  effectImage: null,
+  mainImage: null,      // Main image of the card
+  frameImage: null,     // Frame image
+  frameBreakImage: null,// Frame break image
+  titleImage: null,     // Title image
+  effectImage: null,    // Effect image
 };
 
+
+// Offset for positioning the main image on the card
 var offsetX = 0;
 var offsetY = 0;
 
 // Global state for card settings
+
+// Global settings for the current card
 let cardSettings = {
-  name: "",
-  colorName: "#ffffff",
-  nameOutlineColor: "#000000",
-  fontSelect: "BadaBoom",
-  nameZoom: 1,
-  cost: "1",
-  power: "2",
-  showCostPower: true,
-  description: "",
-  zoom: 1,
-  transparentBg: false,
-  backgroundColor: "#10072b",
-  offset: [0, 0],
-  imagesBase64: imagesBase64,
-  finish: "",
+  name: "",                 // Card name
+  colorName: "#ffffff",     // Name color
+  nameOutlineColor: "#000000", // Name outline color
+  fontSelect: "BadaBoom",   // Font for the name
+  nameZoom: 1,               // Zoom factor for the name
+  cost: "1",                // Card cost
+  power: "2",               // Card power
+  showCostPower: true,       // Show cost and power
+  description: "",           // Description text
+  zoom: 1,                   // Zoom factor for the main image
+  transparentBg: false,      // Transparent background
+  backgroundColor: "#10072b", // Background color
+  offset: [0, 0],            // Offset for the image
+  imagesBase64: imagesBase64,// Image data
+  finish: "",                // Finish effect
 };
 
 // For change detection
-let lastRenderedSettings = null;
-let isRendering = false;
-let pendingRender = false;
 
+// For change detection and rendering the card
+let lastRenderedSettings = null; // Last rendered settings
+let isRendering = false;         // Is currently rendering?
+let pendingRender = false;       // Is another render pending?
+
+
+// Updates the settings based on the current input values and requests a new render
 function updateResult() {
-  // Only update settings
+  // Only update the settings
   cardSettings.name = document.getElementById("name").value;
   cardSettings.colorName = document.getElementById("nameColor").value;
-  cardSettings.nameOutlineColor =
-    document.getElementById("nameOutlineColor").value;
+  cardSettings.nameOutlineColor = document.getElementById("nameOutlineColor").value;
   cardSettings.fontSelect = document.getElementById("fontSelect").value;
-  cardSettings.nameZoom =
-    1 + (document.getElementById("nameZoom").value - 100) / 100;
+  cardSettings.nameZoom = 1 + (document.getElementById("nameZoom").value - 100) / 100;
   cardSettings.cost = document.getElementById("cost").value;
   cardSettings.power = document.getElementById("power").value;
   cardSettings.showCostPower = document.getElementById("showCostPower").checked;
   cardSettings.description = document.getElementById("description").value;
   cardSettings.zoom = 1 + document.getElementById("imageZoom").value / 100;
   cardSettings.transparentBg = document.getElementById("transparentBg").checked;
-  cardSettings.backgroundColor =
-    cardSettings.transparentBg === false
-      ? "transparent"
-      : document.getElementById("backgroundColor").value;
+  cardSettings.backgroundColor = cardSettings.transparentBg === false ? "transparent" : document.getElementById("backgroundColor").value;
   const nameOffsetY = document.getElementById("nameOffsetY").value * -1;
   cardSettings.offset = [offsetX, offsetY, nameOffsetY];
   cardSettings.imagesBase64 = imagesBase64;
@@ -61,6 +67,8 @@ function updateResult() {
   requestRender();
 }
 
+
+// Requests rendering of the card if no rendering is currently running
 function requestRender() {
   if (isRendering) {
     pendingRender = true;
@@ -69,6 +77,9 @@ function requestRender() {
   renderCard();
 }
 
+
+// Renders the card with the current settings and draws it on the canvas
+// skipCheck: If true, renders regardless of changes
 async function renderCard(skipCheck = false) {
   isRendering = true;
   const currentSettings = JSON.stringify(cardSettings);
@@ -93,7 +104,7 @@ async function renderCard(skipCheck = false) {
         cardSettings.finish
       );
       const cardCanvas = document.getElementById("cardImage");
-      // Replace canvas content
+  // Replace canvas content
       const ctx = cardCanvas.getContext("2d");
       ctx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
       ctx.drawImage(canvas, 0, 0);
@@ -108,6 +119,8 @@ async function renderCard(skipCheck = false) {
   }
 }
 
+
+// Called when the main image is changed (e.g. by file upload)
 function mainImageChange(event) {
   const imageFile = event.target.files[0];
   const reader = new FileReader();
@@ -119,6 +132,8 @@ function mainImageChange(event) {
   };
 }
 
+
+// Called when the frame break image is changed
 function frameBreakImageChange(event) {
   const imageFile = event.target.files[0];
   const reader = new FileReader();
@@ -130,6 +145,8 @@ function frameBreakImageChange(event) {
   };
 }
 
+
+// Called when the title image is changed
 function titleImageChange(event) {
   const imageFile = event.target.files[0];
   const reader = new FileReader();
@@ -141,79 +158,107 @@ function titleImageChange(event) {
   };
 }
 
+
+// Removes the main image from the card
 async function clearMainImage() {
   imagesBase64.mainImage = null;
   updateResult();
 }
 
+
+// Removes the frame break image
 function clearFrameBreakImage() {
   imagesBase64.frameBreakImage = null;
   updateResult();
 }
 
+
+// Removes the title image
 function clearTitleImage() {
   imagesBase64.titleImage = null;
   updateResult();
 }
 
+
+// Opens the popup for frame selection
 function selectFrame() {
   const frameSelectPopup = document.getElementById("frameSelectPopup");
   frameSelectPopup.style.visibility = "visible";
   frameSelectPopup.style.opacity = "1";
 }
 
+
+// Closes the frame selection popup
 function closeFrameSelectPopup() {
   const frameSelectPopup = document.getElementById("frameSelectPopup");
   frameSelectPopup.style.opacity = "0";
   frameSelectPopup.style.visibility = "hidden";
 }
 
+
+// Opens the popup for effect selection
 function selectEffect() {
   const effectSelectPopup = document.getElementById("effectSelectPopup");
   effectSelectPopup.style.visibility = "visible";
   effectSelectPopup.style.opacity = "1";
 }
 
+
+// Closes the effect selection popup
 function closeEffectSelectPopup() {
   const effectSelectPopup = document.getElementById("effectSelectPopup");
   effectSelectPopup.style.opacity = "0";
   effectSelectPopup.style.visibility = "hidden";
 }
 
+
+// Opens the popup for finish selection
 function selectFinish() {
   const finishSelectPopup = document.getElementById("finishSelectPopup");
   finishSelectPopup.style.visibility = "visible";
   finishSelectPopup.style.opacity = "1";
 }
 
+
+// Removes the finish effect
 function clearFinish() {
   cardSettings.finish = "";
   updateResult();
 }
 
+
+// Closes the finish selection popup
 function closeFinishSelectPopup() {
   const finishSelectPopup = document.getElementById("finishSelectPopup");
   finishSelectPopup.style.opacity = "0";
   finishSelectPopup.style.visibility = "hidden";
 }
 
+
+// Shows the tutorial popup
 function showTutorialPopup() {
   const tutorialPopup = document.getElementById("tutorialPopup");
   tutorialPopup.style.visibility = "visible";
   tutorialPopup.style.opacity = "1";
 }
 
+
+// Closes the tutorial popup
 function closeTutorialPopup() {
   const tutorialPopup = document.getElementById("tutorialPopup");
   tutorialPopup.style.opacity = "0";
   tutorialPopup.style.visibility = "hidden";
 }
 
+
+// Removes the effect image
 function clearEffect() {
   imagesBase64.effectImage = null;
   updateResult();
 }
 
+
+// Resets the background to default
 function clearBackground() {
   const backgroundColor = document.getElementById("backgroundColor");
   backgroundColor.value = "#10072b";
@@ -222,10 +267,12 @@ function clearBackground() {
   updateResult();
 }
 
+
+// Downloads the current card as PNG
 function downloadCard() {
   let cardCanvas = document.getElementById("cardImage");
   const name = document.getElementById("name").value;
-  // If description is empty and background is transparent download a cut image to 1024x1024
+  // If description is empty and background is not transparent, crop the image to 1024x1024
   if (document.getElementById("description").value === "" && document.getElementById("transparentBg").checked === false) {
     const cutCanvas = document.createElement("canvas");
     cutCanvas.width = 1024;
