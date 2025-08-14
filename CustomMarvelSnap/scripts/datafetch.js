@@ -4,15 +4,12 @@ const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locati
 const PROXY_URL = "https://corsproxy.io/?";
 
 async function getOfficialCards(includeVariants = false) {
-    let officialCards = fetchOfficials("cards", CARDS_API_URL);
+    let officialCards = await fetchOfficials("cards", CARDS_API_URL);
     if (!officialCards || officialCards.length === 0) {
-        console.error("No official cards found or error fetching cards.");
         return [];
     }
-    console.log("Official Cards fetched. Total cards:", officialCards.length);
     // Clean up the data if necessary
     if (!includeVariants) {
-        console.log("Removing variants from official cards.");
         // Remove variants from the official cards if there are any
         for (let i = officialCards.length - 1; i >= 0; i--) {
             if (officialCards[i].variants && officialCards[i].variants.length > 0) {
@@ -21,7 +18,6 @@ async function getOfficialCards(includeVariants = false) {
         }
     }
     for (let i = 0; i < officialCards.length; i++) {
-        console.log("Processing card:", officialCards[i]);
         // Flavor text handling
         if (officialCards[i].flavor && officialCards[i].flavor.length > 0) {
             officialCards[i].ability = officialCards[i].flavor;
@@ -63,7 +59,6 @@ async function getOfficialCards(includeVariants = false) {
         delete officialCards[i].sketcher;
         delete officialCards[i].inker;
         delete officialCards[i].colorist;
-        console.log("Card processed:", officialCards[i]);
     }
     return officialCards;
 }
