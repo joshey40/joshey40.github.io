@@ -122,7 +122,11 @@ for (let i = 0; i < officialCards.length; i++) {
             return;
         }
         if (deck.some(card => card.cid === officialCards[i].cid)) {
-            deck.remove(officialCards[i]); // Remove the card if it already exists in the deck
+            // Remove the card if it already exists in the deck
+            const index = deck.findIndex(card => card.cid === officialCards[i].cid);
+            if (index !== -1) {
+                deck.splice(index, 1);
+            }
             updateDeck();
             return;
         }
