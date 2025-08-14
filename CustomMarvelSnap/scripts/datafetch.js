@@ -1,10 +1,11 @@
 // Constants
 const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true"
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
+const PROXY_URL = "https://corsproxy.io/?";
 
 async function getOfficialCards() {
     try {
-        const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(CARDS_API_URL);
+        const proxyUrl = PROXY_URL + encodeURIComponent(CARDS_API_URL);
         const response = await fetch(proxyUrl);
         const data = await response.json();
         const parsed = JSON.parse(data.contents);
@@ -17,7 +18,7 @@ async function getOfficialCards() {
 
 async function getOfficialLocations() {
     try {
-        const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(LOCATIONS_API_URL);
+        const proxyUrl = PROXY_URL + encodeURIComponent(LOCATIONS_API_URL);
         const response = await fetch(proxyUrl);
         const data = await response.json();
         const parsed = JSON.parse(data.contents);
