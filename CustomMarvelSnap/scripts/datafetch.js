@@ -29,7 +29,7 @@ async function getOfficialCards(includeVariants = false) {
             i--;
         }
         // Remove unavailable cards
-        if (officialCards[i].source === "None") {
+        if (officialCards[i].source === "None" || officialCards[i].source === "Not Available") {
             officialCards.splice(i, 1);
             i--;
         }
