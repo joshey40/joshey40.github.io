@@ -61,9 +61,6 @@ async function getOfficialCards(includeVariants = false) {
         delete officialCards[i].inker;
         delete officialCards[i].colorist;
     }
-
-
-
     return officialCards;
 }
 
@@ -74,7 +71,7 @@ async function getOfficialLocations() {
 
 async function fetchOfficials(type, url) {
     try {
-        const proxyUrl = PROXY_URL + encodeURIComponent(LOCATIONS_API_URL);
+        const proxyUrl = PROXY_URL + encodeURIComponent(url);
         const response = await fetch(proxyUrl);
         const text = await response.text();
         try {
