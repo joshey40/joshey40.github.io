@@ -119,6 +119,7 @@ for (let i = 0; i < officialCards.length; i++) {
     const button = document.createElement("button");
     button.className = "default-button";
     button.innerText = officialCards[i].name;
+    button.style.width = "200px";
     button.onclick = () => {
         if (deck.length >= 12) {
             return;
