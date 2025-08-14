@@ -6,15 +6,38 @@ const deck = [];
 
 function updateDeck() {
     // Sort the deck by cost and if equal, by power and then by name
-    // This ensures that cards are displayed in a consistent order
     deck.sort((a, b) => {
-        if (a.cost !== b.cost) {
-            return a.cost - b.cost; // Sort by cost
+        let costA = 0;
+        let costB = 0;
+        let powerA = 0;
+        let powerB = 0;
+        let nameA = "";
+        let nameB = "";
+        if (a.cid) {
+            costA = a.cost || 0;
+            powerA = a.power || 0;
+            nameA = a.name || "";
+        } else {
+            costA = a.stats?.cost || 0;
+            powerA = a.stats?.power || 0;
+            nameA = a.name || "";
         }
-        if (a.power !== b.power) {
-            return b.power - a.power; // Sort by power (higher power first)
+        if (b.cid) {
+            costB = b.cost || 0;
+            powerB = b.power || 0;
+            nameB = b.name || "";
+        } else {
+            costB = b.stats?.cost || 0;
+            powerB = b.stats?.power || 0;
+            nameB = b.name || "";
         }
-        return a.name.localeCompare(b.name); // Sort by name alphabetically
+        if (costA !== costB) {
+            return costA - costB; // Sort by cost (lower cost first)
+        }
+        if (powerA !== powerB) {
+            return powerA - powerB; // Sort by power (lower power first)
+        }
+        return nameA.localeCompare(nameB); // Sort by name (alphabetical order)
     });
     // Update the displayed deck
     for (let i = 1; i <= 12; i++) {
@@ -146,3 +169,59 @@ for (let i = 0; i < officialCards.length; i++) {
 }
 
 updateDeck();
+
+function clearDeck() {
+    deck.length = 0; // Clear the deck
+    updateDeck(); // Update the displayed deck
+}
+
+function importCard(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        return; // No file selected
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            let cardData = JSON.parse(e.target.result);
+            if (cardData && cardData.card) {
+                const cardSettings = {
+                    name: "",
+                    colorName: "#ffffff",
+                    nameOutlineColor: "#000000",
+                    fontSelect: "BadaBoom",
+                    nameZoom: 1,
+                    cost: "0",
+                    power: "0",
+                    showCostPower: true,
+                    description: "",
+                    zoom: 1,
+                    transparentBg: false,
+                    backgroundColor: "#10072b",
+                    offset: [0, 0],
+                    imagesBase64: {
+                        mainImage: "",
+                        frameImage: "",
+                        frameBreakImage: "",
+                        titleImage: "",
+                        effectImage: "",
+                    },
+                    finish: "",
+                };
+                // Merge the imported card data with the default settings
+                
+                deck.push(cardSettings); // Add the card to the deck
+                updateDeck(); // Update the displayed deck
+            } else {
+                console.error("Invalid card data or card already exists in the deck.");
+            }
+        } catch (error) {
+            console.error("Error parsing card data:", error);
+        }
+    }
+}
+
+window.clearDeck = clearDeck; // Expose the clearDeck function globally
+window.importCard = importCard;
+
+export { clearDeck, importCard }; // Export functions and variables for use in other modules
