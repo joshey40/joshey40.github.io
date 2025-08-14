@@ -51,19 +51,12 @@ for (let i = 1; i <= 12; i++) {
             deck[i - 1].currentSelectedVariant = -1; // Initialize the index if not set
         }
         // Cycle through variants
-        console.log(deck[i - 1]);
-        console.log(deck[i - 1].variants);
-        console.log(deck[i - 1].variants.length);
-        console.log(deck[i - 1].currentSelectedVariant);
-
         if (deck[i - 1] && deck[i - 1].variants && deck[i - 1].variants.length > 0) {
-            console.log(`Cycling through variants for card ${i}`);
             deck[i - 1].currentSelectedVariant = (deck[i - 1].currentSelectedVariant + 1);
             if (deck[i - 1].currentSelectedVariant >= deck[i - 1].variants.length) {
                 deck[i - 1].currentSelectedVariant = -1; // Reset to the first variant if exceeded
             }
         }
-        console.log(`Card ${i} clicked. Current variant index: ${deck[i - 1].currentSelectedVariant}`);
         updateDeck(); // Update the displayed deck
     }
     function handleCardLongClick(i) {

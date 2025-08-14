@@ -3,7 +3,7 @@ const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&sear
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 const PROXY_URL = "https://corsproxy.io/?";
 
-async function getOfficialCards(includeVariants = false) {
+async function getOfficialCards(includeVariants = true) {
     let officialCards = await fetchOfficials("cards", CARDS_API_URL);
     if (!officialCards || officialCards.length === 0) {
         return [];
