@@ -20,15 +20,14 @@ function updateDeck() {
             const card = deck[i - 1];
             if (card) {
                 if (card.cid) {
-                    if (!card.selectedVariant || card.selectedVariant < 0) {
-                        card.selectedVariant = -1; // Select the default variant if not already selected
-                        card_slot.innerHTML = `<img src="${card.art}" alt="${card.name}">`;
-                    } else if (card.variants && card.variants.length > 0) {
-                        const variant = card.variants[card.selectedVariant];
-                        if (variant && variant.art) {
-                            card_slot.innerHTML = `<img src="${variant.art}" alt="${card.name} - ${variant.vid}">`;
-                        } else {
-                            card_slot.innerHTML = `<img src="${card.art}" alt="${card.name}">`;
+                    card_slot.innerHTML = `<img src="${card.art}" alt="${card.name}">`;
+                    // Handle variants if they exist
+                    if (card.variants && card.variants.length > 0) {
+                        if (card.currentSelectedVariant === undefined) {
+                            card.currentVariantIndex = -1; // Initialize the index if not set
+                        }
+                        if (card.currentSelectedVariant >= 0 && card.currentSelectedVariant < card.variants.length) {
+                            card_slot.innerHTML = `<img src="${card.variants[card.currentSelectedVariant].art}" alt="${card.name}">`;
                         }
                     }
                 } else {
@@ -44,60 +43,65 @@ function updateDeck() {
 
 for (let i = 1; i <= 12; i++) {
     const card_slot = document.getElementById(`card-slot-${i}`);
+    function handleCardShortClick(i) {
+        // Cycle through variants
+        if (deck[i - 1] && deck[i - 1].variants && deck[i - 1].variants.length > 0) {
+            if (deck[i - 1].currentSelectedVariant === undefined) {
+                deck[i - 1].currentSelectedVariant = -1; // Initialize the index if not set
+            }
+            deck[i - 1].currentSelectedVariant = (deck[i - 1].currentSelectedVariant + 1);
+            if (deck[i - 1].currentSelectedVariant >= deck[i - 1].variants.length) {
+                deck[i - 1].currentSelectedVariant = -1; // Reset to the first variant if exceeded
+            }
+        }
+    }
+    function handleCardLongClick(i) {
+        // Remove card from deck
+        const card = deck[i - 1];
+        if (card) {
+            deck.splice(i - 1, 1); // Remove the card from the deck
+            updateDeck(); // Update the displayed deck
+        }
+    }
     // Add long press to each card slot -> remove card from deck
     if (card_slot) {
         let timer;
+        let isLongPress = false;
         card_slot.addEventListener("touchstart", () => {
             // Timer
             timer = setTimeout(() => {
-                const card = deck[i - 1];
-                if (card) {
-                    deck.splice(i - 1, 1); // Remove the card from the deck
-                    updateDeck(); // Update the displayed deck
-                }
+                isLongPress = true;
             }, 1000); // 1 second long press
         });
         card_slot.addEventListener("touchend", () => {
-            if (!deck[i - 1]) {
-                clearTimeout(timer); // Clear the timer if the touch is released before 1 second
-                return; // If no card is selected, do nothing
-            }
-            if (timer < 1000) {
-                if (!deck[i - 1].selectedVariant) {
-                    deck[i - 1].selectedVariant = 0; // Select the first variant if not already selected
-                }
-                deck[i - 1].selectedVariant = deck[i - 1].selectedVariant + 1; // Cycle to the next variant
-                if (deck[i - 1].selectedVariant >= deck[i - 1].variants.length) {
-                    deck[i - 1].selectedVariant = -1; // Reset to the default variant if all variants have been cycled through
-                }
-            }
             clearTimeout(timer); // Clear the timer if the touch is released before 1 second
+            if (isLongPress) {
+                handleCardLongClick(i);
+                isLongPress = false; // Reset the long press state
+            } else {
+                handleCardShortClick(i);
+            }
+        });
+        card_slot.addEventListener("touchcancel", () => {
+            clearTimeout(timer); // Clear the timer if the touch is canceled
         });
         card_slot.addEventListener("mousedown", () => {
             // Timer
             timer = setTimeout(() => {
-                const card = deck[i - 1];
-                if (card) {
-                    deck.splice(i - 1, 1); // Remove the card from the deck
-                    updateDeck(); // Update the displayed deck
-                }
+                isLongPress = true;
             }, 1000); // 1 second long press
         });
         card_slot.addEventListener("mouseup", () => {
-            if (!deck[i - 1]) {
-                clearTimeout(timer); // Clear the timer if the touch is released before 1 second
-                return; // If no card is selected, do nothing
-            }
-            if (timer < 1000) {
-                if (!deck[i - 1].selectedVariant) {
-                    deck[i - 1].selectedVariant = 0; // Select the first variant if not already selected
-                }
-                deck[i - 1].selectedVariant = deck[i - 1].selectedVariant + 1; // Cycle to the next variant
-                if (deck[i - 1].selectedVariant >= deck[i - 1].variants.length) {
-                    deck[i - 1].selectedVariant = -1; // Reset to the default variant if all variants have been cycled through
-                }
-            }
             clearTimeout(timer); // Clear the timer if the mouse is released before 1 second
+            if (isLongPress) {
+                handleCardLongClick(i);
+                isLongPress = false; // Reset the long press state
+            } else {
+                handleCardShortClick(i);
+            }
+        });
+        card_slot.addEventListener("mouseleave", () => {
+            clearTimeout(timer); // Clear the timer if the mouse leaves the card slot
         });
     }
 }
