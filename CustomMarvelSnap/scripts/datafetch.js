@@ -5,13 +5,18 @@ const PROXY_URL = "https://corsproxy.io/?";
 
 async function getOfficialCards() {
     try {
-        const proxyUrl = PROXY_URL + encodeURIComponent(CARDS_API_URL);
+        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(CARDS_API_URL);
         const response = await fetch(proxyUrl);
-        const data = await response.json();
-        const parsed = JSON.parse(data.contents);
-        return parsed.success.cards;
+        const text = await response.text();
+        try {
+            const parsed = JSON.parse(text);
+            return parsed.success?.cards || [];
+        } catch (jsonError) {
+            console.error("Antwort ist kein gültiges JSON:", text);
+            return [];
+        }
     } catch (error) {
-        console.error("Error loading cards from Snap Zone:", error);
+        console.error("Fehler beim Laden der Karten:", error);
         return [];
     }
 }
