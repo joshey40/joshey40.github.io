@@ -19,6 +19,7 @@ async function getOfficialCards(includeVariants = false) {
         }
     }
     for (let i = 0; i < officialCards.length; i++) {
+        console.log("Processing card:", officialCards[i]);
         // Flavor text handling
         if (officialCards[i].flavor && officialCards[i].flavor.length > 0) {
             officialCards[i].ability = officialCards[i].flavor;
@@ -60,6 +61,7 @@ async function getOfficialCards(includeVariants = false) {
         delete officialCards[i].sketcher;
         delete officialCards[i].inker;
         delete officialCards[i].colorist;
+        console.log("Card processed:", officialCards[i]);
     }
     return officialCards;
 }
