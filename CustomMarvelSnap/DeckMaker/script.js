@@ -8,8 +8,6 @@ for (let i = 1; i <= 12; i++) {
     deck.push(officialCards[Math.floor(Math.random() * officialCards.length)]);
 }
 
-updateDeck();
-
 function updateDeck() {
     // Sort the deck by cost
     deck.sort((a, b) => a.cost - b.cost);
@@ -44,9 +42,14 @@ function updateDeck() {
     }
 }
 
+// Add event listeners for long press and short click on each card slot
+// This allows cycling through variants on short click and removing the card on long press
 for (let i = 1; i <= 12; i++) {
     const card_slot = document.getElementById(`card-slot-${i}`);
     function handleCardShortClick(i) {
+        if (!deck[i - 1]) {
+            return; // If no card is selected, do nothing
+        }
         if (deck[i - 1].currentSelectedVariant === undefined) {
             deck[i - 1].currentSelectedVariant = -1; // Initialize the index if not set
         }
@@ -109,3 +112,21 @@ for (let i = 1; i <= 12; i++) {
         });
     }
 }
+
+//
+const addCardButtonsDiv = document.getElementById("add-cards-div");
+for (card of officialCards) {
+    const button = document.createElement("button");
+    button.className = "default-button";
+    button.innerText = card.name;
+    button.onclick = () => {
+        if (deck.length >= 12) {
+            return;
+        }
+        deck.push(card);
+        updateDeck();
+    };
+    addCardButtonsDiv.appendChild(button);
+}
+
+updateDeck();

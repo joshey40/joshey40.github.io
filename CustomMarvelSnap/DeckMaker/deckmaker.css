@@ -93,3 +93,31 @@ p {
     overflow: hidden;
     aspect-ratio: 1 / 1;
 }
+.editor-div {
+    margin: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.default-button {
+    margin: 4px 0px;
+    padding: 4px;
+    font: 1em 'Roboto', sans-serif;
+    border-radius: 5px;
+    border: 2px solid #10072b;
+    background-color: rgba(255, 255, 255);
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+.default-button:hover {
+    background-color: #10072b;
+    color: rgb(255, 255, 255);
+}
+.default-button:active {
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #10072b;
+    color: rgb(255, 255, 255);
+}
