@@ -4,10 +4,6 @@ const officialCards = await getOfficialCards();
 
 const deck = [];
 
-for (let i = 1; i <= 12; i++) {
-    deck.push(officialCards[Math.floor(Math.random() * officialCards.length)]);
-}
-
 function updateDeck() {
     // Sort the deck by cost
     deck.sort((a, b) => a.cost - b.cost);
@@ -120,8 +116,14 @@ for (let i = 0; i < officialCards.length; i++) {
     button.className = "default-button";
     button.innerText = officialCards[i].name;
     button.style.width = "200px";
+    button.style.margin = "5px";
     button.onclick = () => {
         if (deck.length >= 12) {
+            return;
+        }
+        if (deck.some(card => card.cid === officialCards[i].cid)) {
+            deck.remove(officialCards[i]); // Remove the card if it already exists in the deck
+            updateDeck();
             return;
         }
         deck.push(officialCards[i]);
