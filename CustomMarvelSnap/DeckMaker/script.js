@@ -52,6 +52,7 @@ for (let i = 1; i <= 12; i++) {
         }
         // Cycle through variants
         if (deck[i - 1] && deck[i - 1].variants && deck[i - 1].variants.length > 0) {
+            console.log(`Cycling through variants for card ${i}`);
             deck[i - 1].currentSelectedVariant = (deck[i - 1].currentSelectedVariant + 1);
             if (deck[i - 1].currentSelectedVariant >= deck[i - 1].variants.length) {
                 deck[i - 1].currentSelectedVariant = -1; // Reset to the first variant if exceeded
