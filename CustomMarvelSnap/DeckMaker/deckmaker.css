@@ -75,8 +75,7 @@ p {
     border-radius: 10px;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    max-height: 40%;
-    width: max-content;
+    max-height: 50%;
 }
 .card-slot {
     position: relative;
@@ -88,5 +87,15 @@ p {
     margin: 10px;
     padding: 10px;
     aspect-ratio: 1 / 1;
-    width: 100%;
+}
+@media (max-width: 1000px) {
+    .deck-div {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media (max-width: 500px) {
+    .deck-div {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
 }
