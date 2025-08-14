@@ -28,6 +28,11 @@ async function getOfficialCards(includeVariants = false) {
             officialCards.splice(i, 1);
             i--;
         }
+        // Remove unavailable cards
+        if (officialCards[i].source === "None") {
+            officialCards.splice(i, 1);
+            i--;
+        }
         // Clean up the variants if they exist
         if (officialCards[i].variants && officialCards[i].variants.length > 0) {
             for (let j = 0; j < officialCards[i].variants.length; j++) {
