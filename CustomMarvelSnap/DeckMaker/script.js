@@ -29,16 +29,34 @@ function updateDeck() {
 
 for (let i = 1; i <= 12; i++) {
     const card_slot = document.getElementById(`card-slot-${i}`);
-    // Add click event listener to each card slot -> remove card from deck
+    // Add long press to each card slot -> remove card from deck
     if (card_slot) {
-        card_slot.addEventListener("click", () => {
-            const card = deck[i - 1];
-            if (card) {
-                deck.splice(i - 1, 1); // Remove the card from the deck
-                updateDeck(); // Update the displayed deck
-            }
+        let timer;
+        card_slot.addEventListener("touchstart", () => {
+            // Timer
+            timer = setTimeout(() => {
+                const card = deck[i - 1];
+                if (card) {
+                    deck.splice(i - 1, 1); // Remove the card from the deck
+                    updateDeck(); // Update the displayed deck
+                }
+            }, 1000); // 1 second long press
+        });
+        card_slot.addEventListener("touchend", () => {
+            clearTimeout(timer); // Clear the timer if the touch is released before 1 second
+        });
+        card_slot.addEventListener("mousedown", () => {
+            // Timer
+            timer = setTimeout(() => {
+                const card = deck[i - 1];
+                if (card) {
+                    deck.splice(i - 1, 1); // Remove the card from the deck
+                    updateDeck(); // Update the displayed deck
+                }
+            }, 1000); // 1 second long press
+        });
+        card_slot.addEventListener("mouseup", () => {
+            clearTimeout(timer); // Clear the timer if the mouse is released before 1 second
         });
     }
 }
-
-
