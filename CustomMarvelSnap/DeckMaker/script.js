@@ -57,6 +57,8 @@ for (let i = 1; i <= 12; i++) {
                 deck[i - 1].currentSelectedVariant = -1; // Reset to the first variant if exceeded
             }
         }
+        console.log(`Card ${i} clicked. Current variant index: ${deck[i - 1].currentSelectedVariant}`);
+        updateDeck(); // Update the displayed deck
     }
     function handleCardLongClick(i) {
         // Remove card from deck
