@@ -11,6 +11,9 @@ for (let i = 1; i <= 12; i++) {
 updateDeck();
 
 function updateDeck() {
+    // Sort the deck by cost
+    deck.sort((a, b) => a.cost - b.cost);
+    // Update the displayed deck
     for (let i = 1; i <= 12; i++) {
         const card_slot = document.getElementById(`card-slot-${i}`);
         if (card_slot) {
