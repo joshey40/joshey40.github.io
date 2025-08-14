@@ -5,8 +5,10 @@ const officialCards = await getOfficialCards();
 const deck = [];
 
 for (let i = 1; i <= 12; i++) {
-    deck.push(officialCards.find(card => card.cid === i) || null);
+    deck.push(officialCards[Math.floor(Math.random() * officialCards.length)]);
 }
+
+updateDeck();
 
 function updateDeck() {
     for (let i = 1; i <= 12; i++) {
@@ -24,17 +26,13 @@ function updateDeck() {
 
 for (let i = 1; i <= 12; i++) {
     const card_slot = document.getElementById(`card-slot-${i}`);
-    // Add long press event listener to each card slot
+    // Add click event listener to each card slot -> remove card from deck
     if (card_slot) {
-        card_slot.addEventListener("contextmenu", (event) => {
-            event.preventDefault(); // Prevent the default context menu
+        card_slot.addEventListener("click", () => {
             const card = deck[i - 1];
             if (card) {
-                // Remove the card from the deck
-                deck.splice(i - 1,1);
-                updateDeck();
-            } else {
-                alert("No card in this slot.");
+                deck.splice(i - 1, 1); // Remove the card from the deck
+                updateDeck(); // Update the displayed deck
             }
         });
     }
