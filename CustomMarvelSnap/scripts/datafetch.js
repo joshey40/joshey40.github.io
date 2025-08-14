@@ -9,8 +9,10 @@ async function getOfficialCards(includeVariants = false) {
         console.error("No official cards found or error fetching cards.");
         return [];
     }
+    console.log("Official Cards fetched. Total cards:", officialCards.length);
     // Clean up the data if necessary
     if (!includeVariants) {
+        console.log("Removing variants from official cards.");
         // Remove variants from the official cards if there are any
         for (let i = officialCards.length - 1; i >= 0; i--) {
             if (officialCards[i].variants && officialCards[i].variants.length > 0) {
