@@ -55,7 +55,7 @@ for (let i = 1; i <= 12; i++) {
                     deck.splice(i - 1, 1); // Remove the card from the deck
                     updateDeck(); // Update the displayed deck
                 }
-            }, 500); // 1 second long press
+            }, 1000); // 1 second long press
         });
         card_slot.addEventListener("touchend", () => {
             if (timer < 1000) {
@@ -77,7 +77,7 @@ for (let i = 1; i <= 12; i++) {
                     deck.splice(i - 1, 1); // Remove the card from the deck
                     updateDeck(); // Update the displayed deck
                 }
-            }, 500); // 1 second long press
+            }, 1000); // 1 second long press
         });
         card_slot.addEventListener("mouseup", () => {
             if (timer < 1000) {
