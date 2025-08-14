@@ -113,17 +113,17 @@ for (let i = 1; i <= 12; i++) {
     }
 }
 
-//
+// Add buttons to add cards to the deck
 const addCardButtonsDiv = document.getElementById("add-cards-div");
-for (card of officialCards) {
+for (let i = 0; i < officialCards.length; i++) {
     const button = document.createElement("button");
     button.className = "default-button";
-    button.innerText = card.name;
+    button.innerText = officialCards[i].name;
     button.onclick = () => {
         if (deck.length >= 12) {
             return;
         }
-        deck.push(card);
+        deck.push(officialCards[i]);
         updateDeck();
     };
     addCardButtonsDiv.appendChild(button);
