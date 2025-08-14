@@ -3,16 +3,29 @@ const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&sear
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 
 async function getOfficialCards() {
-    console.log(fetch(CARDS_API_URL, { mode: 'no-cors' }));
+    try {
+        const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(CARDS_API_URL);
+        const response = await fetch(proxyUrl);
+        const data = await response.json();
+        const parsed = JSON.parse(data.contents);
+        return parsed.success.cards;
+    } catch (error) {
+        console.error("Error loading cards from Snap Zone:", error);
+        return [];
+    }
 }
 
 async function getOfficialLocations() {
-    return fetch(LOCATIONS_API_URL, { mode: 'no-cors' })
-        .then(response => response.json())
-        .then(data => {
-            var locations = data.success.locations;
-            return locations;
-        });
+    try {
+        const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(LOCATIONS_API_URL);
+        const response = await fetch(proxyUrl);
+        const data = await response.json();
+        const parsed = JSON.parse(data.contents);
+        return parsed.success.locations;
+    } catch (error) {
+        console.error("Error loading locations from Snap Zone:", error);
+        return [];
+    }
 }
 
 async function getCustomCards() {
