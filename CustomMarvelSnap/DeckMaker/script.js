@@ -20,15 +20,18 @@ function updateDeck() {
             const card = deck[i - 1];
             if (card) {
                 if (card.cid) {
-                    card_slot.innerHTML = `<img src="${card.art}" alt="${card.name}">`;
                     // Handle variants if they exist
                     if (card.variants && card.variants.length > 0) {
                         if (card.currentSelectedVariant === undefined) {
-                            card.currentVariantIndex = -1; // Initialize the index if not set
+                            card.currentSelectedVariant = -1; // Initialize the index if not set
                         }
                         if (card.currentSelectedVariant >= 0 && card.currentSelectedVariant < card.variants.length) {
                             card_slot.innerHTML = `<img src="${card.variants[card.currentSelectedVariant].art}" alt="${card.name}">`;
+                        } else {
+                            card_slot.innerHTML = `<img src="${card.art}" alt="${card.name}">`; // Default to the main art if no variant is selected
                         }
+                    } else {
+                        card_slot.innerHTML = `<img src="${card.art}" alt="${card.name}">`; // Use the main art if no variants exist
                     }
                 } else {
                     // TODO: Handle custom card
@@ -70,13 +73,13 @@ for (let i = 1; i <= 12; i++) {
         card_slot.addEventListener("touchstart", () => {
             // Timer
             timer = setTimeout(() => {
+                handleCardLongClick(i);
                 isLongPress = true;
             }, 1000); // 1 second long press
         });
         card_slot.addEventListener("touchend", () => {
             clearTimeout(timer); // Clear the timer if the touch is released before 1 second
             if (isLongPress) {
-                handleCardLongClick(i);
                 isLongPress = false; // Reset the long press state
             } else {
                 handleCardShortClick(i);
@@ -88,13 +91,13 @@ for (let i = 1; i <= 12; i++) {
         card_slot.addEventListener("mousedown", () => {
             // Timer
             timer = setTimeout(() => {
+                handleCardLongClick(i);
                 isLongPress = true;
             }, 1000); // 1 second long press
         });
         card_slot.addEventListener("mouseup", () => {
             clearTimeout(timer); // Clear the timer if the mouse is released before 1 second
             if (isLongPress) {
-                handleCardLongClick(i);
                 isLongPress = false; // Reset the long press state
             } else {
                 handleCardShortClick(i);
