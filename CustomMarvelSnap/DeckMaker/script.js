@@ -47,11 +47,11 @@ function updateDeck() {
 for (let i = 1; i <= 12; i++) {
     const card_slot = document.getElementById(`card-slot-${i}`);
     function handleCardShortClick(i) {
+        if (deck[i - 1].currentSelectedVariant === undefined) {
+            deck[i - 1].currentSelectedVariant = -1; // Initialize the index if not set
+        }
         // Cycle through variants
         if (deck[i - 1] && deck[i - 1].variants && deck[i - 1].variants.length > 0) {
-            if (deck[i - 1].currentSelectedVariant === undefined) {
-                deck[i - 1].currentSelectedVariant = -1; // Initialize the index if not set
-            }
             deck[i - 1].currentSelectedVariant = (deck[i - 1].currentSelectedVariant + 1);
             if (deck[i - 1].currentSelectedVariant >= deck[i - 1].variants.length) {
                 deck[i - 1].currentSelectedVariant = -1; // Reset to the first variant if exceeded
