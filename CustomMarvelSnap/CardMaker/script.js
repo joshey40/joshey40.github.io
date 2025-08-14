@@ -17,27 +17,23 @@ var offsetX = 0;
 var offsetY = 0;
 
 // Global state for card settings
-
-// Global settings for the current card
 let cardSettings = {
-  name: "",                 // Card name
-  colorName: "#ffffff",     // Name color
-  nameOutlineColor: "#000000", // Name outline color
-  fontSelect: "BadaBoom",   // Font for the name
-  nameZoom: 1,               // Zoom factor for the name
-  cost: "1",                // Card cost
-  power: "2",               // Card power
-  showCostPower: true,       // Show cost and power
-  description: "",           // Description text
-  zoom: 1,                   // Zoom factor for the main image
-  transparentBg: false,      // Transparent background
-  backgroundColor: "#10072b", // Background color
-  offset: [0, 0],            // Offset for the image
-  imagesBase64: imagesBase64,// Image data
-  finish: "",                // Finish effect
+  name: "",                       // Card name
+  colorName: "#ffffff",         // Name color
+  nameOutlineColor: "#000000",  // Name outline color
+  fontSelect: "BadaBoom",         // Font for the name
+  nameZoom: 1,                    // Zoom factor for the name
+  cost: "1",                      // Card cost
+  power: "2",                     // Card power
+  showCostPower: true,            // Show cost and power
+  description: "",                // Description text
+  zoom: 1,                        // Zoom factor for the main image
+  transparentBg: false,           // Transparent background
+  backgroundColor: "#10072b",   // Background color
+  offset: [0, 0],                 // Offset for the image
+  imagesBase64: imagesBase64,     // Image data
+  finish: "",                     // Finish effect
 };
-
-// For change detection
 
 // For change detection and rendering the card
 let lastRenderedSettings = null; // Last rendered settings
@@ -104,7 +100,7 @@ async function renderCard(skipCheck = false) {
         cardSettings.finish
       );
       const cardCanvas = document.getElementById("cardImage");
-  // Replace canvas content
+      // Replace canvas content
       const ctx = cardCanvas.getContext("2d");
       ctx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
       ctx.drawImage(canvas, 0, 0);

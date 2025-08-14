@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+}
+.background-img {
+    z-index: -1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    overflow: hidden;
+}
+.content-div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+}
+h1 {
+    font-family: 'Ultimatum-Bold', sans-serif;
+    font-size: 5rem;
+    text-align: center;
+    margin: 10px;
+    display: block;
+    text-shadow: 
+        3px 3px 3px #000,
+        -3px 3px 3px #000,
+        3px -3px 3px #000,
+        -3px -3px 3px #000;
+    color: white;
+}
+h2 {
+    font-family: 'Ultimatum-Bold', sans-serif;
+    font-size: 1.3rem;
+    text-align: center;
+    margin: 10px;
+    display: block;
+    text-shadow: 
+        3px 3px 3px #000,
+        -3px 3px 3px #000,
+        3px -3px 3px #000,
+        -3px -3px 3px #000;
+    color: white;
+}
+h3 {
+    font-family: 'Ultimatum-Bold', sans-serif;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 10px;
+    display: block;
+    color: white;
+}
+p {
+    font: 1em 'Roboto', sans-serif;
+    margin: 10px;
+    color: white;
+}
