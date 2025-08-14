@@ -48,4 +48,4 @@ async function getLocations() {
     return [];
 }
 
-export { getCards, getLocations }
+export { getOfficialCards, getCards, getLocations }
