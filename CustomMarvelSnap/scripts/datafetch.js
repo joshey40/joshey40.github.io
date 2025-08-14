@@ -3,33 +3,89 @@ const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&sear
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 const PROXY_URL = "https://corsproxy.io/?";
 
-async function getOfficialCards() {
+async function getOfficialCards(includeVariants = false) {
+    let officialCards = fetchOfficials("cards", CARDS_API_URL);
+    if (!officialCards || officialCards.length === 0) {
+        console.error("No official cards found or error fetching cards.");
+        return [];
+    }
+    // Clean up the data if necessary
+    if (!includeVariants) {
+        // Remove variants from the official cards if there are any
+        for (let i = officialCards.length - 1; i >= 0; i--) {
+            if (officialCards[i].variants && officialCards[i].variants.length > 0) {
+                delete officialCards[i].variants;
+            }
+        }
+    }
+    for (let i = 0; i < officialCards.length; i++) {
+        // Flavor text handling
+        if (officialCards[i].flavor && officialCards[i].flavor.length > 0) {
+            officialCards[i].ability = officialCards[i].flavor;
+        }
+        delete officialCards[i].flavor;
+        // Remove unreleased cards
+        if (officialCards[i].status!== "released") {
+            officialCards.splice(i, 1);
+            i--;
+        }
+        // Clean up the variants if they exist
+        if (officialCards[i].variants && officialCards[i].variants.length > 0) {
+            for (let j = 0; j < officialCards[i].variants.length; j++) {
+                delete officialCards[i].variants[j].art_filename;
+                delete officialCards[i].variants[j].rarity;
+                delete officialCards[i].variants[j].rarity_slug;
+                delete officialCards[i].variants[j].status;
+                delete officialCards[i].variants[j].full_description;
+                delete officialCards[i].variants[j].inker;
+                delete officialCards[i].variants[j].sketcher;
+                delete officialCards[i].variants[j].colorist;
+                delete officialCards[i].variants[j].possession;
+                delete officialCards[i].variants[j].usage_count;
+                delete officialCards[i].variants[j].ReleaseDate;
+                delete officialCards[i].variants[j].CollectorsQualityDefId;
+                delete officialCards[i].variants[j].UseIfOwn;
+                delete officialCards[i].variants[j].PossesionShare;
+                delete officialCards[i].variants[j].UsageShare;
+            }
+        }
+        // Remove unnecessary properties
+        delete officialCards[i].alternate_art;
+        delete officialCards[i].source;
+        delete officialCards[i].source_slug;
+        delete officialCards[i].tags;
+        delete officialCards[i].rarity;
+        delete officialCards[i].rarity_slug;
+        delete officialCards[i].difficulty;
+        delete officialCards[i].sketcher;
+        delete officialCards[i].inker;
+        delete officialCards[i].colorist;
+    }
+
+
+
+    return officialCards;
+}
+
+async function getOfficialLocations() {
+    let officialLocations = fetchOfficials("locations", LOCATIONS_API_URL);
+    return officialLocations;
+}
+
+async function fetchOfficials(type, url) {
     try {
-        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(CARDS_API_URL);
+        const proxyUrl = PROXY_URL + encodeURIComponent(LOCATIONS_API_URL);
         const response = await fetch(proxyUrl);
         const text = await response.text();
         try {
             const parsed = JSON.parse(text);
             return parsed.success?.cards || [];
         } catch (jsonError) {
-            console.error("Antwort ist kein gültiges JSON:", text);
+            console.error("Response is not a valid json:", text);
             return [];
         }
     } catch (error) {
-        console.error("Fehler beim Laden der Karten:", error);
-        return [];
-    }
-}
-
-async function getOfficialLocations() {
-    try {
-        const proxyUrl = PROXY_URL + encodeURIComponent(LOCATIONS_API_URL);
-        const response = await fetch(proxyUrl);
-        const data = await response.json();
-        const parsed = JSON.parse(data.contents);
-        return parsed.success.locations;
-    } catch (error) {
-        console.error("Error loading locations from Snap Zone:", error);
+        console.error("Error loading ", type, " from Snap Zone:", error);
         return [];
     }
 }
