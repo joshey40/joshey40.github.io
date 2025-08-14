@@ -58,6 +58,10 @@ for (let i = 1; i <= 12; i++) {
             }, 1000); // 1 second long press
         });
         card_slot.addEventListener("touchend", () => {
+            if (!deck[i - 1]) {
+                clearTimeout(timer); // Clear the timer if the touch is released before 1 second
+                return; // If no card is selected, do nothing
+            }
             if (timer < 1000) {
                 if (!deck[i - 1].selectedVariant) {
                     deck[i - 1].selectedVariant = 0; // Select the first variant if not already selected
@@ -80,6 +84,10 @@ for (let i = 1; i <= 12; i++) {
             }, 1000); // 1 second long press
         });
         card_slot.addEventListener("mouseup", () => {
+            if (!deck[i - 1]) {
+                clearTimeout(timer); // Clear the timer if the touch is released before 1 second
+                return; // If no card is selected, do nothing
+            }
             if (timer < 1000) {
                 if (!deck[i - 1].selectedVariant) {
                     deck[i - 1].selectedVariant = 0; // Select the first variant if not already selected
