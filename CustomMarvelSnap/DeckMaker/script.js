@@ -5,8 +5,17 @@ const officialCards = await getOfficialCards();
 const deck = [];
 
 function updateDeck() {
-    // Sort the deck by cost
-    deck.sort((a, b) => a.cost - b.cost);
+    // Sort the deck by cost and if equal, by power and then by name
+    // This ensures that cards are displayed in a consistent order
+    deck.sort((a, b) => {
+        if (a.cost !== b.cost) {
+            return a.cost - b.cost; // Sort by cost
+        }
+        if (a.power !== b.power) {
+            return b.power - a.power; // Sort by power (higher power first)
+        }
+        return a.name.localeCompare(b.name); // Sort by name alphabetically
+    });
     // Update the displayed deck
     for (let i = 1; i <= 12; i++) {
         const card_slot = document.getElementById(`card-slot-${i}`);
