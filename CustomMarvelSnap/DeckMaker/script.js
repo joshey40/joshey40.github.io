@@ -38,7 +38,7 @@ async function updateDeck() {
                         card_slot.innerHTML = `<img src="${card.art}" alt="${card.name}">`; // Use the main art if no variants exist
                     }
                 } else {
-                    // TODO: Handle custom card
+                    // Handle custom card
                     const cardCanvas = await generatecard(
                         card.name,
                         card.colorName,
