@@ -4,7 +4,7 @@ const officialCards = await getOfficialCards();
 
 const deck = [];
 
-function updateDeck() {
+async function updateDeck() {
     // Sort the deck by cost and if equal, by power and then by name
     deck.sort((a, b) => {
         let costA = 0;
@@ -61,7 +61,31 @@ function updateDeck() {
                     }
                 } else {
                     // TODO: Handle custom card
-                    card_slot.innerHTML = `<img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/empty.png" alt="placeholder">`;
+                    const cardCanvas = await generatecard(
+                        card.name,
+                        card.colorName,
+                        card.nameOutlineColor,
+                        card.fontSelect,
+                        card.cost,
+                        card.power,
+                        card.showCostPower,
+                        "",
+                        1024,
+                        card.imagesBase64,
+                        card.zoom,
+                        card.nameZoom,
+                        "transparent",
+                        card.offset,
+                        card.finish
+                    );
+                    // Cut the canvas to a 1024x1024 and convert to image
+                    const cutCanvas = document.createElement("canvas");
+                    cutCanvas.width = 1024;
+                    cutCanvas.height = 1024;
+                    const cutCtx = cutCanvas.getContext("2d");
+                    cutCtx.drawImage(cardCanvas, 0, 0, 1024, 1024, 0, 0, 1024, 1024);
+                    cardCanvas = cutCanvas;
+                    card_slot.innerHTML = `<img src="${cardCanvas.toDataURL()}" alt="${card.name}">`;
                 }
             } else {
                 card_slot.innerHTML = `<img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/empty.png" alt="placeholder">`;
@@ -175,50 +199,118 @@ function clearDeck() {
     updateDeck(); // Update the displayed deck
 }
 
-function importCard(event) {
+async function importCard(event) {
     const file = event.target.files[0];
     if (!file) {
         return; // No file selected
     }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        try {
-            let cardData = JSON.parse(e.target.result);
-            if (cardData && cardData.card) {
-                const cardSettings = {
-                    name: "",
-                    colorName: "#ffffff",
-                    nameOutlineColor: "#000000",
-                    fontSelect: "BadaBoom",
-                    nameZoom: 1,
-                    cost: "0",
-                    power: "0",
-                    showCostPower: true,
-                    description: "",
-                    zoom: 1,
-                    transparentBg: false,
-                    backgroundColor: "#10072b",
-                    offset: [0, 0],
-                    imagesBase64: {
-                        mainImage: "",
-                        frameImage: "",
-                        frameBreakImage: "",
-                        titleImage: "",
-                        effectImage: "",
-                    },
-                    finish: "",
-                };
-                // Merge the imported card data with the default settings
-                
-                deck.push(cardSettings); // Add the card to the deck
-                updateDeck(); // Update the displayed deck
-            } else {
-                console.error("Invalid card data or card already exists in the deck.");
-            }
-        } catch (error) {
-            console.error("Error parsing card data:", error);
+    let cardSettings = {
+        name: "",                       // Card name
+        colorName: "#ffffff",         // Name color
+        nameOutlineColor: "#000000",  // Name outline color
+        fontSelect: "BadaBoom",         // Font for the name
+        nameZoom: 1,                    // Zoom factor for the name
+        cost: "1",                      // Card cost
+        power: "2",                     // Card power
+        showCostPower: true,            // Show cost and power
+        description: "",                // Description text
+        zoom: 1,                        // Zoom factor for the main image
+        transparentBg: false,           // Transparent background
+        backgroundColor: "#10072b",   // Background color
+        offset: [0, 0],                 // Offset for the image
+        imagesBase64: {
+            mainImage: null,            // Main image of the card
+            frameImage: null,           // Frame image
+            frameBreakImage: null,      // Frame break image
+            titleImage: null,           // Title image
+            effectImage: null,          // Effect image
+        },
+        finish: "",                     // Finish effect
+    };
+    const CARD_FILE_EXT = ".cmscard";
+    try {
+        // Basic extension guard (users could still rename; deeper structural checks below)
+        if (!file.name.toLowerCase().endsWith(CARD_FILE_EXT)) {
+          throw new Error("Unsupported file type. Please select a " + CARD_FILE_EXT + " file.");
         }
+
+        // Load the ZIP bundle
+        const zip = await JSZip.loadAsync(file);
+        const jsonEntry = zip.file("card.json");
+        if (!jsonEntry) throw new Error("card.json missing");
+
+        // Parse JSON metadata
+        const jsonText = await jsonEntry.async("string");
+        let data;
+        try { data = JSON.parse(jsonText); } catch { throw new Error("card.json invalid JSON"); }
+        if (typeof data.version !== "number") throw new Error("Invalid version");
+        if (data.version > 1) console.warn("Newer file version", data.version); // Compatibility forward-warning
+
+        // Destructure with safe fallbacks
+        const card = data.card || {};
+        const nameObj = card.name || {};
+        const stats = card.stats || {};
+        const desc = card.description || {};
+        const images = card.images || {};
+        const mainImg = images.main || {};
+        const frameBreakImg = images.frameBreak || {};
+        const background = card.background || {};
+
+        // Finish can be string or object {id}
+        let finishId = "";
+        if (card.finish) {
+        if (typeof card.finish === "string") finishId = card.finish; else if (card.finish.id) finishId = card.finish.id;
+        }
+
+        // Repopulate card settings with card data
+        cardSettings.name = nameObj.text || "";
+        cardSettings.colorName = nameObj.color || "#ffffff";
+        cardSettings.nameOutlineColor = nameObj.outlineColor || "#000000";
+        cardSettings.fontSelect = nameObj.font || "BadaBoom";
+        cardSettings.nameZoom = nameObj.zoom || 1;
+        cardSettings.cost = stats.cost || "1";
+        cardSettings.power = stats.power || "2";
+        cardSettings.showCostPower = stats.showCostPower !== false;
+        cardSettings.description = desc.text || "";
+        cardSettings.zoom = background.zoom || 1;
+        cardSettings.transparentBg = background.transparent || false;
+        cardSettings.backgroundColor = background.color || "#10072b";
+
+        // Restore positional + selection state
+        const offsetX = typeof mainImg.offsetX === "number" ? mainImg.offsetX : 0;
+        const offsetY = typeof mainImg.offsetY === "number" ? mainImg.offsetY : 0;
+        cardSettings.offset = [offsetX, offsetY];
+        cardSettings.imagesBase64.frameImage = (card.frame && card.frame.id) || null;
+        cardSettings.imagesBase64.effectImage = (card.effect && card.effect.id) || null;
+        cardSettings.finish = finishId || null;
+
+        // Convert images (title, main, framebreak) to Base64
+        const toBase64 = (path) => new Promise((resolve) => {
+            if (!path) return;               // Nothing referenced
+            let entry = zip.file(path);
+            if (!entry) {                    // Fallback: strip directories and try last segment
+                const simple = path.split('/').pop();
+                entry = zip.file(simple);
+            }
+            if (!entry) return;              // Missing file (graceful skip)
+            entry.async("blob").then((file) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(file);
+            });
+        });
+        cardSettings.imagesBase64.titleImage = await toBase64(nameObj.imageFile);
+        cardSettings.imagesBase64.mainImage = await toBase64(mainImg.file);
+        cardSettings.imagesBase64.frameBreakImage = await toBase64(frameBreakImg.file);
+
+        // Add the card to the deck and update the deck
+        deck.push(cardSettings);
+        updateDeck();
+    } catch (err) {
+        alert("Import failed: " + err.message);
+        console.error(err);
     }
+    
 }
 
 window.clearDeck = clearDeck; // Expose the clearDeck function globally

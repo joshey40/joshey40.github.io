@@ -5,6 +5,7 @@
     <title>CMS Deck Maker</title>
     <link rel="shortcut icon" type="image/x-icon" href="https://joshey40.github.io/CustomMarvelSnap/favicon.ico"/>
     <link href="https://joshey40.github.io/CustomMarvelSnap/css/fonts.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <link href="https://joshey40.github.io/CustomMarvelSnap/DeckMaker/deckmaker.css" rel="stylesheet">
     <script async src="script.js" type="module"></script>
 </html>
@@ -53,7 +54,7 @@
         <div class="editor-div">
             <div id="add-cards-div" style="width: fit-content; overflow-y: scroll; display: flex; flex-direction: column; align-items: center; height: 300px;"></div>
             <div class="settings-button-div">
-                <button id="default-button" style="width: 100px;" onclick="clearDeck()">Clear Deck</button>
+                <button class="default-button" style="width: 100px;" onclick="clearDeck()">Clear Deck</button>
                 <label for="import-button" class="default-button">Import Card</label>
                 <input type="file" id="import-button" accept=".json" style="display: none;" onchange="importCard(event)">
             </div>
