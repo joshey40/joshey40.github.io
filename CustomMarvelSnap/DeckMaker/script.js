@@ -171,6 +171,7 @@ for (let i = 0; i < officialCards.length; i++) {
             updateDeck();
             return;
         }
+        officialCards[i].currentSelectedVariant = -1; // Reset variant selection
         deck.push(officialCards[i]);
         updateDeck();
     };
