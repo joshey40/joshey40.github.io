@@ -304,13 +304,22 @@ async function downloadDeckImg() {
     // Draw each card on the canvas
     for (let i = 0; i < 12; i++) {
         const cardSlot = document.getElementById(`card-slot-${i + 1}`);
+        const imgSrc = cardSlot.querySelector("img").src;
         const img = new Image();
-        img.src = cardSlot.querySelector("img").src;
+        // Set crossOrigin for CORS-safe images
+        if (!imgSrc.startsWith('data:')) {
+            img.crossOrigin = 'anonymous';
+        }
+        img.src = imgSrc;
         await new Promise((resolve) => {
             img.onload = () => {
                 const x = Math.floor(i % (12 / height)) * 1024;
                 const y = Math.floor(i / (12 / height)) * 1024;
                 ctx.drawImage(img, x, y, 1024, 1024);
+                resolve();
+            };
+            img.onerror = () => {
+                // If image fails to load (CORS), skip drawing
                 resolve();
             };
         });
