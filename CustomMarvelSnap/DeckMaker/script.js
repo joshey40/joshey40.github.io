@@ -61,8 +61,7 @@ async function updateDeck() {
                     cutCanvas.height = 1024;
                     const cutCtx = cutCanvas.getContext("2d");
                     cutCtx.drawImage(cardCanvas, 0, 0, 1024, 1024, 0, 0, 1024, 1024);
-                    cardCanvas = cutCanvas;
-                    card_slot.innerHTML = `<img src="${cardCanvas.toDataURL()}" alt="${card.name}">`;
+                    card_slot.innerHTML = `<img src="${cutCanvas.toDataURL()}" alt="${card.name}">`;
                 }
             } else {
                 card_slot.innerHTML = `<img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/empty.png" alt="placeholder">`;
