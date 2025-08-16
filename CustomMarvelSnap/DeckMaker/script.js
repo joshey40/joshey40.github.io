@@ -245,12 +245,12 @@ async function importCard(event) {
         cardSettings.colorName = nameObj.color || "#ffffff";
         cardSettings.nameOutlineColor = nameObj.outlineColor || "#000000";
         cardSettings.fontSelect = nameObj.font || "BadaBoom";
-        cardSettings.nameZoom = nameObj.zoom || 1;
+        cardSettings.nameZoom = nameObj.zoom / 100 || 1;
         cardSettings.cost = stats.cost || "1";
         cardSettings.power = stats.power || "2";
         cardSettings.showCostPower = stats.showCostPower !== false;
         cardSettings.description = desc.text || "";
-        cardSettings.zoom = mainImg.zoom || 1;
+        cardSettings.zoom = 1 + (mainImg.zoom / 100 || 1);
         cardSettings.transparentBg = background.transparent || false;
         cardSettings.backgroundColor = background.color || "#10072b";
 
