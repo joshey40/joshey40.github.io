@@ -293,7 +293,7 @@ async function importCard(event) {
 
 async function downloadDeckImg() {
     const deckCanvas = document.createElement("canvas");
-    const height = 2;
+    const height = document.getElementById("deck-img-grid").value || 2;
     deckCanvas.height = height * 1024;
     deckCanvas.width = (12 / height) * 1024;
 
