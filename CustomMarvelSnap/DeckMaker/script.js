@@ -5,39 +5,16 @@ const officialCards = await getOfficialCards();
 const deck = [];
 
 async function updateDeck() {
+    console.log("Updating deck: ", deck);
     // Sort the deck by cost and if equal, by power and then by name
     deck.sort((a, b) => {
-        let costA = 0;
-        let costB = 0;
-        let powerA = 0;
-        let powerB = 0;
-        let nameA = "";
-        let nameB = "";
-        if (a.cid) {
-            costA = a.cost || 0;
-            powerA = a.power || 0;
-            nameA = a.name || "";
-        } else {
-            costA = a.stats?.cost || 0;
-            powerA = a.stats?.power || 0;
-            nameA = a.name || "";
+        if (a.cost !== b.cost) {
+            return a.cost - b.cost; // Sort by cost first
         }
-        if (b.cid) {
-            costB = b.cost || 0;
-            powerB = b.power || 0;
-            nameB = b.name || "";
-        } else {
-            costB = b.stats?.cost || 0;
-            powerB = b.stats?.power || 0;
-            nameB = b.name || "";
+        if (a.power !== b.power) {
+            return b.power - a.power; // Sort by power next (descending)
         }
-        if (costA !== costB) {
-            return costA - costB; // Sort by cost (lower cost first)
-        }
-        if (powerA !== powerB) {
-            return powerA - powerB; // Sort by power (lower power first)
-        }
-        return nameA.localeCompare(nameB); // Sort by name (alphabetical order)
+        return a.name.localeCompare(b.name); // Finally, sort by name alphabetically
     });
     // Update the displayed deck
     for (let i = 1; i <= 12; i++) {
@@ -200,10 +177,12 @@ function clearDeck() {
 }
 
 async function importCard(event) {
+    console.log("Importing card...");
     const file = event.target.files[0];
     if (!file) {
         return; // No file selected
     }
+    console.log("Selected file:", file);
     let cardSettings = {
         name: "",                       // Card name
         colorName: "#ffffff",         // Name color
