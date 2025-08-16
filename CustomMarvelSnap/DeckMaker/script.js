@@ -289,10 +289,44 @@ async function importCard(event) {
         alert("Import failed: " + err.message);
         console.error(err);
     }
-    
+}
+
+function downloadDeckImg() {
+    const deckCanvas = document.createElement("canvas");
+    const height = 2;
+    deckCanvas.height = height * 1024;
+    deckCanvas.width = (12 / height) * 1024;
+
+    const ctx = deckCanvas.getContext("2d");
+    ctx.fillStyle = "#10072b";
+    ctx.fillRect(0, 0, deckCanvas.width, deckCanvas.height);
+
+    // Draw each card on the canvas
+    for (let i = 0; i < 12; i++) {
+        const cardSlot = document.getElementById(`card-slot-${i + 1}`);
+        const img = new Image();
+        img.src = cardSlot.querySelector("img").src;
+        img.onload = () => {
+            const x = Math.floor(i % (12 / height)) * 1024;
+            const y = Math.floor(i / (12 / height)) * 1024;
+            ctx.drawImage(img, x, y, 1024, 1024);
+        };
+    }
+
+    // Convert the canvas to a data URL
+    const dataURL = deckCanvas.toDataURL("image/png");
+
+    // Create a link element to download the image
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "deck.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 window.clearDeck = clearDeck; // Expose the clearDeck function globally
-window.importCard = importCard;
+window.importCard = importCard; // Expose the importCard function globally
+window.downloadDeckImg = downloadDeckImg; // Expose the downloadDeckImg function globally
 
-export { clearDeck, importCard }; // Export functions and variables for use in other modules
+export { clearDeck, importCard, downloadDeckImg }; // Export functions and variables for use in other modules
