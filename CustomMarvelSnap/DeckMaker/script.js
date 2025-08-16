@@ -178,6 +178,7 @@ function clearDeck() {
 
 async function importCard(event) {
     const file = event.target.files[0];
+    document.getElementById("import-button").value = ""; // Reset the file input
     if (!file) {
         return; // No file selected
     }
@@ -249,14 +250,15 @@ async function importCard(event) {
         cardSettings.power = stats.power || "2";
         cardSettings.showCostPower = stats.showCostPower !== false;
         cardSettings.description = desc.text || "";
-        cardSettings.zoom = background.zoom || 1;
+        cardSettings.zoom = mainImg.zoom || 1;
         cardSettings.transparentBg = background.transparent || false;
         cardSettings.backgroundColor = background.color || "#10072b";
 
         // Restore positional + selection state
         const offsetX = typeof mainImg.offsetX === "number" ? mainImg.offsetX : 0;
         const offsetY = typeof mainImg.offsetY === "number" ? mainImg.offsetY : 0;
-        cardSettings.offset = [offsetX, offsetY];
+        const nameOffsetY = typeof nameObj.offsetY === "number" ? nameObj.offsetY : 0;
+        cardSettings.offset = [offsetX, offsetY, nameOffsetY];
         cardSettings.imagesBase64.frameImage = (card.frame && card.frame.id) || null;
         cardSettings.imagesBase64.effectImage = (card.effect && card.effect.id) || null;
         cardSettings.finish = finishId || null;
