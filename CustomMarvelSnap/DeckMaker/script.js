@@ -307,7 +307,7 @@ async function downloadDeckImg() {
 
     const ctx = deckCanvas.getContext("2d");
     ctx.fillStyle = document.getElementById("backgroundColor").value || "#10072b";
-    if (!document.getElementById("transparentBg").checked) {
+    if (document.getElementById("transparentBg").checked) {
         ctx.fillRect(0, 0, deckCanvas.width, deckCanvas.height);
     }
 
