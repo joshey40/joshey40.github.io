@@ -102,6 +102,11 @@ p {
     flex-direction: row;
     align-items: center;
 }
+@media (max-width: 550px) {
+    .editor-div {
+        flex-direction: column;
+    }
+}
 .default-button {
     margin: 4px 0px;
     padding: 4px;
@@ -126,9 +131,4 @@ p {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-@media (max-width: 550px) {
-    .settings-button-div {
-        flex-direction: row;
-    }
 }

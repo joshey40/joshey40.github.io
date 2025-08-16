@@ -121,6 +121,14 @@ for (let i = 1; i <= 12; i++) {
         card_slot.addEventListener("touchcancel", () => {
             clearTimeout(timer); // Clear the timer if the touch is canceled
         });
+        card_slot.addEventListener("touchmove", (event) => {
+            clearTimeout(timer); // Clear the timer if the touch is moved
+        });
+        card_slot.addEventListener("contextmenu", (event) => {
+            event.preventDefault(); // Prevent the default context menu
+            clearTimeout(timer); // Clear the timer if the context menu is opened
+            handleCardLongClick(i);
+        });
         card_slot.addEventListener("mousedown", () => {
             // Timer
             timer = setTimeout(() => {
