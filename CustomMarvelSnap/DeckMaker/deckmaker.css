@@ -127,3 +127,8 @@ p {
     align-items: center;
     justify-content: center;
 }
+@media (max-width: 550px) {
+    .settings-button-div {
+        flex-direction: row;
+    }
+}
