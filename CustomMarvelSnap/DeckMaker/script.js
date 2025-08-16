@@ -6,6 +6,7 @@ const officialCards = await getOfficialCards();
 const deck = [];
 
 async function updateDeck() {
+    console.log("Updating deck: ", deck);
     // Sort the deck by cost and if equal, by power and then by name
     deck.sort((a, b) => {
         if (a.cost !== b.cost) {
