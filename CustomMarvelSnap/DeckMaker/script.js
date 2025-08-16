@@ -298,8 +298,10 @@ async function downloadDeckImg() {
     deckCanvas.width = (12 / height) * 1024;
 
     const ctx = deckCanvas.getContext("2d");
-    ctx.fillStyle = "#10072b";
-    ctx.fillRect(0, 0, deckCanvas.width, deckCanvas.height);
+    ctx.fillStyle = document.getElementById("backgroundColor").value || "#10072b";
+    if (!document.getElementById("transparentBg").checked) {
+        ctx.fillRect(0, 0, deckCanvas.width, deckCanvas.height);
+    }
 
     // Draw each card on the canvas
     for (let i = 0; i < 12; i++) {
