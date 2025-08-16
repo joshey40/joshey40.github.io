@@ -316,16 +316,13 @@ async function downloadDeckImg() {
         });
     }
 
-    // Convert the canvas to a data URL
-    const dataURL = deckCanvas.toDataURL("image/png");
-
-    // Create a link element to download the image
-    const link = document.createElement("a");
-    link.href = dataURL;
-    link.download = "deck.png";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    deckCanvas.toBlob((blob) => {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "deck_image.png";
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    }, "image/png");
 }
 
 window.clearDeck = clearDeck; // Expose the clearDeck function globally
