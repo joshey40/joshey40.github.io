@@ -291,7 +291,7 @@ async function importCard(event) {
     }
 }
 
-function downloadDeckImg() {
+async function downloadDeckImg() {
     const deckCanvas = document.createElement("canvas");
     const height = 2;
     deckCanvas.height = height * 1024;
@@ -306,11 +306,14 @@ function downloadDeckImg() {
         const cardSlot = document.getElementById(`card-slot-${i + 1}`);
         const img = new Image();
         img.src = cardSlot.querySelector("img").src;
-        img.onload = () => {
-            const x = Math.floor(i % (12 / height)) * 1024;
-            const y = Math.floor(i / (12 / height)) * 1024;
-            ctx.drawImage(img, x, y, 1024, 1024);
-        };
+        await new Promise((resolve) => {
+            img.onload = () => {
+                const x = Math.floor(i % (12 / height)) * 1024;
+                const y = Math.floor(i / (12 / height)) * 1024;
+                ctx.drawImage(img, x, y, 1024, 1024);
+                resolve();
+            };
+        });
     }
 
     // Convert the canvas to a data URL
