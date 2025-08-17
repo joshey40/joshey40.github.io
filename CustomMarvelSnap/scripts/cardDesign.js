@@ -231,13 +231,12 @@ async function generatecard(
     ctx.globalCompositeOperation = "multiply";
     const foilImageMask = await getPreloadedImage("../res/img/finishes/foil.png");
     ctx.drawImage(foilImageMask, 0, 0, size, size);
-    ctx.drawImage(artMask, 0, 0, size, size);
     ctx.globalCompositeOperation = "source-in";
   } else if (finish === "gold") {
     ctx.globalCompositeOperation = "multiply";
     const goldImageMask = await getPreloadedImage("../res/img/finishes/gold.png");
     ctx.drawImage(goldImageMask, 0, 0, size, size);
-    ctx.drawImage(artMask, 0, 0, size, size);
+    ctx.globalCompositeOperation = "source-in";
   }
   // Frame
   let frameImg;
