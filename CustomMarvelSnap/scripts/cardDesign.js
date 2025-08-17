@@ -225,23 +225,20 @@ async function generatecard(
   h *= scale * zoom;
   let x = ((1024 - w) / 2) * scale + offset[0] * scale;
   let y = ((1024 - h) / 2) * scale + 3 * scale + offset[1] * scale;
+    ctx.drawImage(backgroundImg, x, y, w, h);
   // Apply Finish
   if (finish === "foil") {
+    turnContextBlackAndWhite(ctx);
     ctx.globalCompositeOperation = "multiply";
     const foilImageMask = await getPreloadedImage("../res/img/finishes/foil.png");
     ctx.drawImage(foilImageMask, 0, 0, size, size);
-    ctx.globalCompositeOperation = "luminosity";
-    ctx.drawImage(backgroundImg, x, y, w, h);
     ctx.globalCompositeOperation = "source-in";
   } else if (finish === "gold") {
+    turnContextBlackAndWhite(ctx);
     ctx.globalCompositeOperation = "multiply";
     const goldImageMask = await getPreloadedImage("../res/img/finishes/gold.png");
     ctx.drawImage(goldImageMask, 0, 0, size, size);
-    ctx.globalCompositeOperation = "luminosity";
-    ctx.drawImage(backgroundImg, x, y, w, h);
     ctx.globalCompositeOperation = "source-in";
-  } else {
-    ctx.drawImage(backgroundImg, x, y, w, h);
   }
   // Frame
   let frameImg;
@@ -536,6 +533,21 @@ function applyFinish(img, finish, layer) {
     return img;
   }
   return img;
+}
+
+function turnContextBlackAndWhite(ctx) {
+  const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+  const data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+    data[i] = avg;     // Red
+    data[i + 1] = avg; // Green
+    data[i + 2] = avg; // Blue
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+  return ctx;
 }
 
 export { generatecard };
