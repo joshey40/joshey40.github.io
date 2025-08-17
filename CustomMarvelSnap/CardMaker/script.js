@@ -911,6 +911,7 @@ for (const finish in finishes) {
   finishSelectButton.style.borderRadius = "5px";
   finishSelectButton.style.width = "125px";
   finishSelectButton.style.textAlign = "center";
+  finishSelectButton.style.height = "fit-content";
   finishSelectDiv.appendChild(finishSelectButton);
 }
 
