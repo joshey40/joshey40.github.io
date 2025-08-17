@@ -875,6 +875,7 @@ const finishes = {
   inked: "Inked",
   foil: "Foil",
   gold: "Gold",
+  prism: "Prism",
 };
 const finishesButtonImage = {
   inked:
@@ -883,6 +884,8 @@ const finishesButtonImage = {
     "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/Foil.webp",
   gold:
     "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/GoldFoil.webp",
+  prism:
+    "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/PrismFoil.webp",
 };
 
 for (const finish in finishes) {

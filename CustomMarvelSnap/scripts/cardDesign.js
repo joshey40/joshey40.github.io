@@ -8,6 +8,7 @@ const staticImagePaths = [
   "../res/img/frames/power.png",
   "../res/img/finishes/gold.png",
   "../res/img/finishes/foil.png",
+  "../res/img/finishes/prism.png",
 ];
 const numbersDir = "../res/img/numbers/";
 const numbers = ["-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -232,13 +233,21 @@ async function generatecard(
     ctx.globalCompositeOperation = "hard-light";
     const foilImageMask = await getPreloadedImage("../res/img/finishes/foil.png");
     ctx.drawImage(foilImageMask, 0, 0, size, size);
-    ctx.globalCompositeOperation = "source-in";
   } else if (finish === "gold") {
     turnContextBlackAndWhite(ctx);
     ctx.globalCompositeOperation = "multiply";
     const goldImageMask = await getPreloadedImage("../res/img/finishes/gold.png");
     ctx.drawImage(goldImageMask, 0, 0, size, size);
-    ctx.globalCompositeOperation = "source-in";
+  } else if (finish === "prism") {
+    ctx.globalCompositeOperation = "source-over";
+    const prismImageMask = await getPreloadedImage("../res/img/finishes/prism.png");
+    ctx.drawImage(prismImageMask, 0, 0, size, size);
+  }
+  // Foreground
+  ctx.globalCompositeOperation = "source-over";
+  if (imagesBase64.foregroundImage) {
+    let foregroundImg = await getImg(imagesBase64.foregroundImage, finish, "foreground");
+    ctx.drawImage(foregroundImg, x, y, w, h);
   }
   // Frame
   let frameImg;
@@ -247,7 +256,6 @@ async function generatecard(
   } else {
     frameImg = await getPreloadedImage("../res/img/frames/basic/common.png");
   }
-  ctx.globalCompositeOperation = "source-over";
   ctx.drawImage(frameImg, 0, 0, size, size);
   // Cost and Power
   if (showCostPower) {
@@ -324,11 +332,7 @@ async function generatecard(
   }
   // Frame Break
   if (imagesBase64.frameBreakImage) {
-    let frameBreakImg = await getImg(
-      imagesBase64.frameBreakImage,
-      finish,
-      "frameBreak"
-    );
+    let frameBreakImg = await getImg(imagesBase64.frameBreakImage, finish, "frameBreak");
     ctx.drawImage(frameBreakImg, x, y, w, h);
   }
   // Title
