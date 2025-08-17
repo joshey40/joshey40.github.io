@@ -873,15 +873,21 @@ for (const category in effectCategories) {
 const finishSelectDiv = document.getElementById("finishSelectDiv");
 const finishes = {
   inked: "Inked",
+  foil: "Foil",
+  gold: "Gold",
 };
-const finshesButtonImage = {
+const finishesButtonImage = {
   inked:
     "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/Ink.webp",
+  foil:
+    "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/Foil.webp",
+  gold:
+    "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/GoldFoil.webp",
 };
 
 for (const finish in finishes) {
   const finishImg = document.createElement("img");
-  finishImg.src = finshesButtonImage[finish];
+  finishImg.src = finishesButtonImage[finish];
   finishImg.alt = finishes[finish];
   finishImg.className = "frame-image";
   const finishSelectButton = document.createElement("div");

@@ -6,8 +6,8 @@ const staticImagePaths = [
   "../res/img/default_cards/hulk.png",
   "../res/img/frames/cost.png",
   "../res/img/frames/power.png",
-  "../res/img/finishes/goldFinish.jpg",
-  "../res/img/finishes/foilFinish.jpg",
+  "../res/img/finishes/gold.jpg",
+  "../res/img/finishes/foil.jpg",
 ];
 const numbersDir = "../res/img/numbers/";
 const numbers = ["-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -226,6 +226,19 @@ async function generatecard(
   let x = ((1024 - w) / 2) * scale + offset[0] * scale;
   let y = ((1024 - h) / 2) * scale + 3 * scale + offset[1] * scale;
   ctx.drawImage(backgroundImg, x, y, w, h);
+  // Apply Finish
+  if (finish === "foil") {
+    ctx.globalCompositeOperation = "multiply";
+    const foilImageMask = await getPreloadedImage("../res/img/finishes/foil.jpg");
+    ctx.drawImage(foilImageMask, 0, 0, size, size);
+    ctx.drawImage(artMask, 0, 0, size, size);
+    ctx.globalCompositeOperation = "source-in";
+  } else if (finish === "gold") {
+    ctx.globalCompositeOperation = "multiply";
+    const goldImageMask = await getPreloadedImage("../res/img/finishes/gold.jpg");
+    ctx.drawImage(goldImageMask, 0, 0, size, size);
+    ctx.drawImage(artMask, 0, 0, size, size);
+  }
   // Frame
   let frameImg;
   if (imagesBase64.frameImage) {
@@ -488,6 +501,9 @@ function applyFinish(img, finish, layer) {
   if (finish === "none") {
     return img;
   }
+  if (layer === "title") {
+    return img; // No finish for title layer
+  }
 
   if (finish === "inked") {
     // Black and white effect whith high contrast
@@ -513,14 +529,6 @@ function applyFinish(img, finish, layer) {
     }
     ctx.putImageData(imageData, 0, 0);
     img = canvas;
-    return img;
-  }
-  if (finish === "foil") {
-    if (layer !== "background") {
-      return img;
-    }
-    // Apply foil effect
-    // TODO: Implement foil effect
     return img;
   }
   return img;
