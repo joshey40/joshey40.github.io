@@ -225,11 +225,11 @@ async function generatecard(
   h *= scale * zoom;
   let x = ((1024 - w) / 2) * scale + offset[0] * scale;
   let y = ((1024 - h) / 2) * scale + 3 * scale + offset[1] * scale;
-    ctx.drawImage(backgroundImg, x, y, w, h);
+  ctx.drawImage(backgroundImg, x, y, w, h);
   // Apply Finish
   if (finish === "foil") {
     turnContextBlackAndWhite(ctx);
-    ctx.globalCompositeOperation = "multiply";
+    ctx.globalCompositeOperation = "hard-light";
     const foilImageMask = await getPreloadedImage("../res/img/finishes/foil.png");
     ctx.drawImage(foilImageMask, 0, 0, size, size);
     ctx.globalCompositeOperation = "source-in";
