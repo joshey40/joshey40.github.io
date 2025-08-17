@@ -225,18 +225,23 @@ async function generatecard(
   h *= scale * zoom;
   let x = ((1024 - w) / 2) * scale + offset[0] * scale;
   let y = ((1024 - h) / 2) * scale + 3 * scale + offset[1] * scale;
-  ctx.drawImage(backgroundImg, x, y, w, h);
   // Apply Finish
   if (finish === "foil") {
     ctx.globalCompositeOperation = "multiply";
     const foilImageMask = await getPreloadedImage("../res/img/finishes/foil.png");
     ctx.drawImage(foilImageMask, 0, 0, size, size);
+    ctx.globalCompositeOperation = "luminosity";
+    ctx.drawImage(backgroundImg, x, y, w, h);
     ctx.globalCompositeOperation = "source-in";
   } else if (finish === "gold") {
     ctx.globalCompositeOperation = "multiply";
     const goldImageMask = await getPreloadedImage("../res/img/finishes/gold.png");
     ctx.drawImage(goldImageMask, 0, 0, size, size);
+    ctx.globalCompositeOperation = "luminosity";
+    ctx.drawImage(backgroundImg, x, y, w, h);
     ctx.globalCompositeOperation = "source-in";
+  } else {
+    ctx.drawImage(backgroundImg, x, y, w, h);
   }
   // Frame
   let frameImg;
