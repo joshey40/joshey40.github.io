@@ -151,7 +151,7 @@ for (let i = 1; i <= 12; i++) {
 }
 
 // Add buttons to add cards to the deck
-const buttonsAddCard = {};
+const buttonsAddCard = [];
 const addCardButtonsDiv = document.getElementById("add-cards-div");
 for (let i = 0; i < officialCards.length; i++) {
     const button = document.createElement("button");
@@ -176,7 +176,7 @@ for (let i = 0; i < officialCards.length; i++) {
         deck.push(officialCards[i]);
         updateDeck();
     };
-    buttonsAddCard[officialCards[i].cid] = button; // Store the button for later reference
+    buttonsAddCard.push(button);
     addCardButtonsDiv.appendChild(button);
 }
 
@@ -220,9 +220,8 @@ function updateAddCardButtons() {
     });
 
     // Update the displayed add card buttons
-    Object.keys(buttonsAddCard).forEach((cid) => {
-        const button = buttonsAddCard[cid];
-        if (filteredCards.some(card => card.cid === cid)) {
+    buttonsAddCard.forEach((button, index) => {
+        if (filteredCards[index]) {
             button.style.display = "block";
         } else {
             button.style.display = "none";

@@ -115,6 +115,7 @@ p {
     align-items: center;
     height: 300px;
     margin-right: 20px;
+    margin-left: 20px;
     border: 4px solid rgba(255, 255, 255, 0.5);
     padding: 2px;
 }
