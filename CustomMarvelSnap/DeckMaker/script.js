@@ -151,6 +151,7 @@ for (let i = 1; i <= 12; i++) {
 }
 
 // Add buttons to add cards to the deck
+const buttonsAddCard = [];
 const addCardButtonsDiv = document.getElementById("add-cards-div");
 for (let i = 0; i < officialCards.length; i++) {
     const button = document.createElement("button");
@@ -175,10 +176,58 @@ for (let i = 0; i < officialCards.length; i++) {
         deck.push(officialCards[i]);
         updateDeck();
     };
+    buttonsAddCard.push(button);
     addCardButtonsDiv.appendChild(button);
 }
 
+const filterCards = {
+    text: "",
+    cost: "",
+    power: "",
+    sortBy: "name"
+};
+
 updateDeck();
+updateAddCardButtons();
+
+function updateFilter() {
+    filterCards.text = document.getElementById("card-text-input").value.toLowerCase();
+    filterCards.cost = document.getElementById("card-cost-filter").value;
+    filterCards.power = document.getElementById("card-power-filter").value;
+    filterCards.sortBy = document.getElementById("sort-by").value;
+
+    updateAddCardButtons();
+}
+
+function updateAddCardButtons() {
+    const filteredCards = officialCards.filter(card => {
+        const matchesText = card.name.toLowerCase().includes(filterCards.text) || card.description.toLowerCase().includes(filterCards.text);
+        const matchesCost = filterCards.cost === "" || card.cost === filterCards.cost;
+        const matchesPower = filterCards.power === "" || card.power <= filterCards.power;
+
+        return matchesText && matchesCost && matchesPower;
+    });
+
+    // Sort the filtered cards
+    filteredCards.sort((a, b) => {
+        if (filterCards.sortBy === "name") {
+            return a.name.localeCompare(b.name);
+        } else if (filterCards.sortBy === "cost") {
+            return a.cost - b.cost;
+        } else if (filterCards.sortBy === "power") {
+            return a.power - b.power;
+        }
+    });
+
+    // Update the displayed add card buttons
+    buttonsAddCard.forEach((button, index) => {
+        if (filteredCards[index]) {
+            button.style.display = "block";
+        } else {
+            button.style.display = "none";
+        }
+    });
+}
 
 function clearDeck() {
     deck.length = 0; // Clear the deck
@@ -197,8 +246,8 @@ async function importCard(event) {
         nameOutlineColor: "#000000",  // Name outline color
         fontSelect: "BadaBoom",         // Font for the name
         nameZoom: 1,                    // Zoom factor for the name
-        cost: "1",                      // Card cost
-        power: "2",                     // Card power
+        cost: "0",                      // Card cost
+        power: "",                      // Card power
         showCostPower: true,            // Show cost and power
         description: "",                // Description text
         zoom: 1,                        // Zoom factor for the main image
@@ -348,5 +397,6 @@ async function downloadDeckImg() {
 window.clearDeck = clearDeck; // Expose the clearDeck function globally
 window.importCard = importCard; // Expose the importCard function globally
 window.downloadDeckImg = downloadDeckImg; // Expose the downloadDeckImg function globally
+window.updateFilter = updateFilter; // Expose the updateFilter function globally
 
-export { clearDeck, importCard, downloadDeckImg }; // Export functions and variables for use in other modules
+export { clearDeck, importCard, downloadDeckImg, updateFilter }; // Export functions and variables for use in other modules
