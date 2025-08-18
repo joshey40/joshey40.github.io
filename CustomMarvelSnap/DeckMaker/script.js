@@ -201,7 +201,7 @@ function updateFilter() {
 
 function updateAddCardButtons() {
     const filteredCards = officialCards.filter(card => {
-        const matchesText = card.name.toLowerCase().includes(filterCards.text) || card.description.toLowerCase().includes(filterCards.text);
+        const matchesText = card.name.toLowerCase().includes(filterCards.text) || card.ability.toLowerCase().includes(filterCards.text);
         const matchesCost = filterCards.cost === "" || card.cost === filterCards.cost;
         const matchesPower = filterCards.power === "" || card.power <= filterCards.power;
 
