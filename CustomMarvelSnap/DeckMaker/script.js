@@ -11,6 +11,11 @@ async function updateDeck() {
         if (a.cost !== b.cost) {
             return a.cost - b.cost; // Sort by cost first
         }
+        if (a.power !== undefined) {
+            return -1;
+        } else if (b.power !== undefined) {
+            return 1;
+        }
         if (a.power !== b.power) {
             return b.power - a.power; // Sort by power next (descending)
         }
@@ -304,7 +309,7 @@ async function importCard(event) {
         cardSettings.fontSelect = nameObj.font || "BadaBoom";
         cardSettings.nameZoom = nameObj.zoom / 100 || 1;
         cardSettings.cost = stats.cost || "1";
-        cardSettings.power = stats.power || "2";
+        cardSettings.power = stats.power || "";
         cardSettings.showCostPower = stats.showCostPower !== false;
         cardSettings.description = desc.text || "";
         cardSettings.zoom = 1 + (mainImg.zoom / 100 || 1);
