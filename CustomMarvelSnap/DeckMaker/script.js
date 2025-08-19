@@ -176,7 +176,6 @@ for (let i = 0; i < officialCards.length; i++) {
         deck.push(officialCards[i]);
         updateDeck();
     };
-    buttonsAddCard.data = officialCards[i].cid; // Store the card ID in the button data
     buttonsAddCard.push(button);
     addCardButtonsDiv.appendChild(button);
 }
@@ -203,8 +202,8 @@ function updateFilter() {
 function updateAddCardButtons() {
     const filteredCards = officialCards.filter(card => {
         const matchesText = card.name.toLowerCase().includes(filterCards.text) || card.ability.toLowerCase().includes(filterCards.text);
-        const matchesCost = filterCards.cost === "" || card.cost === filterCards.cost;
-        const matchesPower = filterCards.power === "" || card.power === filterCards.power;
+        const matchesCost = filterCards.cost === "" || card.cost === parseInt(filterCards.cost);
+        const matchesPower = filterCards.power === "" || card.power === parseInt(filterCards.power);
 
         return matchesText && matchesCost && matchesPower;
     });
@@ -227,7 +226,7 @@ function updateAddCardButtons() {
     const addCardButtonsDiv = document.getElementById("add-cards-div");
     addCardButtonsDiv.innerHTML = ""; // Clear existing buttons
     for (let i = 0; i < buttonsAddCard.length; i++) {
-        if (filteredCards.some(card => card.cid === buttonsAddCard[i].data)) {
+        if (filteredCards.some(card => card.name === buttonsAddCard[i].innerText)) {
             addCardButtonsDiv.appendChild(buttonsAddCard[i]);
         }
     }
