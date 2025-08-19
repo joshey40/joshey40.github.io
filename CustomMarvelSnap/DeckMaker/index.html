@@ -59,18 +59,10 @@
                     <option value="power">Sort by Power</option>
                 </select>
                 <hr style="width: 200px; border: 2px solid #10072b; margin: 5px 0; border-radius: 5px;">
-                <input type="text" id="card-text-input" class="default-input" style="width: 200px;" placeholder="Search" onchange="updateFilter()">
+                <input type="text" id="card-text-input" class="default-input" style="width: 200px;" placeholder="Search" oninput="updateFilter()">
                 <div style="display: flex; justify-content: space-evenly;">
-                    <select id="card-cost-filter" class="default-input" style="width: 102px; margin-right: 8px;" onchange="updateFilter()">
-                        <option value="">All Costs</option>
-                        <option value=1>Cost: 1</option>
-                        <option value=2>Cost: 2</option>
-                        <option value=3>Cost: 3</option>
-                        <option value=4>Cost: 4</option>
-                        <option value=5>Cost: 5</option>
-                        <option value=6>Cost: 6</option>
-                    </select>
-                    <input type="number" id="card-power-filter" class="default-input" style="width: 90px;" placeholder="Power" onchange="updateFilter()">
+                    <input type="number" id="card-cost-filter" class="default-input" style="width: 90px;" placeholder="Cost" min="0" max="8" oninput="updateFilter()" onchange="updateFilter()">
+                    <input type="number" id="card-power-filter" class="default-input" style="width: 90px;" placeholder="Power" min="-8" max="20" oninput="updateFilter()" onchange="updateFilter()">
                 </div>
             </div>
             <div class="add-cards-div" id="add-cards-div"></div>
