@@ -176,6 +176,7 @@ for (let i = 0; i < officialCards.length; i++) {
         deck.push(officialCards[i]);
         updateDeck();
     };
+    buttonsAddCard.data = officialCards[i].cid; // Store the card ID in the button data
     buttonsAddCard.push(button);
     addCardButtonsDiv.appendChild(button);
 }
@@ -222,13 +223,13 @@ function updateAddCardButtons() {
     console.log("Filtered cards: ", filteredCards);
 
     // Update the displayed add card buttons
-    buttonsAddCard.forEach((button, index) => {
-        if (filteredCards[index]) {
-            button.style.display = "block";
-        } else {
-            button.style.display = "none";
+    const addCardButtonsDiv = document.getElementById("add-cards-div");
+    addCardButtonsDiv.innerHTML = ""; // Clear existing buttons
+    for (let i = 0; i < buttonsAddCard.length; i++) {
+        if (filteredCards.some(card => card.cid === buttonsAddCard[i].data)) {
+            addCardButtonsDiv.appendChild(buttonsAddCard[i]);
         }
-    });
+    }
 }
 
 function clearDeck() {
