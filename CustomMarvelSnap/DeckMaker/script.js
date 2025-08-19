@@ -221,6 +221,7 @@ function updateAddCardButtons() {
     });
 
     console.log("Filtered cards: ", filteredCards);
+    console.log("Buttons to add cards: ", buttonsAddCard);
 
     // Update the displayed add card buttons
     const addCardButtonsDiv = document.getElementById("add-cards-div");
