@@ -203,7 +203,7 @@ function updateAddCardButtons() {
     const filteredCards = officialCards.filter(card => {
         const matchesText = card.name.toLowerCase().includes(filterCards.text) || card.ability.toLowerCase().includes(filterCards.text);
         const matchesCost = filterCards.cost === "" || card.cost === filterCards.cost;
-        const matchesPower = filterCards.power === "" || card.power <= filterCards.power;
+        const matchesPower = filterCards.power === "" || card.power === filterCards.power;
 
         return matchesText && matchesCost && matchesPower;
     });
@@ -218,6 +218,8 @@ function updateAddCardButtons() {
             return a.power - b.power;
         }
     });
+
+    console.log("Filtered cards: ", filteredCards);
 
     // Update the displayed add card buttons
     buttonsAddCard.forEach((button, index) => {

@@ -59,16 +59,18 @@
                     <option value="power">Sort by Power</option>
                 </select>
                 <input type="text" id="card-text-input" class="default-input" style="width: 200px;" placeholder="Search" onchange="updateFilter()">
-                <select id="card-cost-filter" class="default-input" style="width: 212px;" onchange="updateFilter()">
-                    <option value="">All Costs</option>
-                    <option value="1">Cost: 1</option>
-                    <option value="2">Cost: 2</option>
-                    <option value="3">Cost: 3</option>
-                    <option value="4">Cost: 4</option>
-                    <option value="5">Cost: 5</option>
-                    <option value="6">Cost: 6</option>
-                </select>
-                <input type="number" id="card-power-filter" class="default-input" style="width: 200px;" placeholder="Power" onchange="updateFilter()">
+                <div style="display: flex; justify-content: space-evenly;">
+                    <select id="card-cost-filter" class="default-input" style="width: 212px;" onchange="updateFilter()">
+                        <option value="">All Costs</option>
+                        <option value=1>Cost: 1</option>
+                        <option value=2>Cost: 2</option>
+                        <option value=3>Cost: 3</option>
+                        <option value=4>Cost: 4</option>
+                        <option value=5>Cost: 5</option>
+                        <option value=6>Cost: 6</option>
+                    </select>
+                    <input type="number" id="card-power-filter" class="default-input" style="width: 200px;" placeholder="Power" onchange="updateFilter()">
+                </div>
             </div>
             <div class="add-cards-div" id="add-cards-div"></div>
             <div class="settings-button-div">
