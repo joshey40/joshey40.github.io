@@ -175,3 +175,44 @@ p {
     width: 90vw;
     height: 90vh;
 }
+.default-popup h1 {
+    font-family: 'Ultimatum-Bold', sans-serif;
+    font-size: 2rem;
+    text-align: left;
+    margin: 10px;
+    display: block;
+    text-shadow: 
+        3px 3px 3px #000,
+        -3px 3px 3px #000,
+        3px -3px 3px #000,
+        -3px -3px 3px #000;
+    color: white;
+}
+.default-popup h2 {
+    font-family: 'Ultimatum-Bold', sans-serif;
+    font-size: 1.5rem;
+    text-align: left;
+    margin: 10px;
+    display: block;
+    text-shadow: 
+        3px 3px 3px #000,
+        -3px 3px 3px #000,
+        3px -3px 3px #000,
+        -3px -3px 3px #000;
+    color: white;
+}
+a {
+    color: #4fc3ff;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+a:hover, a:focus {
+    color: #b3e0ff;
+}
+a.default-button {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+a.default-button:hover, a.default-button:focus {
+    color: rgb(255, 255, 255);
+}
