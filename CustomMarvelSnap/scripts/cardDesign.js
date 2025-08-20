@@ -9,6 +9,7 @@ const staticImagePaths = [
   "../res/img/finishes/gold.png",
   "../res/img/finishes/foil.png",
   "../res/img/finishes/prism.png",
+  "../res/img/finishes/fire.png"
 ];
 const numbersDir = "../res/img/numbers/";
 const numbers = ["-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -242,6 +243,10 @@ async function generatecard(
     ctx.globalCompositeOperation = "source-over";
     const prismImageMask = await getPreloadedImage("../res/img/finishes/prism.png");
     ctx.drawImage(prismImageMask, 0, 0, size, size);
+  } else if (finish === "fire") {
+    ctx.globalCompositeOperation = "source-over";
+    const fireImageMask = await getPreloadedImage("../res/img/finishes/fire.png");
+    ctx.drawImage(fireImageMask, 0, 0, size, size);
   }
   // Foreground
   ctx.globalCompositeOperation = "source-over";
