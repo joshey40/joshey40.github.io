@@ -405,10 +405,19 @@ function showTutorialPopup() {
   tutorialPopup.style.opacity = "1";
 }
 
+
+// Closes the tutorial popup
+function closeTutorialPopup() {
+  const tutorialPopup = document.getElementById("tutorialPopup");
+  tutorialPopup.style.opacity = "0";
+  tutorialPopup.style.visibility = "hidden";
+}
+
 window.clearDeck = clearDeck; // Expose the clearDeck function globally
 window.importCard = importCard; // Expose the importCard function globally
 window.downloadDeckImg = downloadDeckImg; // Expose the downloadDeckImg function globally
 window.updateFilter = updateFilter; // Expose the updateFilter function globally
 window.showTutorialPopup = showTutorialPopup; // Expose the showTutorialPopup function globally
+window.closeTutorialPopup = closeTutorialPopup; // Expose the closeTutorialPopup function globally
 
-export { clearDeck, importCard, downloadDeckImg, updateFilter, showTutorialPopup }; // Export functions and variables for use in other modules
+export { clearDeck, importCard, downloadDeckImg, updateFilter, showTutorialPopup, closeTutorialPopup }; // Export functions and variables for use in other modules
