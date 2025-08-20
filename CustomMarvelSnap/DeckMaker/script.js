@@ -11,9 +11,9 @@ async function updateDeck() {
         if (a.cost !== b.cost) {
             return a.cost - b.cost; // Sort by cost first
         }
-        if (a.power !== undefined) {
+        if (a.power === undefined) {
             return -1;
-        } else if (b.power !== undefined) {
+        } else if (b.power === undefined) {
             return 1;
         }
         if (a.power !== b.power) {
@@ -312,7 +312,7 @@ async function importCard(event) {
         cardSettings.power = stats.power || "";
         cardSettings.showCostPower = stats.showCostPower !== false;
         cardSettings.description = desc.text || "";
-        cardSettings.zoom = 1 + (mainImg.zoom / 100 || 1);
+        cardSettings.zoom = (1 + (mainImg.zoom / 100)) || 1;
         cardSettings.transparentBg = background.transparent || false;
         cardSettings.backgroundColor = background.color || "#10072b";
 
