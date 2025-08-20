@@ -398,9 +398,17 @@ async function downloadDeckImg() {
     }, "image/png");
 }
 
+// Shows the tutorial popup
+function showTutorialPopup() {
+  const tutorialPopup = document.getElementById("tutorialPopup");
+  tutorialPopup.style.visibility = "visible";
+  tutorialPopup.style.opacity = "1";
+}
+
 window.clearDeck = clearDeck; // Expose the clearDeck function globally
 window.importCard = importCard; // Expose the importCard function globally
 window.downloadDeckImg = downloadDeckImg; // Expose the downloadDeckImg function globally
 window.updateFilter = updateFilter; // Expose the updateFilter function globally
+window.showTutorialPopup = showTutorialPopup; // Expose the showTutorialPopup function globally
 
-export { clearDeck, importCard, downloadDeckImg, updateFilter }; // Export functions and variables for use in other modules
+export { clearDeck, importCard, downloadDeckImg, updateFilter, showTutorialPopup }; // Export functions and variables for use in other modules
