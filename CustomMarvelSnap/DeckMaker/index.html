@@ -87,5 +87,28 @@
             </div>
         </div>
         <div></div>
+        <div style="flex-direction: row; display: flex;">
+            <button class="default-button" style="width: fit-content; padding: 6px 10px; margin: 10px;" onclick="showTutorialPopup()">Tutorial</button>
+            <a href="https://joshey40.github.io/CustomMarvelSnap/CardMaker" target="_blank" rel="noopener noreferrer" class="default-button">Card Maker</a>
+        </div>
+    </div>
+    <div class="default-popup" id="tutorialPopup">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
+            <h1>Info</h1>
+            <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/close.png') no-repeat; background-size: 100% 100%;" onclick="closeTutorialPopup()"></button>
+        </div>
+        <div style="padding: 10px; overflow-y: auto; height: calc(90vh - 28px - 2rem);">
+            <h2>Sorting and Filter</h2>
+            <p>You can sort and filter your cards using the options available on the left (or on top, on smaller screens) of the editor. This allows you to quickly find the cards you want to add to your deck.</p>
+            <h2>Adding and Removing Cards</h2>
+            <p>To add a card to your deck, simply click on it in the card list. To remove a card, click the same card again in the card list. You can also remove a card by pressing on it longer in the deck area. Custom cards can be added by clicking the "Import Custom Card" button, where you can upload a .cmscard file.</p>
+            <h2>Variants</h2>
+            <p>You can cycle through all the variants of the official cards by clicking on a card in the deck area.</p>
+            <h2>Download</h2>
+            <p>You can download an image of your deck by clicking the "Download Deck Image" button. You can also choose to have a transparent background or a solid color background for your deck image and you can choose how the cards are arranged in the deck image by selecting the grid size.</p>
+            <h2>Feedback</h2>
+            <p>Thanks for using the Deck Maker! If you have any feedback or suggestions, feel free to reach out to me on <a href="https://www.reddit.com/u/joshey40" target="_blank" rel="noopener noreferrer">Reddit</a> or as @joshey40 on Discord. You can also find me on the <a href="https://www.reddit.com/r/CustomMarvelSnap" target="_blank" rel="noopener noreferrer">Custom Marvel Snap Subreddit</a>, where I hope to see your creations!</p>
+            <p>Have fun creating your cards!</p>
+        </div>
     </div>
 </body>
