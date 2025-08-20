@@ -249,10 +249,17 @@ async function generatecard(
     ctx.drawImage(fireImageMask, 0, 0, size, size);
   }
   // Foreground
-  ctx.globalCompositeOperation = "source-in";
   if (imagesBase64.foregroundImage) {
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = size;
+    tempCanvas.height = size;
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCtx.drawImage(artMask, 0, 0, size, size);
+    tempCtx.globalCompositeOperation = "source-in";
     let foregroundImg = await getImg(imagesBase64.foregroundImage, finish, "foreground");
-    ctx.drawImage(foregroundImg, x, y, w, h);
+    tempCtx.drawImage(foregroundImg, x, y, w, h);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.drawImage(tempCanvas, 0, 0, size, size);
   }
   // Frame
   ctx.globalCompositeOperation = "source-over";
