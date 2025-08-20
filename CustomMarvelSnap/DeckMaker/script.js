@@ -17,7 +17,7 @@ async function updateDeck() {
             return 1;
         }
         if (a.power !== b.power) {
-            return b.power - a.power; // Sort by power next (descending)
+            return a.power - b.power; // Sort by power next (ascending)
         }
         return a.name.localeCompare(b.name); // Finally, sort by name alphabetically
     });

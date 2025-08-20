@@ -452,7 +452,7 @@ async function importCardFile(file) {
     setVal("nameOffsetY", nameObj.offsetY ?? 0);
     setVal("cost", stats.cost ?? "");
     setVal("power", stats.power ?? "");
-    const sCPoCpgk = document.getElementById("showCostPower"); if (sCPoCpgk) sCPoCpgk.checked = !!stats.showCostPower;
+    const sCPoCpgk = document.getElementById("showCostPower"); if (sCPoCpgk) sCPoCpgk.checked = stats.showCostPower || true;
     setVal("description", desc.raw || "");
     setVal("imageZoom", mainImg.zoom ?? 0);
     const bgChk = document.getElementById("transparentBg"); if (bgChk) bgChk.checked = !!background.transparent;
