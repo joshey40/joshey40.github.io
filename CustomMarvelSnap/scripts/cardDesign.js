@@ -361,7 +361,7 @@ async function generatecard(
     ctx.textBaseline = "top";
     ctx.strokeStyle = nameOutlineColor;
     ctx.fillStyle = colorName;
-    ctx.lineWidth = 15 * scale * nameZoom;
+    ctx.lineWidth = 15 * scale;
     for (let i = 0; i < name.length; i++) {
       let titleHeight = 300 * scale * nameZoom * name.length;
       let titleY = 850 * scale + offset[2] * scale;
