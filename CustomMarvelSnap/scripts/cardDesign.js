@@ -249,12 +249,13 @@ async function generatecard(
     ctx.drawImage(fireImageMask, 0, 0, size, size);
   }
   // Foreground
-  ctx.globalCompositeOperation = "source-over";
+  ctx.globalCompositeOperation = "source-in";
   if (imagesBase64.foregroundImage) {
     let foregroundImg = await getImg(imagesBase64.foregroundImage, finish, "foreground");
     ctx.drawImage(foregroundImg, x, y, w, h);
   }
   // Frame
+  ctx.globalCompositeOperation = "source-over";
   let frameImg;
   if (imagesBase64.frameImage) {
     frameImg = await getPreloadedImage(imagesBase64.frameImage);

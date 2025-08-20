@@ -6,6 +6,7 @@ import { generatecard } from "../scripts/cardDesign.js";
 let imagesBase64 = {
   mainImage: null,      // Main image of the card
   frameImage: null,     // Frame image
+  foregroundImage: null,// Foreground image
   frameBreakImage: null,// Frame break image
   titleImage: null,     // Title image
   effectImage: null,    // Effect image
@@ -129,6 +130,19 @@ function mainImageChange(event) {
 }
 
 
+// Called when the foreground image is changed
+function foregroundImageChange(event) {
+  const imageFile = event.target.files[0];
+  const reader = new FileReader();
+  reader.readAsDataURL(imageFile);
+  reader.onload = function (e) {
+    const base64 = e.target.result;
+    imagesBase64.foregroundImage = base64;
+    updateResult();
+  };
+}
+
+
 // Called when the frame break image is changed
 function frameBreakImageChange(event) {
   const imageFile = event.target.files[0];
@@ -161,6 +175,11 @@ async function clearMainImage() {
   updateResult();
 }
 
+  // Removes the foreground image
+function clearForegroundImage() {
+  imagesBase64.foregroundImage = null;
+  updateResult();
+}
 
 // Removes the frame break image
 function clearFrameBreakImage() {
@@ -348,6 +367,9 @@ async function exportCard() {
             offsetX: safeNum(offsetX, 0),
             offsetY: safeNum(offsetY, 0),
           },
+          foreground: {
+            file: imagesBase64.foregroundImage && imagesBase64.foregroundImage.startsWith("data:") ? IMAGE_DIR + "foreground.png" : null,
+          },
           frameBreak: {
             file: imagesBase64.frameBreakImage && imagesBase64.frameBreakImage.startsWith("data:") ? IMAGE_DIR + "framebreak.png" : null,
           },
@@ -377,6 +399,7 @@ async function exportCard() {
     };
     addBase64(imagesBase64.titleImage, IMAGE_DIR + "title.png");
     addBase64(imagesBase64.mainImage, IMAGE_DIR + "main.png");
+    addBase64(imagesBase64.foregroundImage, IMAGE_DIR + "foreground.png");
     addBase64(imagesBase64.frameBreakImage, IMAGE_DIR + "framebreak.png");
 
     // Generate the blob and trigger download with custom extension
@@ -433,6 +456,7 @@ async function importCardFile(file) {
     const desc = card.description || {};
     const images = card.images || {};
     const mainImg = images.main || {};
+    const foregroundImg = images.foreground || {};
     const frameBreakImg = images.frameBreak || {};
     const background = card.background || {};
 
@@ -468,6 +492,7 @@ async function importCardFile(file) {
     // Reset (will be filled by async loads that follow)
     imagesBase64.titleImage = null;
     imagesBase64.mainImage = null;
+    imagesBase64.foregroundImage = null;
     imagesBase64.frameBreakImage = null;
 
     // Load an image file from the zip (path may be nested, attempt fallback to filename only)
@@ -492,6 +517,7 @@ async function importCardFile(file) {
     // Load images sequentially (small count so perf impact minimal). Could be parallelized with Promise.all.
     await loadImageFile(nameObj.imageFile, (b64) => imagesBase64.titleImage = b64);
     await loadImageFile(mainImg.file, (b64) => imagesBase64.mainImage = b64);
+    await loadImageFile(foregroundImg.file, (b64) => imagesBase64.foregroundImage = b64);
     await loadImageFile(frameBreakImg.file, (b64) => imagesBase64.frameBreakImage = b64);
 
     // Trigger downstream re-render
@@ -684,9 +710,11 @@ cardCanvas.addEventListener("touchcancel", () => {
 // Attach to the global window object
 window.updateResult = updateResult;
 window.mainImageChange = mainImageChange;
+window.foregroundImageChange = foregroundImageChange;
 window.frameBreakImageChange = frameBreakImageChange;
 window.titleImageChange = titleImageChange;
 window.clearMainImage = clearMainImage;
+window.clearForegroundImage = clearForegroundImage;
 window.clearFrameBreakImage = clearFrameBreakImage;
 window.clearTitleImage = clearTitleImage;
 window.selectFrame = selectFrame;
@@ -710,9 +738,11 @@ window.importCardFile = importCardFile;
 export {
   updateResult,
   mainImageChange,
+  foregroundImageChange,
   frameBreakImageChange,
   titleImageChange,
   clearMainImage,
+  clearForegroundImage,
   clearFrameBreakImage,
   clearTitleImage,
   selectFrame,
