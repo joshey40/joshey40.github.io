@@ -261,6 +261,7 @@ async function importCard(event) {
         imagesBase64: {
             mainImage: null,            // Main image of the card
             frameImage: null,           // Frame image
+            foregroundImage: null,      // Foreground image
             frameBreakImage: null,      // Frame break image
             titleImage: null,           // Title image
             effectImage: null,          // Effect image
