@@ -223,14 +223,13 @@ function updateAddCardButtons() {
         }
     });
 
-    console.log(filteredCards);
-
     // Update the displayed add card buttons
     const addCardButtonsDiv = document.getElementById("add-cards-div");
     addCardButtonsDiv.innerHTML = ""; // Clear existing buttons
-    for (let i = 0; i < buttonsAddCard.length; i++) {
-        if (filteredCards.some(card => card.name === buttonsAddCard[i].innerText)) {
-            addCardButtonsDiv.appendChild(buttonsAddCard[i]);
+    for (let i = 0; i < filteredCards.length; i++) {
+        const button = buttonsAddCard.find(btn => btn.innerText === filteredCards[i].name);
+        if (button) {
+            addCardButtonsDiv.appendChild(button);
         }
     }
 }
