@@ -342,6 +342,7 @@ async function importCard(event) {
         });
         cardSettings.imagesBase64.titleImage = await toBase64(nameObj.imageFile);
         cardSettings.imagesBase64.mainImage = await toBase64(mainImg.file);
+        cardSettings.imagesBase64.foregroundImage = await toBase64(images.foregroundFile);
         cardSettings.imagesBase64.frameBreakImage = await toBase64(frameBreakImg.file);
 
         // Add the card to the deck and update the deck
