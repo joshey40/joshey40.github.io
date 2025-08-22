@@ -106,8 +106,8 @@ a.default-button:hover, a.default-button:focus {
     }
 }
 .editor-div {
-    margin: 10px;
-    padding: 10px;
+    margin: 5px;
+    padding: 5px;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     display: flex;
@@ -139,7 +139,7 @@ a.default-button:hover, a.default-button:focus {
     box-shadow:0 0 8px #4fc3ff66;
 }
 .default-input {
-    margin: 4px 0px;
+    margin: 3px 0px;
     padding: 4px;
     font: 1em 'Roboto', sans-serif;
     border-radius: 5px;
@@ -148,8 +148,8 @@ a.default-button:hover, a.default-button:focus {
     color: rgb(0, 0, 0);
 }
 .default-slider {
-    margin: 4px 0px;
-    padding: 4px;
+    margin: 3px 0px;
+    padding: 2px;
     font: 1em 'Roboto', sans-serif;
     border-radius: 5px;
     border: 2px solid #10072b;
@@ -157,7 +157,7 @@ a.default-button:hover, a.default-button:focus {
     color: rgb(0, 0, 0);
 }
 .default-button {
-    margin: 4px 0px;
+    margin: 3px 0px;
     padding: 4px;
     font: 1em 'Roboto', sans-serif;
     border-radius: 5px;
