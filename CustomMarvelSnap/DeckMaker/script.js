@@ -223,6 +223,8 @@ function updateAddCardButtons() {
         }
     });
 
+    console.log(filteredCards);
+
     // Update the displayed add card buttons
     const addCardButtonsDiv = document.getElementById("add-cards-div");
     addCardButtonsDiv.innerHTML = ""; // Clear existing buttons
