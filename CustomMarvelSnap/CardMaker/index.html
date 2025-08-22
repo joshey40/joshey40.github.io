@@ -69,6 +69,11 @@
                     <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearMainImage()"></button>
                 </div>
                 <div style="display: flex; justify-content: space-evenly;">
+                    <label for="foregroundImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Foreground</label>
+                    <input type="file" id="foregroundImage" name="foregroundImage" accept="image/*" style="display: none;" onchange="foregroundImageChange(event)">
+                    <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearForegroundImage()"></button>
+                </div>
+                <div style="display: flex; justify-content: space-evenly;">
                     <label for="frameBreakImage" class="default-button" style="width: 162px; margin-right: 8px;">Upload Frame Break</label>
                     <input type="file" id="frameBreakImage" name="frameBreakImage" accept="image/*" style="display: none;" onchange="frameBreakImageChange(event)">
                     <button class="default-button" style="width: 30px; height: 30px; padding: 1px; background:url('https://joshey40.github.io/CustomMarvelSnap/res/img/reset.png') no-repeat; background-size: 100% 100%;" onclick="clearFrameBreakImage()"></button>
@@ -101,6 +106,7 @@
         <div style="flex-direction: row; display: flex; flex-wrap: wrap;">
             <div class="credits-button" id="creditsButton" onmouseover="showCreditsPopup(0)" onmouseout="hideCreditsPopup(0)">Credits</div>
             <button class="default-button" style="width: fit-content; padding: 6px 10px; margin: 10px;" onclick="showTutorialPopup()">Tutorial</button>
+            <a href="https://joshey40.github.io/CustomMarvelSnap/DeckMaker" target="_blank" rel="noopener noreferrer" class="default-button" style="width: fit-content; padding: 6px 10px; margin: 10px; text-decoration: none;">Deck Maker</a>
             <a href="https://www.patreon.com/TheArtist115" target="_blank" rel="noopener noreferrer" class="default-button" style="width: fit-content; padding: 6px 10px; margin: 10px; display: flex; align-items: center; gap: 8px; text-decoration: none;">
                 <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/patreon-icon.png" alt="Patreon" class="patreon-logo" style="height: 1.3em; width: auto; vertical-align: middle;">Support @TheArtist115
             </a>
@@ -138,8 +144,8 @@
             <h2>Cost, Power and Description:</h2>
             <p>These fields allow you to set the cost, power and description of the card. If nothing is set in the Power field, the frame automatically turns into a Spell/Skill card (see Frame section for more details). The Cost and Power Icon can be turned of completely with the checkbox.</p>
             <p>The description should be up to 5 lines long. Line breaks must be done manually. You can use <b>bold</b> text in the description by wrapping the text in <code>&lt;b&gt;</code>This will be bold<code>&lt;/b&gt;</code> or **This will be bold**. The description field is resizable, for more space.</p>
-            <h2>Image and Frame Break:</h2>
-            <p>You can upload an image for the card and optionally a frame break image. The frame break image should only include those parts of the original image that should be visible outside the frame. I recommend using a tool like <a href="https://www.remove.bg" target="_blank" rel="noopener noreferrer">remove.bg</a> to remove the unwanted parts of the image.</p>
+            <h2>Image, Foreground and Frame Break:</h2>
+            <p>You can upload an image for the card and optionally a frame break image. The frame break image should only include those parts of the original image that should be visible outside the frame. I recommend using a tool like <a href="https://www.remove.bg" target="_blank" rel="noopener noreferrer">remove.bg</a> to remove the unwanted parts of the image. Most finishes are applied to the background, but not to the foreground, so you can use the foreground image to add additional details that should not be affected by the finish, but should be behind the frame.</p>
             <div style="display: flex; flex-direction: row; justify-content: space-evenly; flex-wrap: wrap; margin: 10px;">
                 <div style="align-items: center;">
                     <h3>Example Image</h3>
@@ -154,8 +160,8 @@
                     <img src="https://joshey40.github.io/CustomMarvelSnap/res/img/default_cards/example_result.png" alt="Example Result" style="height: 300px; width: auto; border-radius: 10px;">
                 </div>
             </div>
-            <h2>Frame and Flare:</h2>
-            <p>Here you can select a frame and a flare for the card. More frames and flares will be added in the future, as well as different finishes. If you want to use the round borders for a spell/skill card, just leave the Power field empty (BUT currently only the Basic and Matte frames have a spell variant).</p>
+            <h2>Frame, Flare and Finish:</h2>
+            <p>Here you can select a frame, a flare and a finish for the card. More will be added in the future. If you want to use the round borders for a spell/skill card, just leave the Power field empty (BUT currently only the Basic and Matte frames have a spell variant). Most finishes are applied to the background and will replace the default background, so make sure to use the foreground and framebreak images so your character is visible.</p>
             <h2>Import and Export:</h2>
             <p>You can import and export your card designs. This allows you to save your progress and share your creations with others. The exported file is a .cmscard file that contains all the information and images needed to recreate the card.</p>
             <h2>Drag and Drop:</h2>
