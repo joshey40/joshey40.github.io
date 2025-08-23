@@ -542,9 +542,9 @@ function applyFinish(img, finish, layer) {
       const n2 = 1.5;
       avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
       // Shiny Blacks
-      if (sbIn < 0.1) {
-        const m1 = 5;
-        const m2 = 0.05;
+      const m1 = 1.2;
+      const m2 = 0.02;
+      if (sbIn < m2 * 2) {
         sbIn = sbIn / m2 - 1;
         sbIn = Math.pow(sbIn, 4) - 2 * Math.pow(sbIn, 2) + 1;
         sbIn /= m1;
