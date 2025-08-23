@@ -534,12 +534,17 @@ function applyFinish(img, finish, layer) {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
     for (let i = 0; i < data.length; i += 4) {
-      let avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      let avg = (data[i] * 0.2126 + data[i + 1] * 0.7152 + data[i + 2] * 0.0722) / 255;
       // Increase contrast
       const n1 = 1.5;
       const n2 = 1.9;
-      avg /= 255;
       avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
+      // Shiny Blacks
+      // TO DO
+      // Quantization
+      const quantizationLevels = 8;
+      avg = Math.floor(avg / quantizationLevels) * quantizationLevels;
+      // Back to 255
       avg = Math.round(avg * 255);
       data[i] = avg; // Red
       data[i + 1] = avg; // Green
