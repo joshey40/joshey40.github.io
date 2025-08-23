@@ -538,8 +538,8 @@ function applyFinish(img, finish, layer) {
       let avg = (data[i] * 0.2 + data[i + 1] * 0.7 + data[i + 2] * 0.1) / 255;
       let sbIn = avg;
       // Increase contrast
-      const n1 = 2;
-      const n2 = 1.5;
+      const n1 = 1.2;
+      const n2 = 1.2;
       avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
       /**  Shiny Blacks
       const m1 = 1.2;
