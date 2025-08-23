@@ -329,6 +329,7 @@ async function importCard(event) {
         cardSettings.finish = finishId || null;
 
         console.log(cardSettings);
+        console.log(mainImg, foregroundImg, frameBreakImg);
 
         // Convert images (title, main, framebreak) to Base64
         const toBase64 = (path) => new Promise((resolve) => {
@@ -350,6 +351,7 @@ async function importCard(event) {
         cardSettings.imagesBase64.foregroundImage = await toBase64(foregroundImg.file);
         cardSettings.imagesBase64.frameBreakImage = await toBase64(frameBreakImg.file);
 
+        console.log(cardSettings.imagesBase64);
         // Add the card to the deck and update the deck
         deck.push(cardSettings);
 
