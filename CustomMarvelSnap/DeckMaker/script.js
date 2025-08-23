@@ -328,6 +328,8 @@ async function importCard(event) {
         cardSettings.imagesBase64.effectImage = (card.effect && card.effect.id) || null;
         cardSettings.finish = finishId || null;
 
+        console.log(cardSettings);
+
         // Convert images (title, main, framebreak) to Base64
         const toBase64 = (path) => new Promise((resolve) => {
             if (!path) return;               // Nothing referenced
@@ -350,6 +352,8 @@ async function importCard(event) {
 
         // Add the card to the deck and update the deck
         deck.push(cardSettings);
+
+        console.log(deck);
         updateDeck();
     } catch (err) {
         alert("Import failed: " + err.message);
