@@ -541,7 +541,7 @@ function applyFinish(img, finish, layer) {
       const n1 = 2;
       const n2 = 1.5;
       avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
-      // Shiny Blacks
+      /**  Shiny Blacks
       const m1 = 1.2;
       const m2 = 0.02;
       if (sbIn < m2 * 2) {
@@ -550,10 +550,11 @@ function applyFinish(img, finish, layer) {
         sbIn /= m1;
         avg += sbIn;
       }
+      */
       // Back to value between 0-255
       avg = Math.round(avg * 255);
       // Quantization
-      const quantizationLevels = 8;
+      const quantizationLevels = 16;
       avg = Math.floor(avg / quantizationLevels) * quantizationLevels;
       data[i] = avg; // Red
       data[i + 1] = avg; // Green
