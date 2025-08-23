@@ -535,13 +535,21 @@ function applyFinish(img, finish, layer) {
     const data = imageData.data;
     for (let i = 0; i < data.length; i += 4) {
       // Calculate luminance and turn into value between 0-1
-      let avg = (data[i] * 0.2126 + data[i + 1] * 0.7152 + data[i + 2] * 0.0722) / 255;
+      let avg = (data[i] * 0.2 + data[i + 1] * 0.7 + data[i + 2] * 0.1) / 255;
+      let sbIn = avg;
       // Increase contrast
-      const n1 = 1.5;
-      const n2 = 1.9;
+      const n1 = 2;
+      const n2 = 1.5;
       avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
       // Shiny Blacks
-      // TO DO
+      if (sbIn < 0.1) {
+        const m1 = 5;
+        const m2 = 0.05;
+        sbIn = sbIn / m2 - 1;
+        sbIn = Math.pow(sbIn, 4) - 2 * Math.pow(sbIn, 2) + 1;
+        sbIn /= m1;
+        avg += sbIn;
+      }
       // Back to value between 0-255
       avg = Math.round(avg * 255);
       // Quantization
