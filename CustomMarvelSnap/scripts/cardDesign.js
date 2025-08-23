@@ -536,21 +536,17 @@ function applyFinish(img, finish, layer) {
     for (let i = 0; i < data.length; i += 4) {
       // Calculate luminance and turn into value between 0-1
       let avg = (data[i] * 0.2126 + data[i + 1] * 0.7152 + data[i + 2] * 0.0722) / 255;
-      if (i > 5) console.log(avg);
       // Increase contrast
       const n1 = 1.5;
       const n2 = 1.9;
       avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
-      if (i > 5) console.log(avg);
       // Shiny Blacks
       // TO DO
       // Back to value between 0-255
       avg = Math.round(avg * 255);
-      if (i > 5) console.log(avg);
       // Quantization
       const quantizationLevels = 8;
       avg = Math.floor(avg / quantizationLevels) * quantizationLevels;
-      if (i > 5) console.log(avg);
       data[i] = avg; // Red
       data[i + 1] = avg; // Green
       data[i + 2] = avg; // Blue
