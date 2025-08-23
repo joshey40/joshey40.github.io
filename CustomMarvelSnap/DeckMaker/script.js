@@ -346,9 +346,13 @@ async function importCard(event) {
                 reader.readAsDataURL(file);
             });
         });
+        console.log("1");
         cardSettings.imagesBase64.titleImage = await toBase64(nameObj.imageFile);
+        console.log("2");
         cardSettings.imagesBase64.mainImage = await toBase64(mainImg.file);
+        console.log("3");
         cardSettings.imagesBase64.foregroundImage = await toBase64(foregroundImg.file);
+        console.log("4");
         cardSettings.imagesBase64.frameBreakImage = await toBase64(frameBreakImg.file);
 
         console.log(cardSettings.imagesBase64);
