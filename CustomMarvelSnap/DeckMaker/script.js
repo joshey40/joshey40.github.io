@@ -328,38 +328,28 @@ async function importCard(event) {
         cardSettings.imagesBase64.effectImage = (card.effect && card.effect.id) || null;
         cardSettings.finish = finishId || null;
 
-        console.log(cardSettings);
-        console.log(mainImg, foregroundImg, frameBreakImg);
-
         // Convert images (title, main, framebreak) to Base64
         const toBase64 = (path) => new Promise((resolve) => {
-            if (!path) return;               // Nothing referenced
+            if (!path) return resolve(null);               // Nothing referenced
             let entry = zip.file(path);
             if (!entry) {                    // Fallback: strip directories and try last segment
                 const simple = path.split('/').pop();
                 entry = zip.file(simple);
             }
-            if (!entry) return;              // Missing file (graceful skip)
+            if (!entry) return resolve(null);              // Missing file (graceful skip)
             entry.async("blob").then((file) => {
                 const reader = new FileReader();
                 reader.onloadend = () => resolve(reader.result);
                 reader.readAsDataURL(file);
             });
         });
-        console.log("1");
         cardSettings.imagesBase64.titleImage = await toBase64(nameObj.imageFile);
-        console.log("2");
         cardSettings.imagesBase64.mainImage = await toBase64(mainImg.file);
-        console.log("3");
         cardSettings.imagesBase64.foregroundImage = await toBase64(foregroundImg.file);
-        console.log("4");
         cardSettings.imagesBase64.frameBreakImage = await toBase64(frameBreakImg.file);
 
-        console.log(cardSettings.imagesBase64);
         // Add the card to the deck and update the deck
         deck.push(cardSettings);
-
-        console.log(deck);
         updateDeck();
     } catch (err) {
         alert("Import failed: " + err.message);
