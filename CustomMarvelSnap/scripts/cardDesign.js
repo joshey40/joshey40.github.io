@@ -541,11 +541,11 @@ function applyFinish(img, finish, layer) {
       avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
       // Shiny Blacks
       // TO DO
+      // Back to 255
+      avg = Math.round(avg * 255);
       // Quantization
       const quantizationLevels = 8;
       avg = Math.floor(avg / quantizationLevels) * quantizationLevels;
-      // Back to 255
-      avg = Math.round(avg * 255);
       data[i] = avg; // Red
       data[i + 1] = avg; // Green
       data[i + 2] = avg; // Blue
