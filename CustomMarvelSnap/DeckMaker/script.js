@@ -258,7 +258,7 @@ async function importCard(event) {
         zoom: 1,                        // Zoom factor for the main image
         transparentBg: false,           // Transparent background
         backgroundColor: "#10072b",   // Background color
-        offset: [0, 0],                 // Offset for the image
+        offset: [0, 0, 0],                 // Offset for the image
         imagesBase64: {
             mainImage: null,            // Main image of the card
             frameImage: null,           // Frame image
@@ -322,7 +322,7 @@ async function importCard(event) {
         // Restore positional + selection state
         const offsetX = typeof mainImg.offsetX === "number" ? mainImg.offsetX : 0;
         const offsetY = typeof mainImg.offsetY === "number" ? mainImg.offsetY : 0;
-        const nameOffsetY = typeof nameObj.offsetY === "number" ? nameObj.offsetY : 0;
+        const nameOffsetY = typeof nameObj.offsetY === "number" ? nameObj.offsetY * -1 : 0;
         cardSettings.offset = [offsetX, offsetY, nameOffsetY];
         cardSettings.imagesBase64.frameImage = (card.frame && card.frame.id) || null;
         cardSettings.imagesBase64.effectImage = (card.effect && card.effect.id) || null;
