@@ -360,8 +360,9 @@ async function importCard(event) {
 async function downloadDeckImg() {
     const deckCanvas = document.createElement("canvas");
     const height = document.getElementById("deck-img-grid").value || 2;
-    deckCanvas.height = height * 1024;
-    deckCanvas.width = (12 / height) * 1024;
+    const cardImageSize = 512;
+    deckCanvas.height = height * cardImageSize;
+    deckCanvas.width = (12 / height) * cardImageSize;
 
     const ctx = deckCanvas.getContext("2d");
     ctx.fillStyle = document.getElementById("backgroundColor").value || "#10072b";
@@ -381,9 +382,9 @@ async function downloadDeckImg() {
         img.src = imgSrc;
         await new Promise((resolve) => {
             img.onload = () => {
-                const x = Math.floor(i % (12 / height)) * 1024;
-                const y = Math.floor(i / (12 / height)) * 1024;
-                ctx.drawImage(img, x, y, 1024, 1024);
+                const x = Math.floor(i % (12 / height)) * cardImageSize;
+                const y = Math.floor(i / (12 / height)) * cardImageSize;
+                ctx.drawImage(img, x, y, cardImageSize, cardImageSize);
                 resolve();
             };
             img.onerror = () => {
