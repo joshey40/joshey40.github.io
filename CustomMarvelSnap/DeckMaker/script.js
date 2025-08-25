@@ -240,6 +240,9 @@ function clearDeck() {
 }
 
 async function importCard(event) {
+    if (deck.length >= 12) {
+        return;
+    }
     const file = event.target.files[0];
     document.getElementById("import-button").value = ""; // Reset the file input
     if (!file) {
