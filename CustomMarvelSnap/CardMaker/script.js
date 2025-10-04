@@ -433,7 +433,7 @@ async function exportCard() {
 async function importCardFile(file) {
   try {
     // Basic extension guard (users could still rename; deeper structural checks below)
-    if (!file.name.toLowerCase().endsWith(CARD_FILE_EXT)) {
+    if (!file.name.toLowerCase().endsWith(CARD_FILE_EXT) && !file.name.toLowerCase().endsWith(".zip")) {
       throw new Error("Unsupported file type. Please select a " + CARD_FILE_EXT + " file.");
     }
 
