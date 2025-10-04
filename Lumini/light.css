@@ -7,7 +7,8 @@
     --muted-text: #4b5563;
     --accent: #0066cc;
     --border: rgba(0,0,0,0.08);
-    --table-border: rgba(0,0,0,0.06);
+    --table-border: rgba(0,0,0,0.08);
+    --table-border-strong: rgba(0,0,0,0.14);
     --shadow: 0 6px 16px rgba(12,20,30,0.06);
 }
 
@@ -39,7 +40,6 @@ h1 {
     overflow: hidden;
     background-color: transparent;
     margin-bottom: 20px;
-    max-width: 960px;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -73,10 +73,11 @@ h1 {
     width: 100%;
     border-collapse: collapse;
     margin-top: 16px;
+    border: 1px solid var(--table-border-strong);
 }
 
 .points-table th, .points-table td {
-    border-bottom: 1px solid var(--table-border);
+    border: 1px solid var(--table-border-strong);
     text-align: center;
     padding: 10px;
     color: var(--text);
@@ -90,6 +91,10 @@ h1 {
 
 .points-table td.left {
     width: 50px;
+}
+
+.points-table tr:hover td {
+    background-color: rgba(0,0,0,0.02);
 }
 
 /* Theme toggle styles (light theme) */
