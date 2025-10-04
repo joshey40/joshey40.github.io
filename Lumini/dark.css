@@ -101,8 +101,6 @@ h1 {
 .points-cell {
     width: 80px;
     padding: 0px;
-    display: flex;
-    flex-direction: row;
 }
 
 .points-input {
@@ -127,6 +125,12 @@ h1 {
     width: 60px;
     height: 100%;
     margin: 0;
+}
+
+.water-input-divider {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .verticalLine {
