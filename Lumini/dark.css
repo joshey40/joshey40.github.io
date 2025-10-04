@@ -97,6 +97,14 @@ h1 {
     background-color: rgba(255,255,255,0.02);
 }
 
+.points-input {
+    font-size: 14px;
+    outline: none;
+    text-align: center;
+    color: var(--text);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+}
+
 /* Theme toggle styles */
 .theme-controls {
     display: flex;
