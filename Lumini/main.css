@@ -4,6 +4,19 @@ h1 {
     margin-bottom: 10px;
 }
 
+table {
+    color: #d2fcff;
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #d2fcff;
+    padding: 8px;
+    text-align: left;
+}
+
 .content-div {
     background-color: #000000;
     text-align: center;
