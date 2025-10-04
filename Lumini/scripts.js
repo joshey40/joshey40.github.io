@@ -41,3 +41,10 @@ function setLocale(newLocale) {
     console.warn(`Locale ${newLocale} not found.`);
   }
 }
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const lang = urlParams.get('lang');
+if (lang) {
+  setLocale(lang);
+}
