@@ -79,7 +79,6 @@ h1 {
 .points-table th, .points-table td {
     border: 1px solid var(--table-border-strong);
     text-align: center;
-    padding: 10px;
     color: var(--text);
 }
 
@@ -87,9 +86,10 @@ h1 {
     width: 120px;
     color: var(--muted-text);
     font-weight: 600;
+    padding: 10px;
 }
 
-.points-table td.left {
+.points-table td.left, .points-table th.left {
     width: 50px;
 }
 
@@ -99,7 +99,7 @@ h1 {
 
 .points-cell {
     width: 80px;
-    padding: 0;
+    padding: 0px;
 }
 
 .points-input {
