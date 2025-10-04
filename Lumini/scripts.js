@@ -132,3 +132,35 @@ if (window.matchMedia) {
 window.addEventListener('DOMContentLoaded', () => {
     loadThemeFromStorage();
 });
+
+// Wire up UI listeners once DOM is ready
+window.addEventListener('DOMContentLoaded', () => {
+    // Locale select
+    const localeSelect = document.getElementById('locale-select');
+    if (localeSelect) {
+        localeSelect.addEventListener('change', (e) => setLocale(e.target.value));
+    }
+
+    // Theme checkbox
+    const themeCheckbox = document.getElementById('theme-toggle-checkbox');
+    if (themeCheckbox) {
+        themeCheckbox.addEventListener('change', () => onThemeToggleChange());
+    }
+
+    // System button
+    const systemBtn = document.getElementById('theme-system-btn');
+    if (systemBtn) {
+        systemBtn.addEventListener('click', () => setTheme('system'));
+    }
+
+    // load locale from URL (previously inline onload)
+    loadLocaleFromURL();
+});
+
+// Expose functions used by inline handlers to the global scope
+window.setTheme = setTheme;
+window.onThemeToggleChange = onThemeToggleChange;
+window.loadThemeFromStorage = loadThemeFromStorage;
+window.applyThemeChoice = applyThemeChoice;
+window.setLocale = setLocale;
+window.loadLocaleFromURL = loadLocaleFromURL;

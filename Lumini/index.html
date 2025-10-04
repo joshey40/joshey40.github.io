@@ -9,19 +9,19 @@
     <link rel="stylesheet" href="light.css" id="light-theme" disabled>
     <script src="scripts.js"></script>
 </head>
-<body onload="loadLocaleFromURL()">
+<body>
     <div class="topnav">
-        <select onchange="setLocale(this.value)" id="locale-select">
+        <select id="locale-select">
             <option value="en">English</option>
             <option value="de">Deutsch</option>
         </select>
         <!-- Theme controls: toggle between dark/light and an Auto button for system preference -->
         <div class="theme-controls">
             <label class="theme-toggle" title="Toggle dark / light">
-                <input type="checkbox" id="theme-toggle-checkbox" onchange="onThemeToggleChange()" aria-label="Toggle dark mode">
+                <input type="checkbox" id="theme-toggle-checkbox" aria-label="Toggle dark mode">
                 <span class="slider"></span>
             </label>
-            <button id="theme-system-btn" onclick="setTheme('system')" title="Use system preference" aria-label="Use system theme">Auto</button>
+            <button id="theme-system-btn" title="Use system preference" aria-label="Use system theme">Auto</button>
         </div>
     </div>
     <div class="content-div">
