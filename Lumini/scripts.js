@@ -147,12 +147,6 @@ window.addEventListener('DOMContentLoaded', () => {
         themeCheckbox.addEventListener('change', () => onThemeToggleChange());
     }
 
-    // System button
-    const systemBtn = document.getElementById('theme-system-btn');
-    if (systemBtn) {
-        systemBtn.addEventListener('click', () => setTheme('system'));
-    }
-
     // load locale from URL (previously inline onload)
     loadLocaleFromURL();
 });
