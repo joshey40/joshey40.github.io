@@ -42,12 +42,14 @@ function setLocale(newLocale) {
     }
 }
 
-// Initial translation on page load
-document.addEventListener("DOMContentLoaded", () => {
+// Example: Change locale based on URL parameter (e.g., ?lang=de)
+function loadLocaleFromURL() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const lang = urlParams.get('lang');
     if (lang) {
         setLocale(lang);
     }
-});
+    document.getElementById("locale-select").value = locale;
+
+}

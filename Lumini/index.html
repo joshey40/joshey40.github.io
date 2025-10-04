@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="styles.css">
     <script src="scripts.js"></script>
 </head>
-<body>
+<body onload="loadLocaleFromURL()">
     <div class="topnav">
-        <select onchange="setLocale(this.value)">
+        <select onchange="setLocale(this.value)" id="locale-select">
             <option value="en">English</option>
             <option value="de">Deutsch</option>
         </select>
