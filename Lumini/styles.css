@@ -39,6 +39,9 @@ h1 {
     padding: 8px;
 }
 .points-table th {
+    width: 120px;
+}
+.points-table th {
     background-color: #f2f2f2;
 }
 .points-table tr:nth-child(even) {
