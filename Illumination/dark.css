@@ -133,10 +133,10 @@ h1 {
     align-items: center;
 }
 
-.verticalLine {
-  border-left: 2px solid var(--table-border-strong);
-  height: 100%;
-  width: 100%;
+.water-input-divider hr {
+    border: none;
+    border-left: 2px solid var(--table-border-strong);
+    height: 24px;
 }
 
 p {
