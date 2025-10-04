@@ -49,7 +49,86 @@ function loadLocaleFromURL() {
     const lang = urlParams.get('lang');
     if (lang) {
         setLocale(lang);
+        document.getElementById("locale-select").value = lang;
     }
-    document.getElementById("locale-select").value = locale;
-
 }
+
+// ########################################################
+// Theme (dark/light) management
+// ########################################################
+
+const THEME_KEY = 'lumini-theme'; // 'dark' | 'light' | 'system'
+
+function applyThemeChoice(choice) {
+    const darkLink = document.getElementById('dark-theme');
+    const lightLink = document.getElementById('light-theme');
+
+    if (!darkLink || !lightLink) return;
+
+    if (choice === 'dark') {
+        darkLink.removeAttribute('disabled');
+        lightLink.setAttribute('disabled', '');
+        // reflect in checkbox
+        const cb = document.getElementById('theme-toggle-checkbox');
+        if (cb) cb.checked = true;
+    } else if (choice === 'light') {
+        lightLink.removeAttribute('disabled');
+        darkLink.setAttribute('disabled', '');
+        const cb = document.getElementById('theme-toggle-checkbox');
+        if (cb) cb.checked = false;
+    } else {
+        // system preference
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+            darkLink.removeAttribute('disabled');
+            lightLink.setAttribute('disabled', '');
+            const cb = document.getElementById('theme-toggle-checkbox');
+            if (cb) cb.checked = true;
+        } else {
+            lightLink.removeAttribute('disabled');
+            darkLink.setAttribute('disabled', '');
+            const cb = document.getElementById('theme-toggle-checkbox');
+            if (cb) cb.checked = false;
+        }
+    }
+}
+
+function setTheme(theme) {
+    if (!['dark','light','system'].includes(theme)) theme = 'system';
+    localStorage.setItem(THEME_KEY, theme);
+    applyThemeChoice(theme);
+    const select = document.getElementById('theme-select');
+    // update checkbox (if present) handled inside applyThemeChoice
+}
+
+function loadThemeFromStorage() {
+    const saved = localStorage.getItem(THEME_KEY) || 'system';
+    const cb = document.getElementById('theme-toggle-checkbox');
+    if (saved === 'system') {
+        if (cb) cb.checked = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } else {
+        if (cb) cb.checked = (saved === 'dark');
+    }
+    applyThemeChoice(saved);
+}
+
+// Called when user toggles the checkbox
+function onThemeToggleChange() {
+    const cb = document.getElementById('theme-toggle-checkbox');
+    if (!cb) return;
+    setTheme(cb.checked ? 'dark' : 'light');
+}
+
+// Listen for system preference changes when in 'system' mode
+if (window.matchMedia) {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener && mq.addEventListener('change', () => {
+        const saved = localStorage.getItem(THEME_KEY) || 'system';
+        if (saved === 'system') applyThemeChoice('system');
+    });
+}
+
+// Ensure theme is loaded on script initialization (index.html body onload will also call loadLocaleFromURL)
+window.addEventListener('DOMContentLoaded', () => {
+    loadThemeFromStorage();
+});

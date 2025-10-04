@@ -1,4 +1,5 @@
-/* Dark-mode styles with variables + light fallback */
+/* Dark theme for Lumini (extracted from styles.css)
+   Use: link rel="stylesheet" href="dark.css" */
 :root {
     --bg: #0f1113;
     --surface: #141619;
@@ -11,9 +12,7 @@
     --shadow: 0 8px 20px rgba(2,6,12,0.6);
 }
 
-html, body {
-    height: 100%;
-}
+html, body { height: 100%; }
 
 body {
     font-family: Arial, sans-serif;
@@ -25,18 +24,9 @@ body {
     -moz-osx-font-smoothing:grayscale;
 }
 
-h1 {
-    text-align: center;
-    color: var(--text);
-}
+h1 { text-align: center; color: var(--text); }
 
-.icon {
-    width: 24px;
-    height: 24px;
-    vertical-align: middle;
-    margin-right: 8px;
-    filter: drop-shadow(0 1px 0 rgba(0,0,0,0.6));
-}
+.icon { width: 24px; height: 24px; vertical-align: middle; margin-right: 8px; filter: drop-shadow(0 1px 0 rgba(0,0,0,0.6)); }
 
 .topnav {
     overflow: hidden;
@@ -92,19 +82,11 @@ h1 {
     font-weight: 600;
 }
 
-.points-table td.left {
-    width: 50px;
-}
+.points-table td.left { width: 50px; }
 
-.points-table tr:nth-child(even) {
-    background-color: rgba(255,255,255,0.01);
-}
+.points-table tr:nth-child(even) { background-color: rgba(255,255,255,0.01); }
 
-/* Make empty cells slightly dimmer */
-.points-table td:empty {
-    color: rgba(230,238,248,0.45);
-    min-height: 28px;
-}
+.points-table td:empty { color: rgba(230,238,248,0.45); min-height: 28px; }
 
 @media (max-width: 600px) {
     .content-div { padding: 12px; }
@@ -112,12 +94,13 @@ h1 {
     .points-table th, .points-table td { padding: 8px; }
 }
 
-/* Light-mode fallback for users who prefer light themes */
-@media (prefers-color-scheme: light) {
-    :root { --bg: #f0f0f0; --surface: #ffffff; --muted-surface: #fbfbfb; --text: #111827; --muted-text: #4b5563; --accent: #0066cc; --border: rgba(0,0,0,0.08); --table-border: rgba(0,0,0,0.06); --shadow: 0 6px 16px rgba(12,20,30,0.06); }
-    body { background-color: var(--bg); color: var(--text); }
-    .content-div { background-color: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); }
-    .topnav select { background: #fff; color: var(--text); }
-    .points-table th { background-color: #f2f2f2; color: var(--muted-text); }
-    .points-table tr:nth-child(even) { background-color: #f9f9f9; }
-}
+/* Theme toggle styles */
+.theme-controls { display:flex; align-items:center; gap:8px; margin-left:8px; }
+.theme-toggle { position: relative; display: inline-block; width:48px; height:26px; }
+.theme-toggle input { opacity:0; width:0; height:0; }
+.theme-toggle .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.06); border-radius: 34px; transition: .18s; border:1px solid var(--border); }
+.theme-toggle .slider:before { position:absolute; content:''; height:20px; width:20px; left:3px; top:3px; background: var(--surface); transition:.18s; border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,0.5); }
+.theme-toggle input:checked + .slider { background: var(--accent); }
+.theme-toggle input:checked + .slider:before { transform: translateX(22px); }
+#theme-system-btn { background: transparent; color: var(--muted-text); border: 1px solid var(--border); padding:6px 8px; border-radius:8px; cursor:pointer; }
+#theme-system-btn:hover { color: var(--text); }

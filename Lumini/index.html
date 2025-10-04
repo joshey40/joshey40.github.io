@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumini</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- Theme styles: dark and light files. scripts.js will choose which to enable. -->
+    <link rel="stylesheet" href="dark.css" id="dark-theme">
+    <link rel="stylesheet" href="light.css" id="light-theme" disabled>
     <script src="scripts.js"></script>
 </head>
 <body onload="loadLocaleFromURL()">
@@ -13,75 +15,83 @@
             <option value="en">English</option>
             <option value="de">Deutsch</option>
         </select>
+        <!-- Theme controls: toggle between dark/light and an Auto button for system preference -->
+        <div class="theme-controls">
+            <label class="theme-toggle" title="Toggle dark / light">
+                <input type="checkbox" id="theme-toggle-checkbox" onchange="onThemeToggleChange()" aria-label="Toggle dark mode">
+                <span class="slider"></span>
+            </label>
+            <button id="theme-system-btn" onclick="setTheme('system')" title="Use system preference" aria-label="Use system theme">Auto</button>
+        </div>
     </div>
     <div class="content-div">
         <h1 data-i18n-key="app-title">Lumini</h1>
         <table class="points-table">
             <tr>
-                <th></th>
+                <th class="left"></th>
                 <th data-i18n-key="player-1">Player 1</th>
                 <th data-i18n-key="player-2">Player 2</th>
                 <th data-i18n-key="player-3">Player 3</th>
                 <th data-i18n-key="player-4">Player 4</th>
             </tr>
             <tr>
-                <td><img class="icon" src="res/icons/orange.png" alt="Orange" /></td>
+                <td class="left"><img class="icon" src="res/icons/orange.png" alt="Orange" /></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><img class="icon" src="res/icons/blue.png" alt="Blue" /></td>
+                <td class="left"><img class="icon" src="res/icons/blue.png" alt="Blue" /></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><img class="icon" src="res/icons/green.png" alt="Green" /></td>
+                <td class="left"><img class="icon" src="res/icons/green.png" alt="Green" /></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><img class="icon" src="res/icons/yellow.png" alt="Yellow" /></td>
+                <td class="left"><img class="icon" src="res/icons/yellow.png" alt="Yellow" /></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><img class="icon" src="res/icons/red.png" alt="Red" /></td>
+                <td class="left"><img class="icon" src="res/icons/red.png" alt="Red" /></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><img class="icon" src="res/icons/blue.png" alt="Blue" /></td>
+                <td class="left"><img class="icon" src="res/icons/blue.png" alt="Blue" /></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><img class="icon" src="res/icons/blue.png" alt="Blue" /></td>
+                <td class="left"><img class="icon" src="res/icons/blue.png" alt="Blue" /></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><img class="icon" src="res/icons/blue.png" alt="Blue" /></td>
+                <td class="left"><img class="icon" src="res/icons/blue.png" alt="Blue" /></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Gesamt</td>
+                <td class="left">Gesamt</td>
                 <td></td>
                 <td></td>
                 <td></td>
