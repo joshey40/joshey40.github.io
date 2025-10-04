@@ -8,7 +8,7 @@ let locale = "en";
 const translations = {
     // English translations
     "en": {
-        "app-title": "Lumini",
+        "app-title": "Illumination",
         "player-1": "Player 1",
         "player-2": "Player 2",
         "player-3": "Player 3",
@@ -16,7 +16,7 @@ const translations = {
     },
     // German translations
     "de": {
-        "app-title": "Lumini",
+        "app-title": "Illumination",
         "player-1": "Spieler 1",
         "player-2": "Spieler 2",
         "player-3": "Spieler 3",

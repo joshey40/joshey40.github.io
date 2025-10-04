@@ -135,6 +135,8 @@ h1 {
 
 .verticalLine {
   border-left: 1px solid var(--table-border-strong);
+  height: 100%;
+  width: 100%;
 }
 
 p {
