@@ -1,26 +1,46 @@
-h1 {
-    color: #d2fcff;
-    font-size: 36px;
-    margin-bottom: 10px;
-}
-
-table {
-    color: #d2fcff;
-    width: 80%;
-    margin: 0 auto;
-    border-collapse: collapse;
-}
-
-td, th {
-    border: 1px solid #d2fcff;
-    padding: 8px;
-    text-align: left;
-}
-
-.content-div {
-    background-color: #000000;
-    text-align: center;
+body {
     font-family: Arial, sans-serif;
-    width: 100vh;
-    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    text-align: center;
+    color: #333333;
+}
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    margin-bottom: 20px;
+}
+.topnav select {
+    float: right;
+    margin: 10px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 6px;
+}
+.content-div {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: auto;
+}
+.points-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.points-table th, .points-table td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+.points-table th {
+    background-color: #f2f2f2;
+}
+.points-table tr:nth-child(even) {
+    background-color: #f9f9f9;
 }

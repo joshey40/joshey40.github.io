@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumini</title>
-    <link href="https://joshey40.github.io/Lumini/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
 </head>
 <body>
+    <div class="topnav">
+        <select onchange="setLocale(this.value)">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+        </select>
+    </div>
     <div class="content-div">
-        <h1>Lumini</h1>
+        <h1 data-i18n-key="app-title">Lumini</h1>
         <table class="points-table">
             <tr>
                 <th></th>
-                <th>Player 1</th>
-                <th>Player 2</th>
-                <th>Player 3</th>
-                <th>Player 4</th>
+                <th data-i18n-key="player-1">Player 1</th>
+                <th data-i18n-key="player-2">Player 2</th>
+                <th data-i18n-key="player-3">Player 3</th>
+                <th data-i18n-key="player-4">Player 4</th>
             </tr>
             <tr>
                 <td>Orange</td>
