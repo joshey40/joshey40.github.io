@@ -91,6 +91,7 @@ h1 {
 
 .points-table td.left, .points-table th.left {
     width: 50px;
+    padding: 10px;
 }
 
 .points-table tr:hover td {
@@ -112,6 +113,10 @@ h1 {
     width: 100%;
     height: 100%;
     margin: 0;
+}
+
+.verticalLine {
+  border-left: thick solid var(--table-border-strong);
 }
 
 /* Theme toggle styles */
