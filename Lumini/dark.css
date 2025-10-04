@@ -115,8 +115,27 @@ h1 {
     margin: 0;
 }
 
+.points-input-water {
+    font-size: 14px;
+    outline: none;
+    text-align: center;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    width: 50%;
+    height: 100%;
+    margin: 0;
+}
+
 .verticalLine {
-  border-left: thick solid var(--table-border-strong);
+  border-left: 1px solid var(--table-border-strong);
+}
+
+p {
+    font-size: 14px;
+    color: var(--text);
+    margin: 0;
+    padding: 0;
 }
 
 /* Theme toggle styles */

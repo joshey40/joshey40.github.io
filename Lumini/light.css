@@ -116,7 +116,14 @@ h1 {
 }
 
 .verticalLine {
-  border-left: thick solid var(--table-border-strong);
+  border-left: 1px solid var(--table-border-strong);
+}
+
+p {
+    font-size: 14px;
+    color: var(--text);
+    margin: 0;
+    padding: 0;
 }
 
 /* Theme toggle styles (light theme) */
