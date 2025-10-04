@@ -6,7 +6,8 @@ h1 {
 
 .content-div {
     background-color: #000000;
-    padding: 20px;
     text-align: center;
     font-family: Arial, sans-serif;
+    width: 100vh;
+    height: 100vh;
 }
