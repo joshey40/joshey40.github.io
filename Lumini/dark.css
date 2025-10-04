@@ -101,6 +101,8 @@ h1 {
 .points-cell {
     width: 80px;
     padding: 0px;
+    display: flex;
+    flex-direction: row;
 }
 
 .points-input {
