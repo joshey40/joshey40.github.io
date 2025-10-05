@@ -149,7 +149,7 @@ function onPointsInputChange() {
 
     pointsInputs.forEach(input => {
         const id = input.id;
-        const playerIndex = id.charAt(id.length - 1) - 1; // Get player index from input ID
+        const playerIndex = id.charAt(0) - 1; // Get player index from input ID
         const category = id.slice(2); // Get category from input ID by removing "x_"
         const value = parseInt(input.value);
         console.log(`Player ${playerIndex + 1}, Category: ${category}, Value: ${value}`);
