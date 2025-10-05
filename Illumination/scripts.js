@@ -163,13 +163,12 @@ function onPointsInputChange() {
         allPoints[playerIndex][category] = isNaN(value) ? 0 : value;
     });
 
+    let totals = Array(numPlayers).fill(0);
     // Calculate bonuses
     categories.forEach(cat => {
         if (!cat.includes('water')) return; // Only apply bonuses for water categories
         let maxPoints = Math.max(...allPoints.map(p => p[cat]));
-        console.log(`Max points for ${cat}: ${maxPoints}`);
         let numWithMax = allPoints.filter(p => p[cat] === maxPoints && maxPoints > 0).length;
-        console.log(`Number of players with max points for ${cat}: ${numWithMax}`);
 
         allPoints.forEach(p => {
             if (p[cat] === maxPoints && maxPoints > 0) {
