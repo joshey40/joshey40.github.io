@@ -144,7 +144,7 @@ h1 {
     color: var(--text);
     margin: 0;
     padding: 0;
-    width: 50%;
+    width: 100%;
 }
 
 /* Theme toggle styles (light theme) */

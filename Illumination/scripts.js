@@ -27,7 +27,16 @@ const translations = {
 function translateElement(element) {
     const key = element.getAttribute("data-i18n-key");
     const translation = translations[locale][key];
-    element.innerText = translation;
+    // If the element is an input used for player name and the user has a custom name stored,
+    // do not overwrite it when changing locale. Otherwise, populate the input's value.
+    if (element.tagName === 'INPUT' && element.classList.contains('player-name-input')) {
+        const stored = localStorage.getItem(element.id);
+        if (!stored) {
+            element.value = translation || '';
+        }
+    } else {
+        element.innerText = translation;
+    }
 }
 
 // Function to change the locale and re-translate the page
@@ -154,8 +163,7 @@ function onPointsInputChange() {
         allPoints[playerIndex][category] = isNaN(value) ? 0 : value;
     });
 
-    // Calculate and update totals and bonuses (the player with the highest points in each water category gets a bonus of +2 and if there's a tie, all tied players get +1)
-    let totals = [0, 0, 0, 0];
+    // Calculate bonuses
     categories.forEach(cat => {
         if (!cat.includes('water')) return; // Only apply bonuses for water categories
         let maxPoints = Math.max(...allPoints.map(p => p[cat]));
@@ -204,6 +212,24 @@ window.addEventListener('DOMContentLoaded', () => {
     if (themeCheckbox) {
         themeCheckbox.addEventListener('change', () => onThemeToggleChange());
     }
+
+    // Player name inputs: load stored names (or translations) and save changes
+    const playerInputs = document.querySelectorAll('.player-name-input');
+    playerInputs.forEach(input => {
+        // Load stored value or translation
+        const stored = localStorage.getItem(input.id);
+        if (stored) input.value = stored;
+        else {
+            const key = input.getAttribute('data-i18n-key');
+            input.value = translations[locale] && translations[locale][key] ? translations[locale][key] : '';
+        }
+
+        input.addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            if (val) localStorage.setItem(e.target.id, val);
+            else localStorage.removeItem(e.target.id);
+        });
+    });
 
     const pointsInputs = document.querySelectorAll('.points-input');
     pointsInputs.forEach(input => {
