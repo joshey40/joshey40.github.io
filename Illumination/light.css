@@ -54,9 +54,30 @@ h1 {
     font-size: 15px;
     border-radius: 8px;
     color: var(--text);
-    background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.04));
+    background: var(--surface);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     border: 1px solid var(--border);
     outline: none;
+}
+
+/* Try to style the dropdown items too (browser support varies). */
+.topnav select option,
+.topnav option {
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+/* Some UAs respect color-scheme; others need specific tweaks */
+.topnav select:focus { background-color: var(--surface); color: var(--text); }
+.topnav select::-ms-expand { filter: invert(1) hue-rotate(180deg) !important; }
+.topnav select, .topnav select option { -webkit-text-fill-color: var(--text); }
+
+/* Hover/selected styling for option elements (where supported) */
+.topnav select option:hover, .topnav select option:checked {
+    background-color: var(--accent);
+    color: var(--text);
 }
 
 .content-div {
@@ -86,7 +107,7 @@ h1 {
     width: 120px;
     color: var(--muted-text);
     font-weight: 600;
-    padding: 10px;
+    padding: 0px;
 }
 
 .points-table td.left, .points-table th.left {
