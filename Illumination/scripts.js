@@ -179,6 +179,8 @@ function onPointsInputChange() {
                     totals[allPoints.indexOf(p)] += 1;
                     document.getElementById(`${allPoints.indexOf(p)+1}_${cat}_bonus`).innerText = '+1';
                 }
+            } else {
+                document.getElementById(`${allPoints.indexOf(p)+1}_${cat}_bonus`).innerText = '+0';
             }
         });
     });
