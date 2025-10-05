@@ -166,9 +166,9 @@ function onPointsInputChange() {
         allPoints.forEach(p => {
             if (p[cat] === maxPoints && maxPoints > 0) {
                 if (numWithMax === 1) {
-                    p.bonus = (p.bonus || 0) + 2;
+                    p[cat].bonus = (p[cat].bonus || 0) + 2;
                 } else {
-                    p.bonus = (p.bonus || 0) + 1;
+                    p[cat].bonus = (p[cat].bonus || 0) + 1;
                 }
             }
         });
@@ -179,17 +179,17 @@ function onPointsInputChange() {
     for (let i = 0; i < numPlayers; i++) {
         let total = 0;
         categories.forEach(cat => {
-            total += allPoints[i][cat] + (allPoints[i].bonus || 0);
+            total += allPoints[i][cat] + (allPoints[i][cat].bonus || 0);
         });
         totals[i] += total;
     }
-    
+
     // Update the total and bonus display
     for (let i = 0; i < numPlayers; i++) {
         document.getElementById(`${i+1}_total`).innerText = totals[i];
         categories.forEach(cat => {
             if (!cat.includes('water')) return; // Only apply bonuses for water categories
-            const bonus = allPoints[i].bonus || 0;
+            const bonus = allPoints[i][cat].bonus || 0;
             document.getElementById(`${i+1}_${cat}_bonus`).innerText = bonus > 0 ? `+${bonus}` : '+0';
         });
     }
