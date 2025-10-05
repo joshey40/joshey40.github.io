@@ -149,7 +149,7 @@ function onPointsInputChange() {
     pointsInputs.forEach(input => {
         const id = input.id;
         const playerIndex = id.charAt(id.length - 1) - 1; // Get player index from input ID
-        const category = id.slice(2, -2); // Get category from input ID
+        const category = id.slice(2, 0); // Get category from input ID by removing "1_"
         const value = parseInt(input.value);
         allPoints[playerIndex][category] = isNaN(value) ? 0 : value;
     });
@@ -180,7 +180,7 @@ function onPointsInputChange() {
         document.getElementById(`${i+1}_total`).innerText = totals[i];
         categories.forEach(cat => {
             const bonus = allPoints[i].bonus || 0;
-            document.getElementById(`${i+1}_${cat}_bonus`).innerText = bonus > 0 ? `+${bonus}` : '+0';
+            document.getElementById(`${i+1}_${cat}_bonus`).innerText = bonus > 0 ? `+${bonus}` : '0';
         });
     }
 }
