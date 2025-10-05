@@ -98,6 +98,16 @@ h1 {
     background-color: rgba(0,0,0,0.02);
 }
 
+.player-name-input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background-color: transparent;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+}
+
 .points-cell {
     width: 80px;
     padding: 0;

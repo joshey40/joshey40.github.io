@@ -86,7 +86,7 @@ h1 {
     width: 120px;
     color: var(--muted-text);
     font-weight: 600;
-    padding: 10px;
+    padding: 0px;
 }
 
 .points-table td.left, .points-table th.left {
@@ -96,6 +96,16 @@ h1 {
 
 .points-table td:hover td {
     background-color: rgba(255,255,255,0.02);
+}
+
+.player-name-input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background-color: transparent;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
 }
 
 .points-cell {
