@@ -149,7 +149,7 @@ function onPointsInputChange() {
     pointsInputs.forEach(input => {
         const id = input.id;
         const playerIndex = id.charAt(id.length - 1) - 1; // Get player index from input ID
-        const category = id.slice(2, 0); // Get category from input ID by removing "1_"
+        const category = id.slice(2); // Get category from input ID by removing "x_"
         const value = parseInt(input.value);
         allPoints[playerIndex][category] = isNaN(value) ? 0 : value;
     });
