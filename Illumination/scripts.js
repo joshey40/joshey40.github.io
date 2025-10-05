@@ -153,38 +153,43 @@ function onPointsInputChange() {
         const value = parseInt(input.value);
         allPoints[playerIndex][category] = isNaN(value) ? 0 : value;
     });
-    console.log(allPoints);
 
     // Calculate and update totals and bonuses (the player with the highest points in each water category gets a bonus of +2 and if there's a tie, all tied players get +1)
-    let totals = [];
+    let totals = [0, 0, 0, 0];
     categories.forEach(cat => {
         if (!cat.includes('water')) return; // Only apply bonuses for water categories
         let maxPoints = Math.max(...allPoints.map(p => p[cat]));
+        console.log(`Max points for ${cat}: ${maxPoints}`);
         let numWithMax = allPoints.filter(p => p[cat] === maxPoints && maxPoints > 0).length;
+        console.log(`Number of players with max points for ${cat}: ${numWithMax}`);
 
         allPoints.forEach(p => {
-            if (p[cat] === maxPoints) {
-                p.bonus = 2;
-            } else if (numWithMax > 1 && p[cat] === maxPoints - 1) {
-                p.bonus = 1;
+            if (p[cat] === maxPoints && maxPoints > 0) {
+                if (numWithMax === 1) {
+                    p.bonus = (p.bonus || 0) + 2;
+                } else {
+                    p.bonus = (p.bonus || 0) + 1;
+                }
             }
         });
     });
-    console.log(allPoints);
+    console.log('All points with bonuses:', allPoints);
+
+    // Sum up total points including bonuses
     for (let i = 0; i < numPlayers; i++) {
         let total = 0;
         categories.forEach(cat => {
             total += allPoints[i][cat] + (allPoints[i].bonus || 0);
         });
-        totals[i] = total;
+        totals[i] += total;
     }
+    
     // Update the total and bonus display
     for (let i = 0; i < numPlayers; i++) {
         document.getElementById(`${i+1}_total`).innerText = totals[i];
         categories.forEach(cat => {
             if (!cat.includes('water')) return; // Only apply bonuses for water categories
             const bonus = allPoints[i].bonus || 0;
-            console.log(`Player ${i+1}, Category: ${cat}, Bonus: ${bonus}`);
             document.getElementById(`${i+1}_${cat}_bonus`).innerText = bonus > 0 ? `+${bonus}` : '+0';
         });
     }
