@@ -145,20 +145,20 @@ function onPointsInputChange() {
         allPoints[i] = {};
         categories.forEach(cat => allPoints[i][cat] = 0);
     }
-    console.log(allPoints);
 
     pointsInputs.forEach(input => {
         const id = input.id;
         const playerIndex = id.charAt(0) - 1; // Get player index from input ID
         const category = id.slice(2); // Get category from input ID by removing "x_"
         const value = parseInt(input.value);
-        console.log(`Player ${playerIndex + 1}, Category: ${category}, Value: ${value}`);
         allPoints[playerIndex][category] = isNaN(value) ? 0 : value;
     });
+    console.log(allPoints);
 
     // Calculate and update totals and bonuses (the player with the highest points in each water category gets a bonus of +2 and if there's a tie, all tied players get +1)
     let totals = [];
     categories.forEach(cat => {
+        if (!cat.includes('water')) return; // Only apply bonuses for water categories
         let maxPoints = Math.max(...allPoints.map(p => p[cat]));
         let numWithMax = allPoints.filter(p => p[cat] === maxPoints && maxPoints > 0).length;
 
@@ -170,6 +170,7 @@ function onPointsInputChange() {
             }
         });
     });
+    console.log(allPoints);
     for (let i = 0; i < numPlayers; i++) {
         let total = 0;
         categories.forEach(cat => {
@@ -181,7 +182,9 @@ function onPointsInputChange() {
     for (let i = 0; i < numPlayers; i++) {
         document.getElementById(`${i+1}_total`).innerText = totals[i];
         categories.forEach(cat => {
+            if (!cat.includes('water')) return; // Only apply bonuses for water categories
             const bonus = allPoints[i].bonus || 0;
+            console.log(`Player ${i+1}, Category: ${cat}, Bonus: ${bonus}`);
             document.getElementById(`${i+1}_${cat}_bonus`).innerText = bonus > 0 ? `+${bonus}` : '+0';
         });
     }
