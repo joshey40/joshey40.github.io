@@ -94,7 +94,7 @@ h1 {
     padding: 10px;
 }
 
-.points-table tr:hover td {
+.points-table td:hover td {
     background-color: rgba(255,255,255,0.02);
 }
 
@@ -122,7 +122,7 @@ h1 {
     color: var(--text);
     background: transparent;
     border: none;
-    width: 100%;
+    width: 50%;
     height: 100%;
     margin: 0;
 }
@@ -139,11 +139,12 @@ h1 {
     height: 24px;
 }
 
-p {
+.water-input-divider p {
     font-size: 14px;
     color: var(--text);
     margin: 0;
     padding: 0;
+    width: 50%;
 }
 
 /* Theme toggle styles */

@@ -133,6 +133,62 @@ window.addEventListener('DOMContentLoaded', () => {
     loadThemeFromStorage();
 });
 
+// ########################################################
+// Summing up points
+// ########################################################
+function onPointsInputChange() {
+    const pointsInputs = document.querySelectorAll('.points-input');
+    const numPlayers = 4;
+    const categories = ['orange', 'blue', 'green', 'yellow', 'red', 'low_water', 'mid_water', 'high_water'];
+    let allPoints = [];
+    for (let i = 0; i < numPlayers; i++) {
+        allPoints[i] = {};
+        categories.forEach(cat => allPoints[i][cat] = 0);
+    }
+    
+    pointsInputs.forEach(input => {
+        const id = input.id;
+        const playerIndex = id.charAt(id.length - 1) - 1; // Get player index from input ID
+        const category = id.slice(2, -2); // Get category from input ID
+        const value = parseInt(input.value);
+        allPoints[playerIndex][category] = isNaN(value) ? 0 : value;
+    });
+
+    // Calculate and update totals and bonuses (the player with the highest points in each water category gets a bonus of +2 and if there's a tie, all tied players get +1)
+    let totals = [];
+    categories.forEach(cat => {
+        let maxPoints = Math.max(...allPoints.map(p => p[cat]));
+        let numWithMax = allPoints.filter(p => p[cat] === maxPoints && maxPoints > 0).length;
+
+        allPoints.forEach(p => {
+            if (p[cat] === maxPoints) {
+                p.bonus = 2;
+            } else if (numWithMax > 1 && p[cat] === maxPoints - 1) {
+                p.bonus = 1;
+            }
+        });
+    });
+    for (let i = 0; i < numPlayers; i++) {
+        let total = 0;
+        categories.forEach(cat => {
+            total += allPoints[i][cat] + (allPoints[i].bonus || 0);
+        });
+        totals[i] = total;
+    }
+    // Update the total and bonus display
+    for (let i = 0; i < numPlayers; i++) {
+        document.getElementById(`${i+1}_total`).innerText = totals[i];
+        categories.forEach(cat => {
+            const bonus = allPoints[i].bonus || 0;
+            document.getElementById(`${i+1}_${cat}_bonus`).innerText = bonus > 0 ? `+${bonus}` : '+0';
+        });
+    }
+}
+
+// ########################################################
+// Initialization and Event Listeners
+// ########################################################
+
 // Wire up UI listeners once DOM is ready
 window.addEventListener('DOMContentLoaded', () => {
     // Locale select
@@ -146,6 +202,13 @@ window.addEventListener('DOMContentLoaded', () => {
     if (themeCheckbox) {
         themeCheckbox.addEventListener('change', () => onThemeToggleChange());
     }
+
+    const pointsInputs = document.querySelectorAll('.points-input');
+    pointsInputs.forEach(input => {
+        input.addEventListener('input', () => {
+            onPointsInputChange();
+        });
+    });
 
     // load locale from URL (previously inline onload)
     loadLocaleFromURL();
