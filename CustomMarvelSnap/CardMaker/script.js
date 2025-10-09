@@ -848,6 +848,7 @@ const effects = {
     "rainbow",
     "red",
     "white",
+    "poison",
   ],
   tone: ["black", "blue", "gold", "green", "purple", "rainbow", "red", "white"],
   glimmer: [
