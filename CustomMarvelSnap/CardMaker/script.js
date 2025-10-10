@@ -774,6 +774,7 @@ const frameCategories = {
   metallic: "Metallic",
   matte: "Matte",
   special: "Special",
+  fire: "Fire",
 };
 const frames = {
   basic: [
@@ -797,9 +798,20 @@ const frames = {
     "rainbow",
   ],
   neon: ["blue", "green", "red", "purple", "yellow", "white"],
-  metallic: ["copper", "gold", "silver"],
+  metallic: ["copper", "gold", "silver", "gold_plated", "silver_plated"],
   matte: ["black", "red"],
-  special: ["tokyo2099", "chains", "champion"],
+  special: ["tokyo2099", "chains", "champion", "green_runes", "red_runes"],
+  fire: [
+    "black",
+    "blue",
+    "green",
+    "orange",
+    "purple",
+    "red",
+    "yellow",
+    "white",
+    "rainbow",
+  ]
 };
 
 for (const category in frameCategories) {
