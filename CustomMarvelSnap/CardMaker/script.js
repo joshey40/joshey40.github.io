@@ -770,11 +770,11 @@ const frameDir = "../res/img/frames/";
 const frameCategories = {
   basic: "Basic",
   cosmic: "Cosmic",
+  fire: "Fire",
   neon: "Neon",
   metallic: "Metallic",
   matte: "Matte",
   special: "Special",
-  fire: "Fire",
 };
 const frames = {
   basic: [
