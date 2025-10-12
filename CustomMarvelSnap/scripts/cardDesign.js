@@ -286,7 +286,7 @@ async function generatecard(
   if (showCostPower) {
     const costImg = await getPreloadedImage("../res/img/frames/cost.png");
     ctx.drawImage(costImg, 0, 0, size, size);
-    if (power != null && power != "") {
+    if (power != null && power !== "") {
       const powerImg = await getPreloadedImage("../res/img/frames/power.png");
       ctx.drawImage(powerImg, 0, 0, size, size);
     }
@@ -306,7 +306,7 @@ async function generatecard(
     };
     const multiply = 1.2;
     // Cost number
-    if (cost == null || cost == "") {
+    if (cost == null || cost === "") {
       cost = 0;
     }
     let costNumber = cost.toString().split("");
@@ -331,7 +331,7 @@ async function generatecard(
       costX += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
     }
     // Power number
-    if (power != null && power != "") {
+    if (power != null && power !== "") {
       let powerNumber = power.toString().split("");
       let powerWidth = numbersWidth[powerNumber[0]] * multiply * scale;
       powerWidth *= multiply;
@@ -511,7 +511,8 @@ function loadImg(src) {
 function checkIfSpell(imagesBase64, power) {
   if (!imagesBase64.frameImage)
     imagesBase64.frameImage = "../res/img/frames/basic/common.png";
-  if (power == null || power == "") {
+  // Treat only null/undefined or empty-string as "no power". Use strict check so 0 is preserved.
+  if (power == null || power === "") {
     const frameName = imagesBase64.frameImage;
     if (!frameName.includes("_spell")) {
       const frameSpellName = frameName.replace(/\.png$/, "_spell.png");

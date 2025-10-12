@@ -314,8 +314,8 @@ async function importCard(event) {
         cardSettings.nameOutlineColor = nameObj.outlineColor || "#000000";
         cardSettings.fontSelect = nameObj.font || "BadaBoom";
         cardSettings.nameZoom = nameObj.zoom / 100 || 1;
-        cardSettings.cost = stats.cost || "1";
-        cardSettings.power = stats.power || "";
+        cardSettings.cost = stats.cost ?? "1";
+        cardSettings.power = stats.power ?? "";
         cardSettings.showCostPower = stats.showCostPower !== false;
         cardSettings.description = desc.text || "";
         cardSettings.zoom = (1 + (mainImg.zoom / 100)) || 1;
