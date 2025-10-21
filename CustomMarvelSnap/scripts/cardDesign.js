@@ -6,8 +6,10 @@ const staticImagePaths = [
   "../res/img/default_cards/hulk.png",
   "../res/img/frames/cost.png",
   "../res/img/frames/power.png",
-  "../res/img/finishes/goldFinish.jpg",
-  "../res/img/finishes/foilFinish.jpg",
+  "../res/img/finishes/gold.png",
+  "../res/img/finishes/foil.png",
+  "../res/img/finishes/prism.png",
+  "../res/img/finishes/fire.png"
 ];
 const numbersDir = "../res/img/numbers/";
 const numbers = ["-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -52,6 +54,8 @@ const frameTypes = {
     "copper",
     "gold",
     "silver",
+    "gold_plated",
+    "silver_plated",
     "red",
     "blue",
     "green",
@@ -61,7 +65,18 @@ const frameTypes = {
   ],
   neon: ["blue", "green", "purple", "red", "white", "yellow"],
   matte: ["black", "red", "black_spell", "red_spell"],
-  special: ["tokyo2099", "chains", "golden_chains", "champion", "champion_spell"],
+  special: ["tokyo2099", "chains", "golden_chains", "champion", "champion_spell", "green_runes", "red_runes"],
+  fire: [
+    "black",
+    "blue",
+    "green",
+    "orange",
+    "purple",
+    "red",
+    "yellow",
+    "white",
+    "rainbow",
+  ]
 };
 const frameImagePaths = [];
 Object.entries(frameTypes).forEach(([category, frames]) => {
@@ -81,6 +96,7 @@ const effectTypes = {
     "rainbow",
     "red",
     "white",
+    "poison"
   ],
   tone: ["black", "blue", "gold", "green", "purple", "rainbow", "red", "white"],
   glimmer: [
@@ -236,20 +252,53 @@ async function generatecard(
   let x = ((1024 - w) / 2) * scale + offset[0] * scale;
   let y = ((1024 - h) / 2) * scale + 3 * scale + offset[1] * scale;
   ctx.drawImage(backgroundImg, x, y, w, h);
+  // Apply Finish
+  if (finish === "foil") {
+    turnContextBlackAndWhite(ctx);
+    ctx.globalCompositeOperation = "hard-light";
+    const foilImageMask = await getPreloadedImage("../res/img/finishes/foil.png");
+    ctx.drawImage(foilImageMask, 0, 0, size, size);
+  } else if (finish === "gold") {
+    turnContextBlackAndWhite(ctx);
+    ctx.globalCompositeOperation = "multiply";
+    const goldImageMask = await getPreloadedImage("../res/img/finishes/gold.png");
+    ctx.drawImage(goldImageMask, 0, 0, size, size);
+  } else if (finish === "prism") {
+    ctx.globalCompositeOperation = "source-over";
+    const prismImageMask = await getPreloadedImage("../res/img/finishes/prism.png");
+    ctx.drawImage(prismImageMask, 0, 0, size, size);
+  } else if (finish === "fire") {
+    ctx.globalCompositeOperation = "source-over";
+    const fireImageMask = await getPreloadedImage("../res/img/finishes/fire.png");
+    ctx.drawImage(fireImageMask, 0, 0, size, size);
+  }
+  // Foreground
+  if (imagesBase64.foregroundImage) {
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = size;
+    tempCanvas.height = size;
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCtx.drawImage(artMask, 0, 0, size, size);
+    tempCtx.globalCompositeOperation = "source-in";
+    let foregroundImg = await getImg(imagesBase64.foregroundImage, finish, "foreground");
+    tempCtx.drawImage(foregroundImg, x, y, w, h);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.drawImage(tempCanvas, 0, 0, size, size);
+  }
   // Frame
+  ctx.globalCompositeOperation = "source-over";
   let frameImg;
   if (imagesBase64.frameImage) {
     frameImg = await getPreloadedImage(imagesBase64.frameImage);
   } else {
     frameImg = await getPreloadedImage("../res/img/frames/basic/common.png");
   }
-  ctx.globalCompositeOperation = "source-over";
   ctx.drawImage(frameImg, 0, 0, size, size);
   // Cost and Power
   if (showCostPower) {
     const costImg = await getPreloadedImage("../res/img/frames/cost.png");
     ctx.drawImage(costImg, 0, 0, size, size);
-    if (power != null && power != "") {
+    if (power != null && power !== "") {
       const powerImg = await getPreloadedImage("../res/img/frames/power.png");
       ctx.drawImage(powerImg, 0, 0, size, size);
     }
@@ -269,7 +318,7 @@ async function generatecard(
     };
     const multiply = 1.2;
     // Cost number
-    if (cost == null || cost == "") {
+    if (cost == null || cost === "") {
       cost = 0;
     }
     let costNumber = cost.toString().split("");
@@ -294,7 +343,7 @@ async function generatecard(
       costX += (numbersWidth[costNumber[i]] - 14) * multiply * scale;
     }
     // Power number
-    if (power != null && power != "") {
+    if (power != null && power !== "") {
       let powerNumber = power.toString().split("");
       let powerWidth = numbersWidth[powerNumber[0]] * multiply * scale;
       powerWidth *= multiply;
@@ -320,11 +369,7 @@ async function generatecard(
   }
   // Frame Break
   if (imagesBase64.frameBreakImage) {
-    let frameBreakImg = await getImg(
-      imagesBase64.frameBreakImage,
-      finish,
-      "frameBreak"
-    );
+    let frameBreakImg = await getImg(imagesBase64.frameBreakImage, finish, "frameBreak");
     ctx.drawImage(frameBreakImg, x, y, w, h);
   }
   // Title
@@ -353,7 +398,7 @@ async function generatecard(
     ctx.textBaseline = "top";
     ctx.strokeStyle = nameOutlineColor;
     ctx.fillStyle = colorName;
-    ctx.lineWidth = 15 * scale * nameZoom;
+    ctx.lineWidth = 15 * scale;
     for (let i = 0; i < name.length; i++) {
       let titleHeight = 300 * scale * nameZoom * name.length;
       let titleY = 850 * scale + offset[2] * scale;
@@ -478,7 +523,8 @@ function loadImg(src) {
 function checkIfSpell(imagesBase64, power) {
   if (!imagesBase64.frameImage)
     imagesBase64.frameImage = "../res/img/frames/basic/common.png";
-  if (power == null || power == "") {
+  // Treat only null/undefined or empty-string as "no power". Use strict check so 0 is preserved.
+  if (power == null || power === "") {
     const frameName = imagesBase64.frameImage;
     if (!frameName.includes("_spell")) {
       const frameSpellName = frameName.replace(/\.png$/, "_spell.png");
@@ -498,6 +544,9 @@ function applyFinish(img, finish, layer) {
   if (finish === "none") {
     return img;
   }
+  if (layer === "title") {
+    return img; // No finish for title layer
+  }
 
   if (finish === "inked") {
     // Black and white effect whith high contrast
@@ -510,13 +559,28 @@ function applyFinish(img, finish, layer) {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
     for (let i = 0; i < data.length; i += 4) {
-      let avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      // Calculate luminance and turn into value between 0-1
+      let avg = (data[i] * 0.2 + data[i + 1] * 0.7 + data[i + 2] * 0.1) / 255;
+      let sbIn = avg;
       // Increase contrast
-      const n1 = 1.5;
-      const n2 = 1.9;
-      avg /= 255;
+      const n1 = 1.2;
+      const n2 = 1.2;
       avg = Math.pow(avg, n1) / (Math.pow(avg, n1) + Math.pow(1 - avg, n2));
+      /**  Shiny Blacks
+      const m1 = 1.2;
+      const m2 = 0.02;
+      if (sbIn < m2 * 2) {
+        sbIn = sbIn / m2 - 1;
+        sbIn = Math.pow(sbIn, 4) - 2 * Math.pow(sbIn, 2) + 1;
+        sbIn /= m1;
+        avg += sbIn;
+      }
+      */
+      // Back to value between 0-255
       avg = Math.round(avg * 255);
+      // Quantization
+      const quantizationLevels = 16;
+      avg = Math.floor(avg / quantizationLevels) * quantizationLevels;
       data[i] = avg; // Red
       data[i + 1] = avg; // Green
       data[i + 2] = avg; // Blue
@@ -525,15 +589,22 @@ function applyFinish(img, finish, layer) {
     img = canvas;
     return img;
   }
-  if (finish === "foil") {
-    if (layer !== "background") {
-      return img;
-    }
-    // Apply foil effect
-    // TODO: Implement foil effect
-    return img;
-  }
   return img;
+}
+
+function turnContextBlackAndWhite(ctx) {
+  const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+  const data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+    data[i] = avg;     // Red
+    data[i + 1] = avg; // Green
+    data[i + 2] = avg; // Blue
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+  return ctx;
 }
 
 export { generatecard };

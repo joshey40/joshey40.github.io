@@ -6,6 +6,7 @@ import { generatecard } from "../scripts/cardDesign.js";
 let imagesBase64 = {
   mainImage: null,      // Main image of the card
   frameImage: null,     // Frame image
+  foregroundImage: null,// Foreground image
   frameBreakImage: null,// Frame break image
   titleImage: null,     // Title image
   effectImage: null,    // Effect image
@@ -129,6 +130,19 @@ function mainImageChange(event) {
 }
 
 
+// Called when the foreground image is changed
+function foregroundImageChange(event) {
+  const imageFile = event.target.files[0];
+  const reader = new FileReader();
+  reader.readAsDataURL(imageFile);
+  reader.onload = function (e) {
+    const base64 = e.target.result;
+    imagesBase64.foregroundImage = base64;
+    updateResult();
+  };
+}
+
+
 // Called when the frame break image is changed
 function frameBreakImageChange(event) {
   const imageFile = event.target.files[0];
@@ -161,6 +175,11 @@ async function clearMainImage() {
   updateResult();
 }
 
+  // Removes the foreground image
+function clearForegroundImage() {
+  imagesBase64.foregroundImage = null;
+  updateResult();
+}
 
 // Removes the frame break image
 function clearFrameBreakImage() {
@@ -348,6 +367,9 @@ async function exportCard() {
             offsetX: safeNum(offsetX, 0),
             offsetY: safeNum(offsetY, 0),
           },
+          foreground: {
+            file: imagesBase64.foregroundImage && imagesBase64.foregroundImage.startsWith("data:") ? IMAGE_DIR + "foreground.png" : null,
+          },
           frameBreak: {
             file: imagesBase64.frameBreakImage && imagesBase64.frameBreakImage.startsWith("data:") ? IMAGE_DIR + "framebreak.png" : null,
           },
@@ -377,6 +399,7 @@ async function exportCard() {
     };
     addBase64(imagesBase64.titleImage, IMAGE_DIR + "title.png");
     addBase64(imagesBase64.mainImage, IMAGE_DIR + "main.png");
+    addBase64(imagesBase64.foregroundImage, IMAGE_DIR + "foreground.png");
     addBase64(imagesBase64.frameBreakImage, IMAGE_DIR + "framebreak.png");
 
     // Generate the blob and trigger download with custom extension
@@ -410,7 +433,7 @@ async function exportCard() {
 async function importCardFile(file) {
   try {
     // Basic extension guard (users could still rename; deeper structural checks below)
-    if (!file.name.toLowerCase().endsWith(CARD_FILE_EXT)) {
+    if (!file.name.toLowerCase().endsWith(CARD_FILE_EXT) && !file.name.toLowerCase().endsWith(".zip")) {
       throw new Error("Unsupported file type. Please select a " + CARD_FILE_EXT + " file.");
     }
 
@@ -433,6 +456,7 @@ async function importCardFile(file) {
     const desc = card.description || {};
     const images = card.images || {};
     const mainImg = images.main || {};
+    const foregroundImg = images.foreground || {};
     const frameBreakImg = images.frameBreak || {};
     const background = card.background || {};
 
@@ -452,7 +476,7 @@ async function importCardFile(file) {
     setVal("nameOffsetY", nameObj.offsetY ?? 0);
     setVal("cost", stats.cost ?? "");
     setVal("power", stats.power ?? "");
-    const sCPoCpgk = document.getElementById("showCostPower"); if (sCPoCpgk) sCPoCpgk.checked = !!stats.showCostPower;
+    const sCPoCpgk = document.getElementById("showCostPower"); if (sCPoCpgk) sCPoCpgk.checked = stats.showCostPower || true;
     setVal("description", desc.raw || "");
     setVal("imageZoom", mainImg.zoom ?? 0);
     const bgChk = document.getElementById("transparentBg"); if (bgChk) bgChk.checked = !!background.transparent;
@@ -468,6 +492,7 @@ async function importCardFile(file) {
     // Reset (will be filled by async loads that follow)
     imagesBase64.titleImage = null;
     imagesBase64.mainImage = null;
+    imagesBase64.foregroundImage = null;
     imagesBase64.frameBreakImage = null;
 
     // Load an image file from the zip (path may be nested, attempt fallback to filename only)
@@ -492,6 +517,7 @@ async function importCardFile(file) {
     // Load images sequentially (small count so perf impact minimal). Could be parallelized with Promise.all.
     await loadImageFile(nameObj.imageFile, (b64) => imagesBase64.titleImage = b64);
     await loadImageFile(mainImg.file, (b64) => imagesBase64.mainImage = b64);
+    await loadImageFile(foregroundImg.file, (b64) => imagesBase64.foregroundImage = b64);
     await loadImageFile(frameBreakImg.file, (b64) => imagesBase64.frameBreakImage = b64);
 
     // Trigger downstream re-render
@@ -684,9 +710,11 @@ cardCanvas.addEventListener("touchcancel", () => {
 // Attach to the global window object
 window.updateResult = updateResult;
 window.mainImageChange = mainImageChange;
+window.foregroundImageChange = foregroundImageChange;
 window.frameBreakImageChange = frameBreakImageChange;
 window.titleImageChange = titleImageChange;
 window.clearMainImage = clearMainImage;
+window.clearForegroundImage = clearForegroundImage;
 window.clearFrameBreakImage = clearFrameBreakImage;
 window.clearTitleImage = clearTitleImage;
 window.selectFrame = selectFrame;
@@ -710,9 +738,11 @@ window.importCardFile = importCardFile;
 export {
   updateResult,
   mainImageChange,
+  foregroundImageChange,
   frameBreakImageChange,
   titleImageChange,
   clearMainImage,
+  clearForegroundImage,
   clearFrameBreakImage,
   clearTitleImage,
   selectFrame,
@@ -740,6 +770,7 @@ const frameDir = "../res/img/frames/";
 const frameCategories = {
   basic: "Basic",
   cosmic: "Cosmic",
+  fire: "Fire",
   neon: "Neon",
   metallic: "Metallic",
   matte: "Matte",
@@ -759,18 +790,31 @@ const frames = {
     "black",
     "blue",
     "green",
-    "red",
-    "pink",
     "yellow",
     "orange",
+    "red",
     "purple",
     "rainbow",
+    "pink",
+  ],
+  fire: [
+    "black",
+    "blue",
+    "green",
+    "yellow",
+    "orange",
+    "red",
+    "purple",
+    "rainbow",
+    "white",
   ],
   neon: ["blue", "green", "red", "purple", "yellow", "white"],
   metallic: [
     "copper",
     "gold",
     "silver",
+    "gold_plated",
+    "silver_plated",
     "red",
     "blue",
     "green",
@@ -779,7 +823,7 @@ const frames = {
     "black",
   ],
   matte: ["black", "red"],
-  special: ["tokyo2099", "chains", "golden_chains", "champion"],
+  special: ["tokyo2099", "chains", "golden_chains", "champion", "green_runes", "red_runes"],
 };
 
 for (const category in frameCategories) {
@@ -828,6 +872,7 @@ const effects = {
     "rainbow",
     "red",
     "white",
+    "poison",
   ],
   tone: ["black", "blue", "gold", "green", "purple", "rainbow", "red", "white"],
   glimmer: [
@@ -883,15 +928,27 @@ for (const category in effectCategories) {
 const finishSelectDiv = document.getElementById("finishSelectDiv");
 const finishes = {
   inked: "Inked",
+  foil: "Foil",
+  gold: "Gold",
+  prism: "Prism",
+  fire: "Fire",
 };
-const finshesButtonImage = {
+const finishesButtonImage = {
   inked:
     "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/Ink.webp",
+  foil:
+    "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/Foil.webp",
+  gold:
+    "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/GoldFoil.webp",
+  prism:
+    "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/PrismFoil.webp",
+  fire:
+    "https://game-assets.snap.fan/ConvertedRenders/SurfaceEffects/Fire.webp",
 };
 
 for (const finish in finishes) {
   const finishImg = document.createElement("img");
-  finishImg.src = finshesButtonImage[finish];
+  finishImg.src = finishesButtonImage[finish];
   finishImg.alt = finishes[finish];
   finishImg.className = "frame-image";
   const finishSelectButton = document.createElement("div");
@@ -915,6 +972,7 @@ for (const finish in finishes) {
   finishSelectButton.style.borderRadius = "5px";
   finishSelectButton.style.width = "125px";
   finishSelectButton.style.textAlign = "center";
+  finishSelectButton.style.height = "fit-content";
   finishSelectDiv.appendChild(finishSelectButton);
 }
 

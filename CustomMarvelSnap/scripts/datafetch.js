@@ -22,6 +22,7 @@ async function getOfficialCards(includeVariants = true) {
         if (officialCards[i].flavor && officialCards[i].flavor.length > 0) {
             officialCards[i].ability = officialCards[i].flavor;
         }
+        officialCards[i].flavor = officialCards[i].flavor.replace("<span>", "").replace("</span>", "");
         delete officialCards[i].flavor;
         // Remove unreleased cards
         if (officialCards[i].status!== "released") {
