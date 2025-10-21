@@ -48,10 +48,20 @@ const frameTypes = {
     "purple",
     "rainbow",
   ],
-  metallic: ["copper", "gold", "silver"],
+  metallic: [
+    "copper",
+    "gold",
+    "silver",
+    "red",
+    "blue",
+    "green",
+    "purple",
+    "yellow",
+    "black",
+  ],
   neon: ["blue", "green", "purple", "red", "white", "yellow"],
   matte: ["black", "red", "black_spell", "red_spell"],
-  special: ["tokyo2099", "chains", "champion", "champion_spell"],
+  special: ["tokyo2099", "chains", "golden_chains", "champion", "champion_spell"],
 };
 const frameImagePaths = [];
 Object.entries(frameTypes).forEach(([category, frames]) => {
