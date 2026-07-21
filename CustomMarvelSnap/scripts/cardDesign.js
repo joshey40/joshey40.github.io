@@ -466,7 +466,12 @@ async function generatecard(
   if (description[0] === "!" && (description.includes(">") || description.includes(objectiveArrow))) {
     isObjective = true;
     description = description.substring(1);
-    description = description.replace(/>/g, objectiveArrow);
+    const isMobile = navigator.userAgentData.mobile;
+    if (isMobile) {
+      description = description.replace(objectiveArrow, ">");
+    } else {
+      description = description.replace(/>/g, objectiveArrow);
+    }
   }
   const allSegments = parseDescriptionSegments(description);
   let lines = [[]];
