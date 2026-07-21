@@ -530,6 +530,7 @@ async function generatecard(
       );
       x += 55 * scale + 10 * scale;
     }
+    console.log(segments);
     segments.forEach((seg) => {
       completeCtx.font = normalFont;
       if (seg.bold) {
