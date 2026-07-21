@@ -486,21 +486,19 @@ async function generatecard(
       completeCtx.font = seg.bold ? boldFont : normalFont;
       totalWidth += completeCtx.measureText(seg.text).width;
     });
+    let x = 512 * scale - totalWidth / 2;
     if (isObjective && i === 0) {
       totalWidth += 55 * scale + 10 * scale;
+      x += 55 * scale + 10 * scale;
       const objectiveImg = await getPreloadedImage("../res/img/objective.png");
       const objectiveImgSize = 55 * scale;
       completeCtx.drawImage(
         objectiveImg,
-        512 * scale - totalWidth / 2 - objectiveImgSize - 10 * scale,
+        x,
         y,
         objectiveImgSize,
         objectiveImgSize
       );
-    }
-    let x = 512 * scale - totalWidth / 2;
-    if (isObjective && i === 0) {
-      x += 55 * scale + 10 * scale;
     }
     segments.forEach((seg) => {
       completeCtx.font = seg.bold ? boldFont : normalFont;
