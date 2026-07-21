@@ -472,10 +472,10 @@ async function generatecard(
   completeCtx.textAlign = "center";
   completeCtx.textBaseline = "top";
   completeCtx.lineWidth = 1;
-  const normalFont = `${Math.round(
-    52 * scale
-  )}px 'HelveticaNeueMediumCondensed'`;
+  const normalFont = `${Math.round(52 * scale)}px 'HelveticaNeueMediumCondensed'`;
   const boldFont = `${Math.round(52 * scale)}px 'HelveticaNeueHeavyCondensed'`;
+  const italicFont = `${Math.round(52 * scale)}px 'HelveticaNeueMediumCondensedOblique'`;
+  const boldItalicFont = `${Math.round(52 * scale)}px 'HelveticaNeueHeavyCondensedOblique'`;
   description = description.trim();
   var isObjective = false;
   const objectiveArrow = "⮞";
@@ -504,7 +504,16 @@ async function generatecard(
     const segments = lines[i];
     let totalWidth = 0;
     segments.forEach((seg) => {
-      completeCtx.font = seg.bold ? boldFont : normalFont;
+      completeCtx.font = normalFont;
+      if (seg.bold) {
+        if (seg.italic) {
+          completeCtx.font = boldItalicFont;
+        } else {
+          completeCtx.font = boldFont;
+        }
+      } else if (seg.italic) {
+        completeCtx.font = italicFont;
+      }
       totalWidth += completeCtx.measureText(seg.text).width;
     });
     let x = 512 * scale - totalWidth / 2;
@@ -522,7 +531,16 @@ async function generatecard(
       x += 55 * scale + 10 * scale;
     }
     segments.forEach((seg) => {
-      completeCtx.font = seg.bold ? boldFont : normalFont;
+      completeCtx.font = normalFont;
+      if (seg.bold) {
+        if (seg.italic) {
+          completeCtx.font = boldItalicFont;
+        } else {
+          completeCtx.font = boldFont;
+        }
+      } else if (seg.italic) {
+        completeCtx.font = italicFont;
+      }
       completeCtx.strokeText(
         seg.text,
         x + completeCtx.measureText(seg.text).width / 2,

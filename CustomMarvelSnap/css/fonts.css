@@ -18,6 +18,8 @@
     src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/Helvetica Neue Bold.ttf');
 }
 
+
+
 @font-face {
     font-family: 'AvengersRegular';
     src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/AvengersRegular.ttf');
@@ -71,4 +73,9 @@
 @font-face {
     font-family: 'HelveticaNeueMediumCondensedOblique';
     src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/HelveticaNeue-MediumCondObl.otf');
+}
+
+@font-face {
+    font-family: 'HelveticaNeueHeavyCondensedOblique';
+    src: url('https://joshey40.github.io/CustomMarvelSnap/res/font/HelveticaNeue-HeavyCondObl.otf');
 }
