@@ -496,7 +496,7 @@ async function generatecard(
     for (let i = 0; i < parts.length; i++) {
       if (i > 0) lines.push([]);
       if (parts[i].length > 0)
-        lines[lines.length - 1].push({ text: parts[i], bold: seg.bold });
+        lines[lines.length - 1].push({ text: parts[i], bold: seg.bold, italic: seg.italic });
     }
   });
   for (let i = 0; i < lines.length; i++) {
@@ -530,7 +530,6 @@ async function generatecard(
       );
       x += 55 * scale + 10 * scale;
     }
-    console.log(segments);
     segments.forEach((seg) => {
       completeCtx.font = normalFont;
       if (seg.bold) {
