@@ -489,7 +489,6 @@ async function generatecard(
     let x = 512 * scale - totalWidth / 2;
     if (isObjective && i === 0) {
       totalWidth += 55 * scale + 10 * scale;
-      x += 55 * scale + 10 * scale;
       const objectiveImg = await getPreloadedImage("../res/img/objective.png");
       const objectiveImgSize = 55 * scale;
       completeCtx.drawImage(
@@ -499,6 +498,7 @@ async function generatecard(
         objectiveImgSize,
         objectiveImgSize
       );
+      x += 55 * scale + 10 * scale;
     }
     segments.forEach((seg) => {
       completeCtx.font = seg.bold ? boldFont : normalFont;
