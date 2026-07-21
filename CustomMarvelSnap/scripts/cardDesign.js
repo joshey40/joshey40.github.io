@@ -516,9 +516,11 @@ async function generatecard(
       }
       totalWidth += completeCtx.measureText(seg.text).width;
     });
-    let x = 512 * scale - totalWidth / 2;
     if (isObjective && i === 0) {
       totalWidth += 55 * scale + 10 * scale;
+    }
+    let x = 512 * scale - totalWidth / 2;
+    if (isObjective && i === 0) {
       const objectiveImg = await getPreloadedImage("../res/img/objective.png");
       const objectiveImgSize = 55 * scale;
       completeCtx.drawImage(
