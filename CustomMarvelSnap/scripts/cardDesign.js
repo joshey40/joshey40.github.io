@@ -420,25 +420,41 @@ async function generatecard(
   // Description and Background Color
   function parseDescriptionSegments(desc) {
     const segments = [];
-    // Kombinierte Regex für <b>...</b> und **...**
-    let regex = /<b>([\s\S]*?)<\/b>|\*\*([\s\S]*?)\*\*/gi;
-    let lastIndex = 0;
-    let match;
-    while ((match = regex.exec(desc)) !== null) {
-      if (match.index > lastIndex) {
+    let bold = false;
+    let italic = false;
+    let part = "";
+
+    function flush() {
+        if (!part) return;
         segments.push({
-          text: desc.substring(lastIndex, match.index),
-          bold: false,
+            text: part,
+            bold,
+            italic,
         });
-      }
-      // match[1] ist für <b>...</b>, match[2] für **...**
-      const boldText = match[1] !== undefined ? match[1] : match[2];
-      segments.push({ text: boldText, bold: true });
-      lastIndex = regex.lastIndex;
+        part = "";
     }
-    if (lastIndex < desc.length) {
-      segments.push({ text: desc.substring(lastIndex), bold: false });
+
+    for (let i = 0; i < desc.length;) {
+        if (desc.startsWith("***", i)) {
+            flush();
+            bold = !bold;
+            italic = !italic;
+            i += 3;
+        } else if (desc.startsWith("**", i)) {
+            flush();
+            bold = !bold;
+            i += 2;
+        } else if (desc[i] === "*") {
+            flush();
+            italic = !italic;
+            i++;
+        } else {
+            part += desc[i];
+            i++;
+        }
     }
+
+    flush();
     return segments;
   }
   const completeCanvas = document.createElement("canvas");
