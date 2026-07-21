@@ -463,7 +463,7 @@ async function generatecard(
   description = description.trim();
   var isObjective = false;
   const objectiveArrow = "⮞";
-  if (description[0] === "!" && (description.contains(">") || description.contains(objectiveArrow))) {
+  if (description[0] === "!" && (description.includes(">") || description.includes(objectiveArrow))) {
     isObjective = true;
     description = description.substring(1);
     description = description.replace(/>/g, objectiveArrow);
