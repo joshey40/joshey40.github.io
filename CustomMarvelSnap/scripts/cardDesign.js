@@ -446,6 +446,14 @@ async function generatecard(
     52 * scale
   )}px 'HelveticaNeueMediumCondensed'`;
   const boldFont = `${Math.round(52 * scale)}px 'HelveticaNeueHeavyCondensed'`;
+  description = description.trim();
+  var isObjective = false;
+  const objectiveArrow = "⮞";
+  if (description[0] === "!" && (description.contains(">") || description.contains(objectiveArrow))) {
+    isObjective = true;
+    description = description.substring(1);
+    description = description.replace(/>/g, objectiveArrow);
+  }
   const allSegments = parseDescriptionSegments(description);
   let lines = [[]];
   allSegments.forEach((seg) => {
@@ -464,7 +472,22 @@ async function generatecard(
       completeCtx.font = seg.bold ? boldFont : normalFont;
       totalWidth += completeCtx.measureText(seg.text).width;
     });
+    if (isObjective && i === 0) {
+      totalWidth += 55 * scale + 10 * scale;
+      const objectiveImg = await getPreloadedImage("../res/img/objective.png");
+      const objectiveImgSize = 55 * scale;
+      completeCtx.drawImage(
+        objectiveImg,
+        512 * scale - totalWidth / 2 - objectiveImgSize - 10 * scale,
+        y,
+        objectiveImgSize,
+        objectiveImgSize
+      );
+    }
     let x = 512 * scale - totalWidth / 2;
+    if (isObjective && i === 0) {
+      x += 55 * scale + 10 * scale;
+    }
     segments.forEach((seg) => {
       completeCtx.font = seg.bold ? boldFont : normalFont;
       completeCtx.strokeText(
