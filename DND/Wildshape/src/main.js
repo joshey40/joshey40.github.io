@@ -2,6 +2,7 @@ import { getBeasts } from "./data/beast-repository.js";
 import { getWildshapeLimit } from "./domain/wildshape.js";
 import { renderBeastList } from "./ui/beast-list.js";
 import { renderBeastDetail } from "./ui/beast-detail.js";
+import { isWildshapeEligible } from "./domain/wildshape.js";
 
 const state = { beasts: [], selectedId: null, sortDirection: "asc", tempHp: 0 };
 const CHARACTER_PROFILE_STORAGE_KEY = "wildshape-manager-character-profile";
@@ -73,7 +74,7 @@ function render() {
   elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"}`;
   renderBeastList(elements.list, visible, state.selectedId, state.bookmarks, (id) => {
     state.selectedId = id;
-    state.tempHp = level * (isMoonDruid ? 3 : 1);
+    //state.tempHp = level * (isMoonDruid ? 3 : 1);
     render();
   }, (id) => toggleBookmark(id));
   const selectedBeast = state.beasts.find((beast) => beast.id === state.selectedId);

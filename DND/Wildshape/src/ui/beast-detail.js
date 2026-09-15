@@ -36,7 +36,6 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   ].filter(([, values]) => values?.length).map(([label, values]) => `<p class="beast-property"><strong>${label}:</strong> ${escapeHtml(Array.isArray(values) ? values.join("; ") : values)}</p>`).join("");
   const characterTraits = [];
   if (character.isMoonDruid && character.druidLevel >= 2) {
-    // Circle of the Moon Spells
     if (character.druidLevel < 5) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: <strong>Cure Wounds</strong>, <strong>Flame Blade</strong>, <strong>Moonbeam</strong> and <strong>Starry Wisp</strong>." });
     else if (character.druidLevel < 7) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: <strong>Cure Wounds</strong>, <strong>Flame Blade</strong>, <strong>Moonbeam</strong>, <strong>Starry Wisp</strong> and <strong>Conjure Animals</strong>." });
     else if (character.druidLevel < 9) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: <strong>Cure Wounds</strong>, <strong>Flame Blade</strong>, <strong>Moonbeam</strong>, <strong>Starry Wisp</strong>, <strong>Conjure Animals</strong> and <strong>Fount of Moonlight</strong>." });
@@ -62,7 +61,12 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
     <div class="detail-title"><div><h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)} Beast</p></div><div class="detail-title-actions"><span class="tag">CR ${formatCR(beast.challengeRating)}</span><button class="detail-fullscreen-button" type="button" data-detail-fullscreen aria-label="Open Beast detail in fullscreen" title="Open fullscreen">⛶</button></div></div>
     <div class="detail-columns">
       <div class="detail-column detail-column--stats">
-        <div class="stat-grid"><div class="stat"><span>AC</span><strong>${getWildshapeArmorClass(beast, character.isMoonDruid, character.abilities.wis, character.bonusAc)}</strong></div><div class="stat resource-stat"><span>HP <small>/ ${character.maxHp || "-"}</small></span><div class="resource-control"><button class="resource-button" type="button" data-hp-change="-1" aria-label="Decrease hit points">-</button><strong>${character.hp}</strong><button class="resource-button" type="button" data-hp-change="1" aria-label="Increase hit points">+</button></div></div><div class="stat resource-stat"><span>Temp HP</span><div class="resource-control"><button class="resource-button" type="button" data-temp-hp-change="-1" aria-label="Decrease temporary hit points">-</button><strong>${character.tempHp}</strong><button class="resource-button" type="button" data-temp-hp-change="1" aria-label="Increase temporary hit points">+</button></div></div><div class="stat speed-stat"><span>Speed</span><strong>${Object.entries(beast.speed).map(([k,v]) => `${k} ${v} ${beast.speedUnit}`).join(", ")}</strong></div></div>
+        <div class="stat-grid">
+          <div class="stat"><span>AC</span><strong>${getWildshapeArmorClass(beast, character.isMoonDruid, character.abilities.wis, character.bonusAc)}</strong></div>
+          <div class="stat resource-stat"><span>HP <small>/ ${character.maxHp || "-"}</small></span><div class="resource-control"><button class="resource-button" type="button" data-hp-change="-1" aria-label="Decrease hit points">-</button><strong>${character.hp}</strong><button class="resource-button" type="button" data-hp-change="1" aria-label="Increase hit points">+</button></div></div>
+          <div class="stat resource-stat"><span>Temp HP</span><div class="resource-control"><button class="resource-button" type="button" data-temp-hp-change="-1" aria-label="Decrease temporary hit points">-</button><strong>${character.tempHp}</strong><button class="resource-button" type="button" data-temp-hp-change="1" aria-label="Increase temporary hit points">+</button><button class="resource-button" type="button" id="reset-temp-hp" aria-label="Reset temporary hit points">↺</button></div></div>
+          <div class="stat speed-stat"><span>Speed</span><strong>${Object.entries(beast.speed).map(([k,v]) => `${k} ${v} ${beast.speedUnit}`).join(", ")}</strong></div>
+        </div>
         <div class="stat-grid">${abilityHtml}</div>
         <hr /><h3>Saving Throws</h3><div class="bonus-grid saving-grid">${savingThrowHtml}</div>
         <hr /><h3>Skills</h3><div class="bonus-grid check-grid">${abilityCheckHtml}</div>
@@ -76,6 +80,7 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
     </div>`;
   container.querySelectorAll("[data-hp-change]").forEach((button) => button.addEventListener("click", () => onHpChange(Number(button.dataset.hpChange), false)));
   container.querySelectorAll("[data-temp-hp-change]").forEach((button) => button.addEventListener("click", () => onHpChange(Number(button.dataset.tempHpChange), true)));
+  container.querySelector("#reset-temp-hp").addEventListener("click", () => {onHpChange((character.isMoonDruid ? character.druidLevel * 3 : character.druidLevel) - character.tempHp, true)});
   const fullscreenButton = container.querySelector("[data-detail-fullscreen]");
   fullscreenButton.addEventListener("click", () => toggleFullscreen(container));
   updateFullscreenButton(fullscreenButton, wasFullscreen);
