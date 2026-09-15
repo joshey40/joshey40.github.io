@@ -11,25 +11,44 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
     return `<div class="bonus-value"><span>${abilityNames[ability]}:</span><strong>${formatModifier(finalValue)}</strong></div>`;
   }).join("");
   const skillAbilities = { acrobatics: "dex", "animal_handling": "wis", arcana: "int", athletics: "str", deception: "cha", history: "int", insight: "wis", intimidation: "cha", investigation: "int", medicine: "wis", nature: "int", perception: "wis", performance: "cha", persuasion: "cha", religion: "int", "sleight_of_hand": "dex", stealth: "dex", survival: "wis" };
+  const skillCheckValues = {};
   const abilityCheckHtml = Object.entries(skillAbilities).map(([skill, ability]) => {
     const characterValue = modifier(abilities[ability]) + proficiencyBonus(character.skillProficiencies, skill, character.proficiencyBonus) + character.skillBonuses[skill];
     const finalValue = Math.max(characterValue, Number(beast.skillBonuses[skill]) || 0);
+    skillCheckValues[skill] = finalValue;
     return `<div class="bonus-value"><span>${skillLabel(skill)}:</span><strong>${formatModifier(finalValue)}</strong></div>`;
   }).join("");
   const entries = (items) => items.map((item) => `<div class="action"><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.description)}</p></div>`).join("");
   const properties = [
+    ["Passives", formatPassives(skillCheckValues)],
     ["Senses", beast.senses], ["Resistances", beast.resistances], ["Immunities", beast.immunities],
     ["Vulnerabilities", beast.vulnerabilities], ["Languages", beast.languages],
-  ].filter(([, values]) => values?.length).map(([label, values]) => `<p class="beast-property"><strong>${label}:</strong> ${escapeHtml(values.join("; "))}</p>`).join("");
+  ].filter(([, values]) => values?.length).map(([label, values]) => `<p class="beast-property"><strong>${label}:</strong> ${escapeHtml(Array.isArray(values) ? values.join("; ") : values)}</p>`).join("");
+  const characterTraits = [];
+  if (character.isMoonDruid && character.druidLevel >= 6) {
+    if (character.druidLevel < 14) characterTraits.push({ name: "Lunar Radiance", description: "Your attacks can deal its normal damage type or Radiant damage. You make this choice each time you hit with those attacks." });
+    else characterTraits.push({ name: "Improved Lunar Radiance", description: "Your attacks can deal its normal damage type or Radiant damage. You make this choice each time you hit with those attacks. Once per turn, you can deal an extra 2d10 Radiant damage." });
+  }
+  if (character.isMoonDruid && character.druidLevel >= 10) {
+    if (character.druidLevel < 14) characterTraits.push({ name: "Moonlight Step", description: "You can use a bonus action to teleport up to 30 feet to an unoccupied space you can see, and you have Advantage on the next attack roll you make before the end of this turn./nYou can use this feature a number of times equal to your Wisdom modifier (minimum of once), and you regain all expended uses when you finish a Long Rest. You can also regain uses by expending a level 2+ spell slot for each use you want to restore (no action required)." });
+    else  characterTraits.push({ name: "Shared Moonlight Step", description: "You can use a bonus action to teleport up to 30 feet to an unoccupied space you can see, and you have Advantage on the next attack roll you make before the end of this turn./n You can teleport one willing creature with you. That creature must be within 10 feet of you, and you teleport it to an unoccupied space you can see within 10 feet of your destination space./nYou can use this feature a number of times equal to your Wisdom modifier (minimum of once), and you regain all expended uses when you finish a Long Rest. You can also regain uses by expending a level 2+ spell slot for each use you want to restore (no action required)." });
+  } 
+  if (character.primalStrike && character.druidLevel >= 7) {
+    const dice = character.druidLevel >= 15 ? "2d8" : "1d8";
+    characterTraits.push({ name: "Primal Strike", description: `Once on each of your turns when you hit a creature, you can cause the target to take an extra ${dice} Cold, Fire, Lightning, or Thunder damage (choose when you hit).` });
+  }
+  if (character.druidLevel >= 18) characterTraits.push({ name: "Beast Spells", description: "You can cast spells, except for any spell that has a Material component with a cost specified or that consumes its Material component." });
+  
+  const traits = [...characterTraits, ...(beast.traits ?? [])];
   container.innerHTML = `
     <div class="detail-title"><div><h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)} Beast</p></div><span class="tag">CR ${formatCR(beast.challengeRating)}</span></div>
     <div class="stat-grid"><div class="stat"><span>AC</span><strong>${getWildshapeArmorClass(beast, character.isMoonDruid, character.abilities.wis, character.bonusAc)}</strong></div><div class="stat resource-stat"><span>HP <small>/ ${character.maxHp || "-"}</small></span><div class="resource-control"><button class="resource-button" type="button" data-hp-change="-1" aria-label="Decrease hit points">-</button><strong>${character.hp}</strong><button class="resource-button" type="button" data-hp-change="1" aria-label="Increase hit points">+</button></div></div><div class="stat resource-stat"><span>Temp HP</span><div class="resource-control"><button class="resource-button" type="button" data-temp-hp-change="-1" aria-label="Decrease temporary hit points">-</button><strong>${character.tempHp}</strong><button class="resource-button" type="button" data-temp-hp-change="1" aria-label="Increase temporary hit points">+</button></div></div><div class="stat speed-stat"><span>Speed</span><strong>${Object.entries(beast.speed).map(([k,v]) => `${k} ${v} ${beast.speedUnit}`).join(", ")}</strong></div></div>
     <div class="stat-grid">${abilityHtml}</div>
     <h3>Saving Throws</h3><div class="bonus-grid saving-grid">${savingThrowHtml}</div>
-    <h3>Ability Checks</h3><div class="bonus-grid check-grid">${abilityCheckHtml}</div>
-    ${beast.traits.length ? `<h3>Traits</h3>${entries(beast.traits)}` : ""}
+    <h3>Skills</h3><div class="bonus-grid check-grid">${abilityCheckHtml}</div>
     ${properties}
-    <h3>Actions</h3>${entries(beast.actions)}`;
+    ${traits.length ? `<h3>Traits</h3>${entries(traits)}` : ""}
+    <h3 class="actions-heading">Actions</h3>${entries(beast.actions)}`;
   container.querySelectorAll("[data-hp-change]").forEach((button) => button.addEventListener("click", () => onHpChange(Number(button.dataset.hpChange), false)));
   container.querySelectorAll("[data-temp-hp-change]").forEach((button) => button.addEventListener("click", () => onHpChange(Number(button.dataset.tempHpChange), true)));
 }
@@ -45,4 +64,8 @@ function proficiencyBonus(proficiencies, key, bonus) {
 }
 function skillKey(skill) { return skill.toLocaleLowerCase("en").replaceAll(" ", "_"); }
 function skillLabel(skill) { return skill.split("_").map((part) => part[0].toUpperCase() + part.slice(1)).join(" "); }
+function formatPassives(passives = {}) {
+  const values = [["Perception", passives.perception], ["Investigation", passives.investigation], ["Insight", passives.insight]].filter(([, value]) => Number.isFinite(value));
+  return values.length ? values.map(([name, value]) => `${name} ${10 + value}`).join(", ") : "";
+}
 function escapeHtml(value) { const element = document.createElement("div"); element.textContent = value; return element.innerHTML; }

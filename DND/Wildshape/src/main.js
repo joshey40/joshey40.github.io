@@ -9,7 +9,7 @@ const skills = ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Decepti
 const characterFieldIds = ["character-level", "druid-level", "bonus-ac", "character-hp", "character-max-hp", "ability-str", "ability-dex", "ability-con", "ability-int", "ability-wis", "ability-cha", "saving-bonus-str", "saving-bonus-dex", "saving-bonus-con", "saving-bonus-int", "saving-bonus-wis", "saving-bonus-cha"];
 const elements = {
   search: document.querySelector("#search-input"), characterLevel: document.querySelector("#character-level"), druidLevel: document.querySelector("#druid-level"), bonusAc: document.querySelector("#bonus-ac"),
-  moonDruid: document.querySelector("#moon-druid"), characterHp: document.querySelector("#character-hp"), characterMaxHp: document.querySelector("#character-max-hp"),
+  moonDruid: document.querySelector("#moon-druid"), primalStrike: document.querySelector("#primal-strike"), characterHp: document.querySelector("#character-hp"), characterMaxHp: document.querySelector("#character-max-hp"),
   abilityInt: document.querySelector("#ability-int"), abilityWis: document.querySelector("#ability-wis"), abilityCha: document.querySelector("#ability-cha"),
   crMin: document.querySelector("#cr-min"), crMax: document.querySelector("#cr-max"),
   acMin: document.querySelector("#ac-min"), acMax: document.querySelector("#ac-max"),
@@ -50,8 +50,10 @@ async function init() {
 }
 
 function render() {
-  saveCharacterProfile();
   const level = Number(elements.druidLevel.value), isMoonDruid = elements.moonDruid.checked, query = elements.search.value.trim().toLocaleLowerCase();
+  elements.primalStrike.disabled = level < 7;
+  if (level < 7) elements.primalStrike.checked = false;
+  saveCharacterProfile();
   const characterLimit = getWildshapeLimit(level, isMoonDruid);
   const crMax = elements.crMax.value === "character" ? characterLimit?.maxCR : elements.crMax.value;
   let visible = state.beasts.filter((beast) => !query || beast.name.toLocaleLowerCase().includes(query));
@@ -84,6 +86,8 @@ function render() {
     tempHp: state.tempHp,
     isMoonDruid,
     bonusAc: Number(elements.bonusAc.value) || 0,
+    primalStrike: elements.primalStrike.checked,
+    druidLevel: level,
     abilities,
     proficiencyBonus: getProficiencyBonus(Number(elements.characterLevel.value)),
     savingThrowProficiencies: proficiencyStates("saving-throw"),
@@ -158,6 +162,7 @@ function saveCharacterProfile() {
   const profile = {
     values,
     moonDruid: elements.moonDruid.checked,
+    primalStrike: elements.primalStrike.checked,
     savingThrowStates: proficiencyStates("saving-throw"),
     skillStates: proficiencyStates("skill"),
   };
@@ -172,6 +177,7 @@ function loadCharacterProfile() {
     if (input) input.value = value;
   }
   elements.moonDruid.checked = Boolean(profile.moonDruid);
+  elements.primalStrike.checked = Boolean(profile.primalStrike);
   for (const entry of profile.savingThrowStates ?? []) {
     const button = document.querySelector(`button[data-proficiency-name="saving-throw"][data-proficiency-key="${entry.key}"]`);
     if (button) button.dataset.proficiency = entry.state;

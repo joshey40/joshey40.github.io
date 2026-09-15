@@ -3,6 +3,7 @@
  * @property {number} challengeRating @property {{walk?: number, swim?: number, fly?: number}} speed
  * @property {string} speedUnit
  * @property {number} armorClass @property {number} hitPoints
+ * @property {{perception?: number, investigation?: number, insight?: number}} passiveSkills
  * @property {{str:number, dex:number, con:number, int:number, wis:number, cha:number}} abilities
  * @property {Partial<Record<string, number>>} savingThrows @property {Partial<Record<string, number>>} skillBonuses
  * @property {string[]} resistances @property {string[]} immunities @property {string[]} vulnerabilities @property {string[]} senses @property {string[]} languages
@@ -21,8 +22,10 @@ export function toBeast(apiBeast) {
     vulnerabilities: apiBeast.vulnerabilities ?? [],
     senses: apiBeast.senses ?? [],
     languages: apiBeast.languages ?? [],
+    traits: apiBeast.traits ?? [],
     savingThrows: normalizeSavingThrows(apiBeast.savingThrows),
     skillBonuses: apiBeast.skillBonuses ?? {},
+    passiveSkills: apiBeast.passiveSkills ?? {},
   };
   const speed = Object.fromEntries(Object.entries(apiBeast.speed ?? {})
     .filter(([type, value]) => type !== "unit" && typeof value === "number" && value > 0));
