@@ -19,11 +19,11 @@ src/ui/                 Render-Funktionen für Liste und Detailansicht
 src/main.js             App-Zustand, Filter und Zusammensetzen der UI
 ```
 
-## Von Mock-Daten zur API wechseln
+## Datenquelle
 
-1. In `src/config.js` `USE_MOCK_DATA` auf `false` setzen.
-2. `BEAST_API_URL` auf die Beast-Endpunkt-URL setzen.
-3. In `src/models/beast.js` die Funktion `toBeast()` einmalig an das konkrete API-Format anpassen. Die restliche App bleibt unverändert.
+Standardmäßig lädt die App alle 91 SRD-2024-Beasts von Open5e. Die API liefert 50 Ergebnisse pro Seite; `src/data/beast-repository.js` folgt automatisch dem `next`-Link und fasst beide Seiten zusammen.
+
+Für die fiktiven Entwicklungsdaten in `src/data/mock-beasts.js` in `src/config.js` `USE_MOCK_DATA` auf `true` setzen.
 
 Die Beispieldaten unter `src/data/mock-beasts.js` sind fiktiv und dienen nur der Entwicklung. Sie enthalten keine veröffentlichten D&D-Monsterdaten.
 

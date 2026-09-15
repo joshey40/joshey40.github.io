@@ -65,6 +65,10 @@
           Name
           <input id="search-input" type="search" placeholder="Name eingeben …" autocomplete="off" />
         </label>
+        <label>
+          Größe
+          <select id="size-filter"><option value="all">Alle</option></select>
+        </label>
         <fieldset class="range-field">
           <legend>Armor Class</legend>
           <div>
@@ -79,10 +83,6 @@
             <label>bis<select id="cr-max"></select></label>
           </div>
         </fieldset>
-        <label>
-          Größe
-          <select id="size-filter"><option value="all">Alle</option></select>
-        </label>
         <div class="sort-control">
           <label>
             Sortieren
@@ -96,22 +96,10 @@
           <button id="sort-direction" type="button" aria-label="Aufsteigend sortieren" title="Aufsteigend sortieren">↑</button>
         </div>
         <div class="multi-filter-row">
-          <label>
-            Resistances
-            <select id="resistance-filter" multiple size="4" aria-label="Resistances auswählen"></select>
-          </label>
-          <label>
-            Immunities
-            <select id="immunity-filter" multiple size="4" aria-label="Immunities auswählen"></select>
-          </label>
-          <label>
-            Senses
-            <select id="sense-filter" multiple size="4" aria-label="Senses auswählen"></select>
-          </label>
-          <label>
-            Movement Types
-            <select id="movement-filter" multiple size="4" aria-label="Movement Types auswählen"></select>
-          </label>
+          <details class="multi-select" id="resistance-filter"><summary>Resistances</summary></details>
+          <details class="multi-select" id="immunity-filter"><summary>Immunities</summary></details>
+          <details class="multi-select" id="sense-filter"><summary>Senses</summary></details>
+          <details class="multi-select" id="movement-filter"><summary>Movement Types</summary></details>
         </div>
       </section>
 

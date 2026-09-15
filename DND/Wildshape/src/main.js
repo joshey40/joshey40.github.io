@@ -31,12 +31,15 @@ async function init() {
     state.beasts = await getBeasts();
     fillOptions(elements.size, valuesFor("size"));
     fillChallengeRatingOptions();
-    fillOptions(elements.resistance, valuesFor("resistances"));
-    fillOptions(elements.immunity, valuesFor("immunities"));
-    fillOptions(elements.sense, valuesFor("senses"));
-    fillOptions(elements.movement, [...new Set(state.beasts.flatMap((beast) => Object.keys(beast.speed)))].sort());
+    fillMultiSelect(elements.resistance, valuesFor("resistances"));
+    fillMultiSelect(elements.immunity, valuesFor("immunities"));
+    fillMultiSelect(elements.sense, valuesFor("senses"));
+    fillMultiSelect(elements.movement, [...new Set(state.beasts.flatMap((beast) => Object.keys(beast.speed)))].sort());
     render();
-  } catch (error) { console.error("Beasts konnten nicht geladen werden:", error); }
+  } catch (error) {
+    console.error("Beasts konnten nicht geladen werden:", error);
+    elements.list.innerHTML = '<p class="empty-detail">Die Beast-Daten konnten nicht geladen werden. Bitte später erneut versuchen.</p>';
+  }
 }
 
 function render() {
@@ -60,13 +63,27 @@ function render() {
 
 function valuesFor(property) { return [...new Set(state.beasts.flatMap((beast) => Array.isArray(beast[property]) ? beast[property] : [beast[property]]))].filter(Boolean).sort(); }
 function fillOptions(select, values) { for (const value of values) select.add(new Option(value, value)); }
+function fillMultiSelect(container, values) {
+  const options = document.createElement("div");
+  options.className = "multi-select__options";
+  for (const value of values) {
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = value;
+    checkbox.addEventListener("input", render);
+    label.append(checkbox, document.createTextNode(` ${value}`));
+    options.append(label);
+  }
+  container.append(options);
+}
 function fillChallengeRatingOptions() {
   const ratings = [["Beliebig", ""], ["0", "0"], ["1/8", "0.125"], ["1/4", "0.25"], ["1/2", "0.5"], ...Array.from({ length: 30 }, (_, index) => [String(index + 1), String(index + 1)])];
   for (const [label, value] of ratings) elements.crMin.add(new Option(label, value));
   for (const [label, value] of [["Beliebig", ""], ["Char", "character"], ...ratings.slice(1)]) elements.crMax.add(new Option(label, value));
-  elements.crMax.value = "character";
+  elements.crMax.value = "";
 }
-function selectedValues(select) { return [...select.selectedOptions].map((option) => option.value); }
+function selectedValues(container) { return [...container.querySelectorAll('input:checked')].map((input) => input.value); }
 function matchesAll(values, requested) { return requested.every((value) => values.includes(value)); }
 function inRange(value, min, max) { return (min === "" || value >= Number(min)) && (max === "" || value <= Number(max)); }
 
