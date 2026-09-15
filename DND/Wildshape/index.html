@@ -145,10 +145,13 @@
     </main>
 
     <template id="beast-card-template">
-      <button class="beast-card" type="button">
-        <span class="beast-card__topline"><strong class="beast-card__name"></strong><span class="beast-card__cr"></span></span>
-        <span class="beast-card__meta"></span>
-      </button>
+      <div class="beast-card">
+        <button class="beast-card-select" type="button">
+          <span class="beast-card__topline"><strong class="beast-card__name"></strong><span class="beast-card__cr"></span></span>
+          <span class="beast-card__meta"></span>
+        </button>
+        <button class="bookmark-button" type="button" aria-label="Add bookmark" title="Add bookmark">☆</button>
+      </div>
     </template>
     <script type="module" src="./src/main.js"></script>
   </body>

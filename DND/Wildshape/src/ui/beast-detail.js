@@ -12,14 +12,14 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   const abilityHtml = Object.entries(abilities).map(([key, value]) => `<div class="stat"><span>${abilityNames[key]}</span><strong>${value} / ${formatModifier(modifier(value))}</strong></div>`).join("");
   const savingThrowHtml = Object.keys(abilityNames).map((ability) => {
     const characterValue = modifier(abilities[ability]) + proficiencyBonus(character.savingThrowProficiencies, ability, character.proficiencyBonus) + character.savingThrowBonuses[ability];
-    const finalValue = Math.max(characterValue, Number(beast.savingThrows[ability]));
+    const finalValue = Math.max(characterValue, Number(beast.savingThrows[ability]) || characterValue);
     return `<div class="bonus-value"><span>${abilityNames[ability]}:</span><strong>${formatModifier(finalValue)}</strong></div>`;
   }).join("");
   const skillAbilities = { acrobatics: "dex", "animal_handling": "wis", arcana: "int", athletics: "str", deception: "cha", history: "int", insight: "wis", intimidation: "cha", investigation: "int", medicine: "wis", nature: "int", perception: "wis", performance: "cha", persuasion: "cha", religion: "int", "sleight_of_hand": "dex", stealth: "dex", survival: "wis" };
   const skillCheckValues = {};
   const abilityCheckHtml = Object.entries(skillAbilities).map(([skill, ability]) => {
     const characterValue = modifier(abilities[ability]) + proficiencyBonus(character.skillProficiencies, skill, character.proficiencyBonus) + character.skillBonuses[skill];
-    const finalValue = Math.max(characterValue, Number(beast.skillBonuses[skill]));
+    const finalValue = Math.max(characterValue, Number(beast.skillBonuses[skill]) || characterValue);
     skillCheckValues[skill] = finalValue;
     return `<div class="bonus-value"><span>${skillLabel(skill)}:</span><strong>${formatModifier(finalValue)}</strong></div>`;
   }).join("");

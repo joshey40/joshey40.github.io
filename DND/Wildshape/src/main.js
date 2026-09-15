@@ -5,6 +5,7 @@ import { renderBeastDetail } from "./ui/beast-detail.js";
 
 const state = { beasts: [], selectedId: null, sortDirection: "asc", tempHp: 0 };
 const CHARACTER_PROFILE_STORAGE_KEY = "wildshape-manager-character-profile";
+const BOOKMARKS_STORAGE_KEY = "wildshape-manager-bookmarks";
 const skills = ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival"];
 const characterFieldIds = ["character-level", "druid-level", "bonus-ac", "character-hp", "character-max-hp", "ability-str", "ability-dex", "ability-con", "ability-int", "ability-wis", "ability-cha", "saving-bonus-str", "saving-bonus-dex", "saving-bonus-con", "saving-bonus-int", "saving-bonus-wis", "saving-bonus-cha"];
 const elements = {
@@ -32,6 +33,7 @@ elements.direction.addEventListener("input", () => {
 
 async function init() {
   try {
+    loadBookmarks();
     state.beasts = await getBeasts();
     fillOptions(elements.size, valuesFor("size"));
     fillChallengeRatingOptions();
@@ -66,11 +68,11 @@ function render() {
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   if (state.selectedId && !visible.some((beast) => beast.id === state.selectedId)) state.selectedId = null;
   elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"}`;
-  renderBeastList(elements.list, visible, state.selectedId, (id) => {
+  renderBeastList(elements.list, visible, state.selectedId, state.bookmarks, (id) => {
     state.selectedId = id;
     state.tempHp = level * (isMoonDruid ? 3 : 1);
     render();
-  });
+  }, (id) => toggleBookmark(id));
   const selectedBeast = state.beasts.find((beast) => beast.id === state.selectedId);
   const abilities = {
     str: Number(document.querySelector("#ability-str").value) || 0,
@@ -168,6 +170,18 @@ function saveCharacterProfile() {
   };
   try { localStorage.setItem(CHARACTER_PROFILE_STORAGE_KEY, JSON.stringify(profile)); } catch (error) { console.warn("Could not save Character Profile:", error); }
 }
+function loadBookmarks() {
+  try {
+    const values = JSON.parse(localStorage.getItem(BOOKMARKS_STORAGE_KEY) ?? "[]");
+    state.bookmarks = new Set(Array.isArray(values) ? values : []);
+  } catch (error) { state.bookmarks = new Set(); }
+}
+function toggleBookmark(id) {
+  if (state.bookmarks.has(id)) state.bookmarks.delete(id);
+  else state.bookmarks.add(id);
+  try { localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify([...state.bookmarks])); } catch (error) { console.warn("Could not save bookmarks:", error); }
+  render();
+}
 function loadCharacterProfile() {
   let profile;
   try { profile = JSON.parse(localStorage.getItem(CHARACTER_PROFILE_STORAGE_KEY) ?? "null"); } catch (error) { return; }
@@ -201,7 +215,8 @@ function comparator(sort, direction) {
   const sizeOrder = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"];
   return (a, b) => {
     let result;
-    if (sort === "cr") result = a.challengeRating - b.challengeRating;
+    if (state.bookmarks.has(a.id) !== state.bookmarks.has(b.id)) result = state.bookmarks.has(a.id) ? -1 : 1;
+    else if (sort === "cr") result = a.challengeRating - b.challengeRating;
     else if (sort === "ac") result = a.armorClass - b.armorClass;
     else if (sort === "size") result = sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
     else result = a.name.localeCompare(b.name, "de");
