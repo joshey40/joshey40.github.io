@@ -11,7 +11,7 @@
 
 /** Normalisiert eine Open5e-v2-Antwort auf das app-eigene Beast-Modell. */
 export function toBeast(apiBeast) {
-  // Mock-Daten verwenden bereits das app-eigene Modell.
+  // Mock data already uses the app's own model.
   if (apiBeast.challengeRating !== undefined) return { ...apiBeast, speedUnit: apiBeast.speedUnit ?? "m" };
   const speed = Object.fromEntries(Object.entries(apiBeast.speed ?? {})
     .filter(([type, value]) => type !== "unit" && typeof value === "number" && value > 0));

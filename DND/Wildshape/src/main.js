@@ -20,7 +20,7 @@ for (const skill of document.querySelectorAll('input[name="skill"]')) skill.addE
 elements.direction.addEventListener("click", () => {
   state.sortDirection = state.sortDirection === "asc" ? "desc" : "asc";
   elements.direction.textContent = state.sortDirection === "asc" ? "↑" : "↓";
-  const label = state.sortDirection === "asc" ? "Aufsteigend sortieren" : "Absteigend sortieren";
+  const label = state.sortDirection === "asc" ? "Sort ascending" : "Sort descending";
   elements.direction.setAttribute("aria-label", label);
   elements.direction.title = label;
   render();
@@ -37,8 +37,8 @@ async function init() {
     fillMultiSelect(elements.movement, [...new Set(state.beasts.flatMap((beast) => Object.keys(beast.speed)))].sort());
     render();
   } catch (error) {
-    console.error("Beasts konnten nicht geladen werden:", error);
-    elements.list.innerHTML = '<p class="empty-detail">Die Beast-Daten konnten nicht geladen werden. Bitte später erneut versuchen.</p>';
+    console.error("Could not load Beasts:", error);
+    elements.list.innerHTML = '<p class="empty-detail">The Beast data could not be loaded. Please try again later.</p>';
   }
 }
 
@@ -56,7 +56,7 @@ function render() {
   visible = visible.filter((beast) => matchesAll(Object.keys(beast.speed), selectedValues(elements.movement)));
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   if (state.selectedId && !visible.some((beast) => beast.id === state.selectedId)) state.selectedId = null;
-  elements.count.textContent = `${visible.length} Ergebnis${visible.length === 1 ? "" : "se"}`;
+  elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"}`;
   renderBeastList(elements.list, visible, state.selectedId, (id) => { state.selectedId = id; render(); });
   renderBeastDetail(elements.detail, state.beasts.find((beast) => beast.id === state.selectedId));
 }
@@ -78,9 +78,9 @@ function fillMultiSelect(container, values) {
   container.append(options);
 }
 function fillChallengeRatingOptions() {
-  const ratings = [["Beliebig", ""], ["0", "0"], ["1/8", "0.125"], ["1/4", "0.25"], ["1/2", "0.5"], ...Array.from({ length: 30 }, (_, index) => [String(index + 1), String(index + 1)])];
+  const ratings = [["Any", ""], ["0", "0"], ["1/8", "0.125"], ["1/4", "0.25"], ["1/2", "0.5"], ...Array.from({ length: 30 }, (_, index) => [String(index + 1), String(index + 1)])];
   for (const [label, value] of ratings) elements.crMin.add(new Option(label, value));
-  for (const [label, value] of [["Beliebig", ""], ["Char", "character"], ...ratings.slice(1)]) elements.crMax.add(new Option(label, value));
+  for (const [label, value] of [["Any", ""], ["Character", "character"], ...ratings.slice(1)]) elements.crMax.add(new Option(label, value));
   elements.crMax.value = "";
 }
 function selectedValues(container) { return [...container.querySelectorAll('input:checked')].map((input) => input.value); }

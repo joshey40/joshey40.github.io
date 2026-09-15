@@ -1,4 +1,4 @@
-// Regel-Helfer: vor Verwendung im Spiel mit der verwendeten Regelquelle abgleichen.
+// Rules helper: verify it against the rules source used at your table before play.
 const limitsByLevel = [
   { minLevel: 8, maxCR: 1, canFly: true },
   { minLevel: 4, maxCR: 0.5, canFly: false },

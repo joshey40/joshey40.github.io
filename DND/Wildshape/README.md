@@ -1,40 +1,40 @@
-# Wildshape-Kompass
+# Wild Shape Compass
 
-Eine kleine, frameworkfreie GitHub-Pages-Webapp zum Durchsuchen von D&D-2024-Wildshape-Formen. Sie läuft vollständig im Browser und benötigt kein Backend.
+A small, framework-free GitHub Pages app for browsing D&D 2024 Wild Shape forms. It runs entirely in the browser and needs no backend.
 
-## Lokal starten
+## Run locally
 
-Da JavaScript-Module nicht zuverlässig über `file://` laufen, den Projektordner mit einem beliebigen lokalen Webserver öffnen, zum Beispiel über die Vorschau-Erweiterung deines Editors. Anschließend `index.html` im Browser aufrufen.
+Because JavaScript modules do not reliably run over `file://`, open the project directory with any local web server, for example your editor's preview extension. Then open `index.html` in the browser.
 
-## Struktur
+## Structure
 
 ```
-index.html              Einstiegspunkt
-styles/main.css         Darstellung
-src/config.js           Mock-/API-Umschalter und spätere API-Adresse
-src/models/beast.js     App-eigenes Datenmodell und API-Normalisierung
-src/data/               Mock-Daten und Datenzugriff
-src/domain/wildshape.js Wildshape-Regelhelfer
-src/ui/                 Render-Funktionen für Liste und Detailansicht
-src/main.js             App-Zustand, Filter und Zusammensetzen der UI
+index.html              Entry point
+styles/main.css         Styling
+src/config.js           Mock/API switch and API URL
+src/models/beast.js     App-owned model and API normalization
+src/data/               Mock data and data access
+src/domain/wildshape.js Wild Shape rules helper
+src/ui/                 Render functions for the list and detail view
+src/main.js             App state, filters, and UI composition
 ```
 
-## Datenquelle
+## Data source
 
-Standardmäßig lädt die App alle 91 SRD-2024-Beasts von Open5e. Die API liefert 50 Ergebnisse pro Seite; `src/data/beast-repository.js` folgt automatisch dem `next`-Link und fasst beide Seiten zusammen.
+By default, the app loads all 91 SRD 2024 Beasts from Open5e. The API returns 50 results per page; `src/data/beast-repository.js` automatically follows the `next` link and combines both pages.
 
-Für die fiktiven Entwicklungsdaten in `src/data/mock-beasts.js` in `src/config.js` `USE_MOCK_DATA` auf `true` setzen.
+To use the fictional development data in `src/data/mock-beasts.js`, set `USE_MOCK_DATA` to `true` in `src/config.js`.
 
-Die Beispieldaten unter `src/data/mock-beasts.js` sind fiktiv und dienen nur der Entwicklung. Sie enthalten keine veröffentlichten D&D-Monsterdaten.
+The sample data in `src/data/mock-beasts.js` is fictional and intended only for development. It contains no published D&D monster data.
 
 ## GitHub Pages
 
-1. Dieses Projekt in ein GitHub-Repository hochladen.
-2. In den Repository-Einstellungen unter **Pages** die Bereitstellung von einem Branch aktivieren (z. B. `main`, Ordner `/ (root)`).
-3. Nach kurzer Zeit ist die App über die dort angezeigte URL erreichbar.
+1. Upload this project to a GitHub repository.
+2. In the repository settings, enable deployment from a branch under **Pages** (for example `main`, folder `/ (root)`).
+3. After a short time, the app will be available at the URL shown there.
 
-Alle Dateipfade sind relativ, daher funktioniert die Seite auch unter einer Repository-Unteradresse von GitHub Pages.
+All file paths are relative, so the app also works from a GitHub Pages repository subpath.
 
-## Regelhinweis
+## Rules note
 
-`src/domain/wildshape.js` enthält einen bewusst kleinen Regelhelfer für Stufen, HG und Flugbewegung. Bitte gleiche ihn vor Spielgebrauch mit eurer verwendeten Regelquelle ab und passe ihn dort zentral an.
+`src/domain/wildshape.js` contains a deliberately small rules helper for levels, CR, and flying movement. Verify it against the rules source used at your table before play, and adapt it centrally there if needed.
