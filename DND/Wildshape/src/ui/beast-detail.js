@@ -12,7 +12,10 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   const abilityHtml = Object.entries(abilities).map(([key, value]) => `<div class="stat"><span>${abilityNames[key]}</span><strong>${value} / ${formatModifier(modifier(value))}</strong></div>`).join("");
   const savingThrowHtml = Object.keys(abilityNames).map((ability) => {
     const characterValue = modifier(abilities[ability]) + proficiencyBonus(character.savingThrowProficiencies, ability, character.proficiencyBonus) + character.savingThrowBonuses[ability];
-    const finalValue = Math.max(characterValue, Number(beast.savingThrows[ability]) || characterValue);
+    let finalValue = Math.max(characterValue, Number(beast.savingThrows[ability]) || characterValue);
+    if (character.isMoonDruid && character.druidLevel >= 6 && ability === "con") {
+      finalValue += modifier(abilities["wis"]);
+    }
     return `<div class="bonus-value"><span>${abilityNames[ability]}:</span><strong>${formatModifier(finalValue)}</strong></div>`;
   }).join("");
   const skillAbilities = { acrobatics: "dex", "animal_handling": "wis", arcana: "int", athletics: "str", deception: "cha", history: "int", insight: "wis", intimidation: "cha", investigation: "int", medicine: "wis", nature: "int", perception: "wis", performance: "cha", persuasion: "cha", religion: "int", "sleight_of_hand": "dex", stealth: "dex", survival: "wis" };
@@ -26,8 +29,10 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   const entries = (items) => items.map((item) => `<div class="action"><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.description)}</p></div>`).join("");
   const properties = [
     ["Passives", formatPassives(skillCheckValues)],
-    ["Senses", beast.senses], ["Resistances", beast.resistances], ["Immunities", beast.immunities],
-    ["Vulnerabilities", beast.vulnerabilities], ["Languages", beast.languages],
+    ["Senses", beast.senses],
+    ["Resistances", beast.resistances],
+    ["Immunities", beast.immunities],
+    ["Vulnerabilities", beast.vulnerabilities]
   ].filter(([, values]) => values?.length).map(([label, values]) => `<p class="beast-property"><strong>${label}:</strong> ${escapeHtml(Array.isArray(values) ? values.join("; ") : values)}</p>`).join("");
   const characterTraits = [];
   if (character.isMoonDruid && character.druidLevel >= 6) {
@@ -48,13 +53,20 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   const wasFullscreen = container.classList.contains("is-fullscreen");
   container.innerHTML = `
     <div class="detail-title"><div><h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)} Beast</p></div><div class="detail-title-actions"><span class="tag">CR ${formatCR(beast.challengeRating)}</span><button class="detail-fullscreen-button" type="button" data-detail-fullscreen aria-label="Open Beast detail in fullscreen" title="Open fullscreen">⛶</button></div></div>
-    <div class="stat-grid"><div class="stat"><span>AC</span><strong>${getWildshapeArmorClass(beast, character.isMoonDruid, character.abilities.wis, character.bonusAc)}</strong></div><div class="stat resource-stat"><span>HP <small>/ ${character.maxHp || "-"}</small></span><div class="resource-control"><button class="resource-button" type="button" data-hp-change="-1" aria-label="Decrease hit points">-</button><strong>${character.hp}</strong><button class="resource-button" type="button" data-hp-change="1" aria-label="Increase hit points">+</button></div></div><div class="stat resource-stat"><span>Temp HP</span><div class="resource-control"><button class="resource-button" type="button" data-temp-hp-change="-1" aria-label="Decrease temporary hit points">-</button><strong>${character.tempHp}</strong><button class="resource-button" type="button" data-temp-hp-change="1" aria-label="Increase temporary hit points">+</button></div></div><div class="stat speed-stat"><span>Speed</span><strong>${Object.entries(beast.speed).map(([k,v]) => `${k} ${v} ${beast.speedUnit}`).join(", ")}</strong></div></div>
-    <div class="stat-grid">${abilityHtml}</div>
-    <h3>Saving Throws</h3><div class="bonus-grid saving-grid">${savingThrowHtml}</div>
-    <h3>Skills</h3><div class="bonus-grid check-grid">${abilityCheckHtml}</div>
-    ${properties}
-    ${traits.length ? `<h3>Traits</h3>${entries(traits)}` : ""}
-    <h3 class="actions-heading">Actions</h3>${entries(beast.actions)}`;
+    <div class="detail-columns">
+      <div class="detail-column detail-column--stats">
+        <div class="stat-grid"><div class="stat"><span>AC</span><strong>${getWildshapeArmorClass(beast, character.isMoonDruid, character.abilities.wis, character.bonusAc)}</strong></div><div class="stat resource-stat"><span>HP <small>/ ${character.maxHp || "-"}</small></span><div class="resource-control"><button class="resource-button" type="button" data-hp-change="-1" aria-label="Decrease hit points">-</button><strong>${character.hp}</strong><button class="resource-button" type="button" data-hp-change="1" aria-label="Increase hit points">+</button></div></div><div class="stat resource-stat"><span>Temp HP</span><div class="resource-control"><button class="resource-button" type="button" data-temp-hp-change="-1" aria-label="Decrease temporary hit points">-</button><strong>${character.tempHp}</strong><button class="resource-button" type="button" data-temp-hp-change="1" aria-label="Increase temporary hit points">+</button></div></div><div class="stat speed-stat"><span>Speed</span><strong>${Object.entries(beast.speed).map(([k,v]) => `${k} ${v} ${beast.speedUnit}`).join(", ")}</strong></div></div>
+        <div class="stat-grid">${abilityHtml}</div>
+        <hr /><h3>Saving Throws</h3><div class="bonus-grid saving-grid">${savingThrowHtml}</div>
+        <hr /><h3>Skills</h3><div class="bonus-grid check-grid">${abilityCheckHtml}</div>
+      </div>
+      <div class="detail-column detail-column--traits">
+        <h3>Properties</h3>
+        ${properties}
+        ${traits.length ? `<hr /><h3>Traits</h3>${entries(traits)}` : ""}
+        <hr /><h3 class="actions-heading">Actions</h3>${entries(beast.actions)}
+      </div>
+    </div>`;
   container.querySelectorAll("[data-hp-change]").forEach((button) => button.addEventListener("click", () => onHpChange(Number(button.dataset.hpChange), false)));
   container.querySelectorAll("[data-temp-hp-change]").forEach((button) => button.addEventListener("click", () => onHpChange(Number(button.dataset.tempHpChange), true)));
   const fullscreenButton = container.querySelector("[data-detail-fullscreen]");
