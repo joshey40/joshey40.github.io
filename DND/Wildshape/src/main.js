@@ -3,19 +3,25 @@ import { getWildshapeLimit } from "./domain/wildshape.js";
 import { renderBeastList } from "./ui/beast-list.js";
 import { renderBeastDetail } from "./ui/beast-detail.js";
 
-const state = { beasts: [], selectedId: null, sortDirection: "asc" };
+const state = { beasts: [], selectedId: null, sortDirection: "asc", tempHp: 0 };
 const elements = {
-  search: document.querySelector("#search-input"), druidLevel: document.querySelector("#druid-level"),
+  search: document.querySelector("#search-input"), characterLevel: document.querySelector("#character-level"), druidLevel: document.querySelector("#druid-level"), bonusAc: document.querySelector("#bonus-ac"),
+  moonDruid: document.querySelector("#moon-druid"), characterHp: document.querySelector("#character-hp"), characterMaxHp: document.querySelector("#character-max-hp"),
+  abilityInt: document.querySelector("#ability-int"), abilityWis: document.querySelector("#ability-wis"), abilityCha: document.querySelector("#ability-cha"),
   crMin: document.querySelector("#cr-min"), crMax: document.querySelector("#cr-max"),
   acMin: document.querySelector("#ac-min"), acMax: document.querySelector("#ac-max"),
   movement: document.querySelector("#movement-filter"), size: document.querySelector("#size-filter"),
-  resistance: document.querySelector("#resistance-filter"), immunity: document.querySelector("#immunity-filter"), sense: document.querySelector("#sense-filter"),
+  resistance: document.querySelector("#resistance-filter"), sense: document.querySelector("#sense-filter"),
   sort: document.querySelector("#sort-select"),
   count: document.querySelector("#result-count"), direction: document.querySelector("#sort-direction"),
   list: document.querySelector("#beast-list"), detail: document.querySelector("#detail-panel"),
 };
 
-for (const control of Object.values(elements)) if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement) control.addEventListener("input", render);
+for (const control of Object.values(elements)) if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement) if (control !== elements.druidLevel) control.addEventListener("input", render);
+elements.druidLevel.addEventListener("input", () => {
+  if (Number(elements.characterLevel.value) < Number(elements.druidLevel.value)) elements.characterLevel.value = elements.druidLevel.value;
+  render();
+});
 for (const skill of document.querySelectorAll('input[name="skill"]')) skill.addEventListener("input", render);
 elements.direction.addEventListener("click", () => {
   state.sortDirection = state.sortDirection === "asc" ? "desc" : "asc";
@@ -32,7 +38,6 @@ async function init() {
     fillOptions(elements.size, valuesFor("size"));
     fillChallengeRatingOptions();
     fillMultiSelect(elements.resistance, valuesFor("resistances"));
-    fillMultiSelect(elements.immunity, valuesFor("immunities"));
     fillMultiSelect(elements.sense, valuesFor("senses"));
     fillMultiSelect(elements.movement, [...new Set(state.beasts.flatMap((beast) => Object.keys(beast.speed)))].sort());
     render();
@@ -43,22 +48,37 @@ async function init() {
 }
 
 function render() {
-  const level = Number(elements.druidLevel.value), query = elements.search.value.trim().toLocaleLowerCase();
-  const characterLimit = getWildshapeLimit(level);
+  const level = Number(elements.druidLevel.value), isMoonDruid = elements.moonDruid.checked, query = elements.search.value.trim().toLocaleLowerCase();
+  const characterLimit = getWildshapeLimit(level, isMoonDruid);
   const crMax = elements.crMax.value === "character" ? characterLimit?.maxCR : elements.crMax.value;
   let visible = state.beasts.filter((beast) => !query || beast.name.toLocaleLowerCase().includes(query));
   visible = visible.filter((beast) => inRange(beast.challengeRating, elements.crMin.value, crMax));
   visible = visible.filter((beast) => inRange(beast.armorClass, elements.acMin.value, elements.acMax.value));
   if (elements.size.value !== "all") visible = visible.filter((beast) => beast.size === elements.size.value);
   visible = visible.filter((beast) => matchesAll(beast.resistances, selectedValues(elements.resistance)));
-  visible = visible.filter((beast) => matchesAll(beast.immunities, selectedValues(elements.immunity)));
   visible = visible.filter((beast) => matchesAll(beast.senses, selectedValues(elements.sense)));
   visible = visible.filter((beast) => matchesAll(Object.keys(beast.speed), selectedValues(elements.movement)));
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   if (state.selectedId && !visible.some((beast) => beast.id === state.selectedId)) state.selectedId = null;
   elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"}`;
-  renderBeastList(elements.list, visible, state.selectedId, (id) => { state.selectedId = id; render(); });
-  renderBeastDetail(elements.detail, state.beasts.find((beast) => beast.id === state.selectedId));
+  renderBeastList(elements.list, visible, state.selectedId, (id) => {
+    state.selectedId = id;
+    state.tempHp = level * (isMoonDruid ? 3 : 1);
+    render();
+  });
+  const selectedBeast = state.beasts.find((beast) => beast.id === state.selectedId);
+  renderBeastDetail(elements.detail, selectedBeast, {
+    hp: Number(elements.characterHp.value) || 0,
+    maxHp: Number(elements.characterMaxHp.value) || 0,
+    tempHp: state.tempHp,
+    isMoonDruid,
+    bonusAc: Number(elements.bonusAc.value) || 0,
+    abilities: { int: Number(elements.abilityInt.value) || 0, wis: Number(elements.abilityWis.value) || 0, cha: Number(elements.abilityCha.value) || 0 },
+  }, (change, isTempHp) => {
+    if (isTempHp) state.tempHp = Math.max(0, state.tempHp + change);
+    else elements.characterHp.value = Math.max(0, (Number(elements.characterHp.value) || 0) + change);
+    render();
+  });
 }
 
 function valuesFor(property) { return [...new Set(state.beasts.flatMap((beast) => Array.isArray(beast[property]) ? beast[property] : [beast[property]]))].filter(Boolean).sort(); }
@@ -80,7 +100,7 @@ function fillMultiSelect(container, values) {
 function fillChallengeRatingOptions() {
   const ratings = [["Any", ""], ["0", "0"], ["1/8", "0.125"], ["1/4", "0.25"], ["1/2", "0.5"], ...Array.from({ length: 30 }, (_, index) => [String(index + 1), String(index + 1)])];
   for (const [label, value] of ratings) elements.crMin.add(new Option(label, value));
-  for (const [label, value] of [["Any", ""], ["Character", "character"], ...ratings.slice(1)]) elements.crMax.add(new Option(label, value));
+  for (const [label, value] of [["Any", ""], ["Char", "character"], ...ratings.slice(1)]) elements.crMax.add(new Option(label, value));
   elements.crMax.value = "";
 }
 function selectedValues(container) { return [...container.querySelectorAll('input:checked')].map((input) => input.value); }

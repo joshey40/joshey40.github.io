@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Browse and filter D&D Wild Shape forms." />
-    <title>Wild Shape Compass</title>
+    <title>Wild Shape Manager</title>
     <link rel="stylesheet" href="./styles/main.css" />
   </head>
   <body>
     <header class="site-header">
       <div>
         <p class="eyebrow">D&D 2024 · Tool</p>
-        <h1>Wild Shape Compass</h1>
+        <h1>Wild Shape Manager</h1>
       </div>
     </header>
 
@@ -20,10 +20,14 @@
         <summary>Character Profile</summary>
         <div class="character-fields">
           <div class="character-details">
-            <label>Character Level<input id="character-level" type="number" min="1" max="20" value="2" /></label>
-            <label>Druid Level<input id="druid-level" type="number" min="1" max="20" value="2" /></label>
-            <label class="checkbox-label"><input id="moon-druid" type="checkbox" /> Moon Druid</label>
-            <label>HP<input id="character-hp" type="number" min="0" placeholder="e.g. 32" /></label>
+            <label>Character Level<input id="character-level" type="number" min="1" max="20" value="1" /></label>
+            <label>Druid Level<input id="druid-level" type="number" min="1" max="20" value="1" /></label>
+            <label>Bonus AC<input id="bonus-ac" type="number" min="0" value="0" /></label>
+            <label class="checkbox-label"><input id="moon-druid" type="checkbox" /><span class="checkbox-switch" aria-hidden="true"></span><span>Moon Druid</span></label>
+            <div class="resource-fields">
+              <label>HP<input id="character-hp" type="number" min="0" placeholder="e.g. 32" /></label>
+              <label>Max HP<input id="character-max-hp" type="number" min="1" placeholder="e.g. 40" /></label>
+            </div>
             <fieldset class="ability-fields">
               <legend>Ability Scores</legend>
               <label>STR<input id="ability-str" type="number" min="1" max="30" value="10" /></label>
@@ -83,23 +87,22 @@
             <label>to<select id="cr-max"></select></label>
           </div>
         </fieldset>
-        <div class="sort-control">
-          <label>
-            Sort by
-            <select id="sort-select">
-              <option value="cr">CR (Challenge Rating)</option>
-              <option value="name" selected>Name</option>
-              <option value="size">Size</option>
-              <option value="ac">AC (Armor Class)</option>
-            </select>
-          </label>
-          <button id="sort-direction" type="button" aria-label="Sort ascending" title="Sort ascending">↑</button>
-        </div>
         <div class="multi-filter-row">
           <details class="multi-select" id="resistance-filter"><summary>Resistances</summary></details>
-          <details class="multi-select" id="immunity-filter"><summary>Immunities</summary></details>
           <details class="multi-select" id="sense-filter"><summary>Senses</summary></details>
-          <details class="multi-select" id="movement-filter"><summary>Movement Types</summary></details>
+          <details class="multi-select" id="movement-filter"><summary>Movement</summary></details>
+          <div class="sort-control">
+            <label>
+              Sort by
+              <select id="sort-select">
+                <option value="cr">CR (Challenge Rating)</option>
+                <option value="name" selected>Name</option>
+                <option value="size">Size</option>
+                <option value="ac">AC (Armor Class)</option>
+              </select>
+            </label>
+            <button id="sort-direction" type="button" aria-label="Sort ascending" title="Sort ascending">↑</button>
+          </div>
         </div>
       </section>
 

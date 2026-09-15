@@ -1,4 +1,4 @@
-# Wild Shape Compass
+# Wild Shape Manager
 
 A small, framework-free GitHub Pages app for browsing D&D 2024 Wild Shape forms. It runs entirely in the browser and needs no backend.
 
