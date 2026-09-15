@@ -7,7 +7,7 @@ const limitsByLevel = [
 
 export function getWildshapeLimit(level, isMoonDruid = false) {
   const limit = limitsByLevel.find((entry) => level >= entry.minLevel) ?? null;
-  return isMoonDruid && limit ? { ...limit, maxCR: level / 3 } : limit;
+  return isMoonDruid && limit ? { ...limit, maxCR: Math.floor(level / 3) } : limit;
 }
 
 export function isWildshapeEligible(beast, level, isMoonDruid = false) {

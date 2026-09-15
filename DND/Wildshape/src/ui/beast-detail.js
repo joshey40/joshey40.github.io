@@ -35,6 +35,13 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
     ["Vulnerabilities", beast.vulnerabilities]
   ].filter(([, values]) => values?.length).map(([label, values]) => `<p class="beast-property"><strong>${label}:</strong> ${escapeHtml(Array.isArray(values) ? values.join("; ") : values)}</p>`).join("");
   const characterTraits = [];
+  if (character.isMoonDruid && character.druidLevel >= 2) {
+    // Circle of the Moon Spells
+    if (character.druidLevel < 5) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: <strong>Cure Wounds</strong>, <strong>Flame Blade</strong>, <strong>Moonbeam</strong> and <strong>Starry Wisp</strong>." });
+    else if (character.druidLevel < 7) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: <strong>Cure Wounds</strong>, <strong>Flame Blade</strong>, <strong>Moonbeam</strong>, <strong>Starry Wisp</strong> and <strong>Conjure Animals</strong>." });
+    else if (character.druidLevel < 9) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: <strong>Cure Wounds</strong>, <strong>Flame Blade</strong>, <strong>Moonbeam</strong>, <strong>Starry Wisp</strong>, <strong>Conjure Animals</strong> and <strong>Fount of Moonlight</strong>." });
+    else characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: <strong>Cure Wounds</strong>, <strong>Flame Blade</strong>, <strong>Moonbeam</strong>, <strong>Starry Wisp</strong>, <strong>Conjure Animals</strong>, <strong>Fount of Moonlight</strong> and <strong>Mass Cure Wounds</strong>." });
+  }
   if (character.isMoonDruid && character.druidLevel >= 6) {
     if (character.druidLevel < 14) characterTraits.push({ name: "Lunar Radiance", description: "Your attacks can deal its normal damage type or Radiant damage. You make this choice each time you hit with those attacks." });
     else characterTraits.push({ name: "Improved Lunar Radiance", description: "Your attacks can deal its normal damage type or Radiant damage. You make this choice each time you hit with those attacks. Once per turn, you can deal an extra 2d10 Radiant damage." });

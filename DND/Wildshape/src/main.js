@@ -53,7 +53,9 @@ async function init() {
 
 function render() {
   const level = Number(elements.druidLevel.value), isMoonDruid = elements.moonDruid.checked, query = elements.search.value.trim().toLocaleLowerCase();
+  elements.moonDruid.disabled = level < 3;
   elements.primalStrike.disabled = level < 7;
+  if (level < 3) elements.moonDruid.checked = false;
   if (level < 7) elements.primalStrike.checked = false;
   saveCharacterProfile();
   const characterLimit = getWildshapeLimit(level, isMoonDruid);
@@ -65,6 +67,7 @@ function render() {
   visible = visible.filter((beast) => matchesAll(beast.resistances, selectedValues(elements.resistance)));
   visible = visible.filter((beast) => matchesAll(beast.senses, selectedValues(elements.sense)));
   visible = visible.filter((beast) => matchesAll(Object.keys(beast.speed), selectedValues(elements.movement)));
+  visible = visible.filter((beast) => isWildshapeEligible(beast, level, isMoonDruid));
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   if (state.selectedId && !visible.some((beast) => beast.id === state.selectedId)) state.selectedId = null;
   elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"}`;
