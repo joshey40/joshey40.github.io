@@ -25,8 +25,8 @@
             <label>Bonus AC<input id="bonus-ac" type="number" min="0" value="0" /></label>
             <label class="checkbox-label"><input id="moon-druid" type="checkbox" /><span class="checkbox-switch" aria-hidden="true"></span><span>Moon Druid</span></label>
             <div class="resource-fields">
-              <label>HP<input id="character-hp" type="number" min="0" placeholder="e.g. 32" /></label>
-              <label>Max HP<input id="character-max-hp" type="number" min="1" placeholder="e.g. 40" /></label>
+              <label>HP<input id="character-hp" type="number" min="0" value="1" /></label>
+              <label>Max HP<input id="character-max-hp" type="number" min="1" value="1" /></label>
             </div>
             <fieldset class="ability-fields">
               <legend>Ability Scores</legend>
@@ -36,6 +36,17 @@
               <label>INT<input id="ability-int" type="number" min="1" max="30" value="10" /></label>
               <label>WIS<input id="ability-wis" type="number" min="1" max="30" value="10" /></label>
               <label>CHA<input id="ability-cha" type="number" min="1" max="30" value="10" /></label>
+            </fieldset>
+            <fieldset class="saving-fields">
+              <legend>Saving Throw Proficiencies &amp; Bonuses</legend>
+              <div class="saving-options">
+                <label><span><input type="checkbox" name="saving-throw" value="str" /> STR</span><input id="saving-bonus-str" type="number" value="0" aria-label="Additional STR saving throw bonus" /></label>
+                <label><span><input type="checkbox" name="saving-throw" value="dex" /> DEX</span><input id="saving-bonus-dex" type="number" value="0" aria-label="Additional DEX saving throw bonus" /></label>
+                <label><span><input type="checkbox" name="saving-throw" value="con" /> CON</span><input id="saving-bonus-con" type="number" value="0" aria-label="Additional CON saving throw bonus" /></label>
+                <label><span><input type="checkbox" name="saving-throw" value="int" /> INT</span><input id="saving-bonus-int" type="number" value="0" aria-label="Additional INT saving throw bonus" /></label>
+                <label><span><input type="checkbox" name="saving-throw" value="wis" /> WIS</span><input id="saving-bonus-wis" type="number" value="0" aria-label="Additional WIS saving throw bonus" /></label>
+                <label><span><input type="checkbox" name="saving-throw" value="cha" /> CHA</span><input id="saving-bonus-cha" type="number" value="0" aria-label="Additional CHA saving throw bonus" /></label>
+              </div>
             </fieldset>
           </div>
           <section class="skill-picker" aria-labelledby="skill-proficiencies-heading">
@@ -65,44 +76,52 @@
       </details>
 
       <section class="controls" aria-label="Filters and sorting">
-        <label>
-          Name
-          <input id="search-input" type="search" placeholder="Enter a name …" autocomplete="off" />
-        </label>
-        <label>
-          Size
-          <select id="size-filter"><option value="all">All</option></select>
-        </label>
-        <fieldset class="range-field">
-          <legend>Armor Class</legend>
-          <div>
-            <label>from<input id="ac-min" type="number" min="0" placeholder="e.g. 12" /></label>
-            <label>to<input id="ac-max" type="number" min="0" placeholder="e.g. 16" /></label>
+        <div class="filter-main">
+          <label>
+            Name
+            <input id="search-input" type="search" placeholder="Enter a name …" autocomplete="off" />
+          </label>
+          <label>
+            Size
+            <select id="size-filter"><option value="all">All</option></select>
+          </label>
+          <fieldset class="range-field">
+            <legend>Armor Class</legend>
+            <div>
+              <label>from<input id="ac-min" type="number" min="0" placeholder="e.g. 12" /></label>
+              <label>to<input id="ac-max" type="number" min="0" placeholder="e.g. 16" /></label>
+            </div>
+          </fieldset>
+          <fieldset class="range-field">
+            <legend>Challenge Rating</legend>
+            <div>
+              <label>from<select id="cr-min"></select></label>
+              <label>to<select id="cr-max"></select></label>
+            </div>
+          </fieldset>
+          <div class="multi-filter-row">
+            <details class="multi-select" id="resistance-filter"><summary>Resistances</summary></details>
+            <details class="multi-select" id="sense-filter"><summary>Senses</summary></details>
+            <details class="multi-select" id="movement-filter"><summary>Movement</summary></details>
           </div>
-        </fieldset>
-        <fieldset class="range-field">
-          <legend>Challenge Rating</legend>
-          <div>
-            <label>from<select id="cr-min"></select></label>
-            <label>to<select id="cr-max"></select></label>
-          </div>
-        </fieldset>
-        <div class="multi-filter-row">
-          <details class="multi-select" id="resistance-filter"><summary>Resistances</summary></details>
-          <details class="multi-select" id="sense-filter"><summary>Senses</summary></details>
-          <details class="multi-select" id="movement-filter"><summary>Movement</summary></details>
-          <div class="sort-control">
-            <label>
-              Sort by
-              <select id="sort-select">
-                <option value="cr">CR (Challenge Rating)</option>
-                <option value="name" selected>Name</option>
-                <option value="size">Size</option>
-                <option value="ac">AC (Armor Class)</option>
-              </select>
-            </label>
-            <button id="sort-direction" type="button" aria-label="Sort ascending" title="Sort ascending">↑</button>
-          </div>
+        </div>
+        <div class="sort-control">
+          <label>
+            Sort by
+            <select id="sort-select">
+              <option value="cr">CR (Challenge Rating)</option>
+              <option value="name" selected>Name</option>
+              <option value="size">Size</option>
+              <option value="ac">AC (Armor Class)</option>
+            </select>
+          </label>
+          <label>
+            Direction
+            <select id="sort-direction" aria-label="Sort direction">
+              <option value="asc" selected>Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </label>
         </div>
       </section>
 
