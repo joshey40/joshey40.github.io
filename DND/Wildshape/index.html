@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Übersicht und Filter für D&D-Wildshape-Formen." />
+    <title>Wildshape-Kompass</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div>
+        <p class="eyebrow">D&D 2024 · Werkzeug</p>
+        <h1>Wildshape-Kompass</h1>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <details class="character-panel" open>
+        <summary>Charakterprofil</summary>
+        <div class="character-fields">
+          <div class="character-details">
+            <label>Charakterstufe<input id="character-level" type="number" min="1" max="20" value="2" /></label>
+            <label>Druid:innen-Stufe<input id="druid-level" type="number" min="1" max="20" value="2" /></label>
+            <label class="checkbox-label"><input id="moon-druid" type="checkbox" /> Moon Druid</label>
+            <label>HP<input id="character-hp" type="number" min="0" placeholder="z. B. 32" /></label>
+            <fieldset class="ability-fields">
+              <legend>Ability Scores</legend>
+              <label>STR<input id="ability-str" type="number" min="1" max="30" value="10" /></label>
+              <label>DEX<input id="ability-dex" type="number" min="1" max="30" value="10" /></label>
+              <label>CON<input id="ability-con" type="number" min="1" max="30" value="10" /></label>
+              <label>INT<input id="ability-int" type="number" min="1" max="30" value="10" /></label>
+              <label>WIS<input id="ability-wis" type="number" min="1" max="30" value="10" /></label>
+              <label>CHA<input id="ability-cha" type="number" min="1" max="30" value="10" /></label>
+            </fieldset>
+          </div>
+          <section class="skill-picker" aria-labelledby="skill-proficiencies-heading">
+            <h3 id="skill-proficiencies-heading">Skill Proficiencies</h3>
+            <div class="skill-options">
+              <label><input type="checkbox" name="skill" value="Acrobatics" /> Acrobatics</label>
+              <label><input type="checkbox" name="skill" value="Animal Handling" /> Animal Handling</label>
+              <label><input type="checkbox" name="skill" value="Arcana" /> Arcana</label>
+              <label><input type="checkbox" name="skill" value="Athletics" /> Athletics</label>
+              <label><input type="checkbox" name="skill" value="Deception" /> Deception</label>
+              <label><input type="checkbox" name="skill" value="History" /> History</label>
+              <label><input type="checkbox" name="skill" value="Insight" /> Insight</label>
+              <label><input type="checkbox" name="skill" value="Intimidation" /> Intimidation</label>
+              <label><input type="checkbox" name="skill" value="Investigation" /> Investigation</label>
+              <label><input type="checkbox" name="skill" value="Medicine" /> Medicine</label>
+              <label><input type="checkbox" name="skill" value="Nature" /> Nature</label>
+              <label><input type="checkbox" name="skill" value="Perception" /> Perception</label>
+              <label><input type="checkbox" name="skill" value="Performance" /> Performance</label>
+              <label><input type="checkbox" name="skill" value="Persuasion" /> Persuasion</label>
+              <label><input type="checkbox" name="skill" value="Religion" /> Religion</label>
+              <label><input type="checkbox" name="skill" value="Sleight of Hand" /> Sleight of Hand</label>
+              <label><input type="checkbox" name="skill" value="Stealth" /> Stealth</label>
+              <label><input type="checkbox" name="skill" value="Survival" /> Survival</label>
+            </div>
+          </section>
+        </div>
+      </details>
+
+      <section class="controls" aria-label="Filter und Sortierung">
+        <label>
+          Name
+          <input id="search-input" type="search" placeholder="Name eingeben …" autocomplete="off" />
+        </label>
+        <fieldset class="range-field">
+          <legend>Armor Class</legend>
+          <div>
+            <label>von<input id="ac-min" type="number" min="0" placeholder="z. B. 12" /></label>
+            <label>bis<input id="ac-max" type="number" min="0" placeholder="z. B. 16" /></label>
+          </div>
+        </fieldset>
+        <fieldset class="range-field">
+          <legend>Challenge Rating</legend>
+          <div>
+            <label>von<select id="cr-min"></select></label>
+            <label>bis<select id="cr-max"></select></label>
+          </div>
+        </fieldset>
+        <label>
+          Größe
+          <select id="size-filter"><option value="all">Alle</option></select>
+        </label>
+        <div class="sort-control">
+          <label>
+            Sortieren
+            <select id="sort-select">
+              <option value="cr">CR (Challenge Rating)</option>
+              <option value="name" selected>Name</option>
+              <option value="size">Size</option>
+              <option value="ac">AC (Armor Class)</option>
+            </select>
+          </label>
+          <button id="sort-direction" type="button" aria-label="Aufsteigend sortieren" title="Aufsteigend sortieren">↑</button>
+        </div>
+        <div class="multi-filter-row">
+          <label>
+            Resistances
+            <select id="resistance-filter" multiple size="4" aria-label="Resistances auswählen"></select>
+          </label>
+          <label>
+            Immunities
+            <select id="immunity-filter" multiple size="4" aria-label="Immunities auswählen"></select>
+          </label>
+          <label>
+            Senses
+            <select id="sense-filter" multiple size="4" aria-label="Senses auswählen"></select>
+          </label>
+          <label>
+            Movement Types
+            <select id="movement-filter" multiple size="4" aria-label="Movement Types auswählen"></select>
+          </label>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <section aria-labelledby="beast-list-heading">
+          <div class="section-heading">
+            <h2 id="beast-list-heading">Tierformen</h2>
+            <span id="result-count" class="result-count"></span>
+          </div>
+          <div id="beast-list" class="beast-list" aria-live="polite"></div>
+        </section>
+        <aside id="detail-panel" class="detail-panel" aria-live="polite">
+          <p class="empty-detail">Wähle eine Tierform aus der Liste.</p>
+        </aside>
+      </section>
+    </main>
+
+    <template id="beast-card-template">
+      <button class="beast-card" type="button">
+        <span class="beast-card__topline"><strong class="beast-card__name"></strong><span class="beast-card__cr"></span></span>
+        <span class="beast-card__meta"></span>
+      </button>
+    </template>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
