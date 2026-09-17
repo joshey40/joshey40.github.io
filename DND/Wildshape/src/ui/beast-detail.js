@@ -22,7 +22,10 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   const skillCheckValues = {};
   const abilityCheckHtml = Object.entries(skillAbilities).map(([skill, ability]) => {
     const characterValue = modifier(abilities[ability]) + proficiencyBonus(character.skillProficiencies, skill, character.proficiencyBonus) + character.skillBonuses[skill];
-    const finalValue = Math.max(characterValue, Number(beast.skillBonuses[skill]) || characterValue);
+    let finalValue = Math.max(characterValue, Number(beast.skillBonuses[skill]) || characterValue);
+    if (character.magician && (skill === "arcana" || skill === "nature")) {
+      finalValue += modifier(abilities["wis"]);
+    }
     skillCheckValues[skill] = finalValue;
     return `<div class="bonus-value"><span>${skillLabel(skill)}:</span><strong>${formatModifier(finalValue)}</strong></div>`;
   }).join("");

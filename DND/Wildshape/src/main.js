@@ -11,7 +11,8 @@ const skills = ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Decepti
 const characterFieldIds = ["character-level", "druid-level", "bonus-ac", "character-hp", "character-max-hp", "ability-str", "ability-dex", "ability-con", "ability-int", "ability-wis", "ability-cha", "saving-bonus-str", "saving-bonus-dex", "saving-bonus-con", "saving-bonus-int", "saving-bonus-wis", "saving-bonus-cha"];
 const elements = {
   search: document.querySelector("#search-input"), characterLevel: document.querySelector("#character-level"), druidLevel: document.querySelector("#druid-level"), bonusAc: document.querySelector("#bonus-ac"),
-  moonDruid: document.querySelector("#moon-druid"), primalStrike: document.querySelector("#primal-strike"), characterHp: document.querySelector("#character-hp"), characterMaxHp: document.querySelector("#character-max-hp"),
+  moonDruid: document.querySelector("#moon-druid"), primalStrike: document.querySelector("#primal-strike"), magician: document.querySelector("#magician"),
+  characterHp: document.querySelector("#character-hp"), characterMaxHp: document.querySelector("#character-max-hp"),
   abilityInt: document.querySelector("#ability-int"), abilityWis: document.querySelector("#ability-wis"), abilityCha: document.querySelector("#ability-cha"),
   crMin: document.querySelector("#cr-min"), crMax: document.querySelector("#cr-max"),
   acMin: document.querySelector("#ac-min"), acMax: document.querySelector("#ac-max"),
@@ -93,6 +94,7 @@ function render() {
     isMoonDruid,
     bonusAc: Number(elements.bonusAc.value) || 0,
     primalStrike: elements.primalStrike.checked,
+    magician: elements.magician.checked,
     druidLevel: level,
     abilities,
     proficiencyBonus: getProficiencyBonus(Number(elements.characterLevel.value)),
@@ -169,6 +171,7 @@ function saveCharacterProfile() {
     values,
     moonDruid: elements.moonDruid.checked,
     primalStrike: elements.primalStrike.checked,
+    magician: elements.magician.checked,
     savingThrowStates: proficiencyStates("saving-throw"),
     skillStates: proficiencyStates("skill"),
   };
@@ -196,6 +199,7 @@ function loadCharacterProfile() {
   }
   elements.moonDruid.checked = Boolean(profile.moonDruid);
   elements.primalStrike.checked = Boolean(profile.primalStrike);
+  elements.magician.checked = Boolean(profile.magician);
   for (const entry of profile.savingThrowStates ?? []) {
     const button = document.querySelector(`button[data-proficiency-name="saving-throw"][data-proficiency-key="${entry.key}"]`);
     if (button) button.dataset.proficiency = entry.state;
