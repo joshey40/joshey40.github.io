@@ -29,14 +29,13 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
     skillCheckValues[skill] = finalValue;
     return `<div class="bonus-value"><span>${skillLabel(skill)}:</span><strong>${formatModifier(finalValue)}</strong></div>`;
   }).join("");
-  const entries = (items) => items.map((item) => `<div class="action"><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.description)}</p></div>`).join("");
   const properties = [
-    ["Passives", formatPassives(skillCheckValues)],
-    ["Senses", beast.senses],
-    ["Resistances", beast.resistances],
-    ["Immunities", beast.immunities],
-    ["Vulnerabilities", beast.vulnerabilities]
-  ].filter(([, values]) => values?.length).map(([label, values]) => `<p class="beast-property"><strong>${label}:</strong> ${escapeHtml(Array.isArray(values) ? values.join("; ") : values)}</p>`).join("");
+    {name: "Passives", description: formatPassives(skillCheckValues)},
+    {name: "Senses", description: beast.senses},
+    {name: "Resistances", description: beast.resistances},
+    {name: "Immunities", description: beast.immunities},
+    {name: "Vulnerabilities", description: beast.vulnerabilities}
+  ];
   const characterTraits = [];
   if (character.isMoonDruid && character.druidLevel >= 2) {
     if (character.druidLevel < 5) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Flame Blade, Moonbeam and Starry Wisp." });
@@ -76,9 +75,11 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
       </div>
       <div class="detail-column detail-column--traits">
         <h3>Properties</h3>
-        ${properties}
-        ${traits.length ? `<hr /><h3>Traits</h3>${entries(traits)}` : ""}
-        <hr /><h3 class="actions-heading">Actions</h3>${entries(beast.actions)}
+        ${properties.filter((prop) => prop.description && prop.description.length > 0).map((prop) => `<p class="beast-property"><strong>${prop.name}:</strong> ${escapeHtml(Array.isArray(prop.description) ? prop.description.join("; ") : prop.description)}</p>`).join("")}
+        ${traits.length ? `<hr /><h3>Traits</h3>` : ""}
+        ${traits.map((trait) => `<p class="beast-property"><strong>${trait.name}:</strong> ${escapeHtml(Array.isArray(trait.description) ? trait.description.join("; ") : trait.description)}</p>`).join("")}
+        ${beast.actions.length ? `<hr /><h3>Actions</h3>` : ""}
+        ${beast.actions.map((action) => `<p class="beast-property"><strong>${action.name}:</strong> ${escapeHtml(action.description)}</p>`).join("")}
         ${character.notes ? `<hr /><h3 class="notes-heading">Notes</h3><div class="notes">${formatNotes(character.notes)}</div>` : ""}
       </div>
     </div>`;
@@ -118,7 +119,6 @@ function proficiencyBonus(proficiencies, key, bonus) {
   if (state === "half") return Math.floor(bonus / 2);
   return 0;
 }
-function skillKey(skill) { return skill.toLocaleLowerCase("en").replaceAll(" ", "_"); }
 function skillLabel(skill) { return skill.split("_").map((part) => part[0].toUpperCase() + part.slice(1)).join(" "); }
 function formatPassives(passives = {}) {
   const values = [["Perception", passives.perception], ["Investigation", passives.investigation], ["Insight", passives.insight]].filter(([, value]) => Number.isFinite(value));
@@ -128,8 +128,8 @@ function escapeHtml(value) { const element = document.createElement("div"); elem
 function formatNotes(value) {
   const escaped = escapeHtml(value ?? "");
   return escaped
-    .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*\*\*(.+?)\*\*\*/g, "<span style=\"color: #9bd18b\"><strong><em>$1</em></strong></span>")
+    .replace(/\*\*(.+?)\*\*/g, "<span style=\"color: #9bd18b\"><strong>$1</strong></span>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/\n/g, "<br>");
 }
