@@ -8,7 +8,7 @@ const state = { beasts: [], selectedId: null, sortDirection: "asc", tempHp: 0 };
 const CHARACTER_PROFILE_STORAGE_KEY = "wildshape-manager-character-profile";
 const BOOKMARKS_STORAGE_KEY = "wildshape-manager-bookmarks";
 const skills = ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival"];
-const characterFieldIds = ["character-level", "druid-level", "bonus-ac", "character-hp", "character-max-hp", "ability-str", "ability-dex", "ability-con", "ability-int", "ability-wis", "ability-cha", "saving-bonus-str", "saving-bonus-dex", "saving-bonus-con", "saving-bonus-int", "saving-bonus-wis", "saving-bonus-cha"];
+const characterFieldIds = ["character-level", "druid-level", "bonus-ac", "character-hp", "character-max-hp", "ability-str", "ability-dex", "ability-con", "ability-int", "ability-wis", "ability-cha", "saving-bonus-str", "saving-bonus-dex", "saving-bonus-con", "saving-bonus-int", "saving-bonus-wis", "saving-bonus-cha", "character-notes"];
 const elements = {
   search: document.querySelector("#search-input"), characterLevel: document.querySelector("#character-level"), druidLevel: document.querySelector("#druid-level"), bonusAc: document.querySelector("#bonus-ac"),
   moonDruid: document.querySelector("#moon-druid"), primalStrike: document.querySelector("#primal-strike"), magician: document.querySelector("#magician"),
@@ -21,9 +21,12 @@ const elements = {
   sort: document.querySelector("#sort-select"), direction: document.querySelector("#sort-direction"),
   count: document.querySelector("#result-count"),
   list: document.querySelector("#beast-list"), detail: document.querySelector("#detail-panel"),
+  notes: document.querySelector("#character-notes"),
 };
 
-for (const control of Object.values(elements)) if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement) if (control !== elements.druidLevel) control.addEventListener("input", render);
+for (const control of Object.values(elements))
+  if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement || control instanceof HTMLTextAreaElement)
+    if (control !== elements.druidLevel) control.addEventListener("input", render);
 elements.druidLevel.addEventListener("input", () => {
   if (Number(elements.characterLevel.value) < Number(elements.druidLevel.value)) elements.characterLevel.value = elements.druidLevel.value;
   render();
@@ -75,7 +78,6 @@ function render() {
   elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"}`;
   renderBeastList(elements.list, visible, state.selectedId, state.bookmarks, (id) => {
     state.selectedId = id;
-    //state.tempHp = level * (isMoonDruid ? 3 : 1);
     render();
   }, (id) => toggleBookmark(id));
   const selectedBeast = state.beasts.find((beast) => beast.id === state.selectedId);
@@ -102,6 +104,7 @@ function render() {
     savingThrowBonuses: Object.fromEntries(["str", "dex", "con", "int", "wis", "cha"].map((ability) => [ability, Number(document.querySelector(`#saving-bonus-${ability}`).value) || 0])),
     skillProficiencies: proficiencyStates("skill"),
     skillBonuses: Object.fromEntries(skills.map((skill) => [skillKey(skill), Number(document.querySelector(`#skill-bonus-${skillKey(skill)}`).value) || 0])),
+    notes: elements.notes.value,
   }, (change, isTempHp) => {
     if (isTempHp) state.tempHp = Math.max(0, state.tempHp + change);
     else elements.characterHp.value = Math.max(0, (Number(elements.characterHp.value) || 0) + change);
@@ -172,6 +175,8 @@ function saveCharacterProfile() {
     moonDruid: elements.moonDruid.checked,
     primalStrike: elements.primalStrike.checked,
     magician: elements.magician.checked,
+    tempHp: state.tempHp,
+    selectedId: state.selectedId,
     savingThrowStates: proficiencyStates("saving-throw"),
     skillStates: proficiencyStates("skill"),
   };
@@ -200,6 +205,8 @@ function loadCharacterProfile() {
   elements.moonDruid.checked = Boolean(profile.moonDruid);
   elements.primalStrike.checked = Boolean(profile.primalStrike);
   elements.magician.checked = Boolean(profile.magician);
+  state.tempHp = Number(profile.tempHp) || 0;
+  state.selectedId = profile.selectedId ?? null;
   for (const entry of profile.savingThrowStates ?? []) {
     const button = document.querySelector(`button[data-proficiency-name="saving-throw"][data-proficiency-key="${entry.key}"]`);
     if (button) button.dataset.proficiency = entry.state;

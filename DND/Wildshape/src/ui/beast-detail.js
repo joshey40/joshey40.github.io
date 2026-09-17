@@ -49,8 +49,8 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
     else characterTraits.push({ name: "Improved Lunar Radiance", description: "Your attacks can deal its normal damage type or Radiant damage. You make this choice each time you hit with those attacks. Once per turn, you can deal an extra 2d10 Radiant damage." });
   }
   if (character.isMoonDruid && character.druidLevel >= 10) {
-    if (character.druidLevel < 14) characterTraits.push({ name: "Moonlight Step", description: "You can use a bonus action to teleport up to 30 feet to an unoccupied space you can see, and you have Advantage on the next attack roll you make before the end of this turn./nYou can use this feature a number of times equal to your Wisdom modifier (minimum of once), and you regain all expended uses when you finish a Long Rest. You can also regain uses by expending a level 2+ spell slot for each use you want to restore (no action required)." });
-    else  characterTraits.push({ name: "Shared Moonlight Step", description: "You can use a bonus action to teleport up to 30 feet to an unoccupied space you can see, and you have Advantage on the next attack roll you make before the end of this turn./n You can teleport one willing creature with you. That creature must be within 10 feet of you, and you teleport it to an unoccupied space you can see within 10 feet of your destination space./nYou can use this feature a number of times equal to your Wisdom modifier (minimum of once), and you regain all expended uses when you finish a Long Rest. You can also regain uses by expending a level 2+ spell slot for each use you want to restore (no action required)." });
+    if (character.druidLevel < 14) characterTraits.push({ name: "Moonlight Step", description: "You can use a bonus action to teleport up to 30 feet to an unoccupied space you can see, and you have Advantage on the next attack roll you make before the end of this turn.\nYou can use this feature a number of times equal to your Wisdom modifier (minimum of once), and you regain all expended uses when you finish a Long Rest. You can also regain uses by expending a level 2+ spell slot for each use you want to restore (no action required)." });
+    else  characterTraits.push({ name: "Shared Moonlight Step", description: "You can use a bonus action to teleport up to 30 feet to an unoccupied space you can see, and you have Advantage on the next attack roll you make before the end of this turn.\n You can teleport one willing creature with you. That creature must be within 10 feet of you, and you teleport it to an unoccupied space you can see within 10 feet of your destination space.\nYou can use this feature a number of times equal to your Wisdom modifier (minimum of once), and you regain all expended uses when you finish a Long Rest. You can also regain uses by expending a level 2+ spell slot for each use you want to restore (no action required)." });
   } 
   if (character.primalStrike && character.druidLevel >= 7) {
     const dice = character.druidLevel >= 15 ? "2d8" : "1d8";
@@ -79,6 +79,7 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
         ${properties}
         ${traits.length ? `<hr /><h3>Traits</h3>${entries(traits)}` : ""}
         <hr /><h3 class="actions-heading">Actions</h3>${entries(beast.actions)}
+        ${character.notes ? `<hr /><h3 class="notes-heading">Notes</h3><div class="notes">${formatNotes(character.notes)}</div>` : ""}
       </div>
     </div>`;
   container.querySelectorAll("[data-hp-change]").forEach((button) => button.addEventListener("click", () => onHpChange(Number(button.dataset.hpChange), false)));
@@ -123,3 +124,11 @@ function formatPassives(passives = {}) {
   return values.length ? values.map(([name, value]) => `${name} ${10 + value}`).join(", ") : "";
 }
 function escapeHtml(value) { const element = document.createElement("div"); element.textContent = value; return element.innerHTML; }
+function formatNotes(value) {
+  const escaped = escapeHtml(value ?? "");
+  return escaped
+    .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    .replace(/\n/g, "<br>");
+}
