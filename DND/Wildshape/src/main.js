@@ -75,7 +75,8 @@ function render() {
   visible = visible.filter((beast) => isWildshapeEligible(beast, level, isMoonDruid));
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   if (state.selectedId && !visible.some((beast) => beast.id === state.selectedId)) state.selectedId = null;
-  elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"}`;
+  let knownFormsCount = level >= 8 ? 8 : level >= 4 ? 2 : level >= 2 ? 1 : 0;
+  elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"} | ${state.bookmarks.size}/${knownFormsCount} known form${knownFormsCount === 1 ? "" : "s"}`;
   renderBeastList(elements.list, visible, state.selectedId, state.bookmarks, (id) => {
     state.selectedId = id;
     render();
