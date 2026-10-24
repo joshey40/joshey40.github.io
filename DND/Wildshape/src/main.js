@@ -231,7 +231,7 @@ function comparator(sort, direction) {
   const sizeOrder = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"];
   return (a, b) => {
     let result;
-    if (state.bookmarks.has(a.id) !== state.bookmarks.has(b.id)) result = state.bookmarks.has(a.id) ? -1 : 1;
+    if (state.bookmarks.has(a.id) !== state.bookmarks.has(b.id)) result = (state.bookmarks.has(a.id) ? -1 : 1) * multiplier;
     else if (sort === "cr") result = a.challengeRating - b.challengeRating;
     else if (sort === "ac") result = a.armorClass - b.armorClass;
     else if (sort === "size") result = sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
