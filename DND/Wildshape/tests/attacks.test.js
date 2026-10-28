@@ -90,6 +90,15 @@ test("starry wisp for Moon Druids", () => {
   assert.equal(wisp({ druidLevel: 17, characterLevel: 17, proficiencyBonus: 6 }).toHit, 9);
 });
 
+test("potent spellcasting adds Wisdom to Starry Wisp and extends its range from level 15", () => {
+  const wisp = (character) => getSpellAttacks({ isMoonDruid: true, potentSpellcasting: true, abilities: { wis: 16 }, ...character })[0].attack;
+  assert.deepEqual(wisp({ druidLevel: 7, characterLevel: 7, proficiencyBonus: 3 }).damage[0], { average: 12, dice: "2d8+3", type: "Radiant" });
+  assert.equal(wisp({ druidLevel: 7, characterLevel: 7, proficiencyBonus: 3 }).distance, "60 ft.");
+  assert.equal(wisp({ druidLevel: 15, characterLevel: 15, proficiencyBonus: 5 }).distance, "360 ft.");
+  assert.equal(wisp({ druidLevel: 7, characterLevel: 7, proficiencyBonus: 3, abilities: { wis: 8 } }).damage[0].dice, "2d8-1");
+  assert.equal(wisp({ druidLevel: 6, characterLevel: 6, proficiencyBonus: 3 }).damage[0].dice, "2d8");
+});
+
 test("druid features for attacks", () => {
   const names = (character) => getAttackFeatures({ isMoonDruid: false, primalStrike: false, ...character }).map((feature) => feature.name);
   assert.deepEqual(names({ druidLevel: 5, isMoonDruid: true }), []);

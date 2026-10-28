@@ -15,6 +15,7 @@ const features = [
   { name: "Moonlight Step", moon: true, from: 10, to: 13, description: (character) => `${moonlightStep}\n${moonlightStepUses(character)}` },
   { name: "Shared Moonlight Step", moon: true, from: 14, description: (character) => `${moonlightStep}\nYou can teleport one willing creature with you. That creature must be within 10 feet of you, and you teleport it to an unoccupied space you can see within 10 feet of your destination space.\n${moonlightStepUses(character)}` },
   { name: "Primal Strike", from: 7, when: (character) => character.primalStrike, description: (character) => `Once on each of your turns when you hit a creature, you can cause the target to take an extra ${character.druidLevel >= 15 ? "2d8" : "1d8"} Cold, Fire, Lightning, or Thunder damage (choose when you hit).` },
+  { name: "Potent Spellcasting", from: 7, when: (character) => character.potentSpellcasting, description: (character) => `Add your Wisdom modifier to the damage you deal with any Druid cantrip.${character.druidLevel >= 15 ? " The range of your Druid cantrips with a range of 10 feet or greater increases by 300 feet." : ""}` },
   { name: "Beast Spells", from: 18, description: "You can cast spells, except for any spell that has a Material component with a cost specified or that consumes its Material component." },
 ];
 
@@ -31,14 +32,16 @@ export function getSpellAttacks(character) {
   if (!character.isMoonDruid || character.druidLevel < 3) return [];
   const level = character.characterLevel ?? character.druidLevel;
   const dice = level >= 17 ? 4 : level >= 11 ? 3 : level >= 5 ? 2 : 1;
+  const bonus = character.potentSpellcasting && character.druidLevel >= 7 ? modifier(character.abilities?.wis ?? 10) : 0;
+  const range = character.potentSpellcasting && character.druidLevel >= 15 ? 360 : 60;
   return [{
     name: "Starry Wisp",
     type: "CANTRIP",
     attack: {
       kind: "Ranged",
       toHit: character.proficiencyBonus + modifier(character.abilities?.wis ?? 10),
-      distance: "60 ft.",
-      damage: [{ average: Math.floor(dice * 4.5), dice: `${dice}d8`, type: "Radiant" }],
+      distance: `${range} ft.`,
+      damage: [{ average: Math.max(0, Math.floor(dice * 4.5) + bonus), dice: `${dice}d8${bonus > 0 ? `+${bonus}` : bonus < 0 ? bonus : ""}`, type: "Radiant" }],
       notes: [],
     },
   }];

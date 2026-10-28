@@ -12,7 +12,7 @@ const skills = Object.keys(skillAbilities);
 const characterFieldIds = ["character-level", "druid-level", "bonus-ac", "character-hp", "character-max-hp", ...abilities.map((ability) => `ability-${ability}`), ...abilities.map((ability) => `saving-bonus-${ability}`), "character-notes"];
 const elements = {
   search: document.querySelector("#search-input"), searchDetails: document.querySelector("#search-details"), characterLevel: document.querySelector("#character-level"), druidLevel: document.querySelector("#druid-level"), bonusAc: document.querySelector("#bonus-ac"),
-  moonDruid: document.querySelector("#moon-druid"), primalStrike: document.querySelector("#primal-strike"), magician: document.querySelector("#magician"),
+  moonDruid: document.querySelector("#moon-druid"), primalStrike: document.querySelector("#primal-strike"), potentSpellcasting: document.querySelector("#potent-spellcasting"), magician: document.querySelector("#magician"),
   characterHp: document.querySelector("#character-hp"), characterMaxHp: document.querySelector("#character-max-hp"),
   crMin: document.querySelector("#cr-min"), crMax: document.querySelector("#cr-max"),
   acMin: document.querySelector("#ac-min"), acMax: document.querySelector("#ac-max"),
@@ -46,6 +46,12 @@ for (const ability of abilities) {
   });
 }
 document.querySelector("#reset-filters").addEventListener("click", resetFilters);
+for (const [toggle, other] of [[elements.primalStrike, elements.potentSpellcasting], [elements.potentSpellcasting, elements.primalStrike]]) {
+  toggle.addEventListener("input", () => {
+    if (toggle.checked) other.checked = false;
+    render();
+  });
+}
 elements.direction.addEventListener("input", () => {
   state.sortDirection = elements.direction.value;
   render();
@@ -84,8 +90,10 @@ function render() {
   const level = Number(elements.druidLevel.value), isMoonDruid = elements.moonDruid.checked, query = elements.search.value.trim().toLocaleLowerCase();
   elements.moonDruid.disabled = level < 3;
   elements.primalStrike.disabled = level < 7;
+  elements.potentSpellcasting.disabled = level < 7;
   if (level < 3) elements.moonDruid.checked = false;
   if (level < 7) elements.primalStrike.checked = false;
+  if (level < 7) elements.potentSpellcasting.checked = false;
   saveCharacterProfile();
   if (!state.isLoaded) return;
   const characterLimit = getWildshapeLimit(level, isMoonDruid);
@@ -124,6 +132,7 @@ function render() {
     isMoonDruid,
     bonusAc: Number(elements.bonusAc.value) || 0,
     primalStrike: elements.primalStrike.checked,
+    potentSpellcasting: elements.potentSpellcasting.checked,
     magician: elements.magician.checked,
     druidLevel: level,
     abilities: Object.fromEntries(abilities.map((ability) => [ability, Number(document.querySelector(`#ability-${ability}`).value) || 0])),
@@ -264,6 +273,7 @@ function saveCharacterProfile() {
     values,
     moonDruid: elements.moonDruid.checked,
     primalStrike: elements.primalStrike.checked,
+    potentSpellcasting: elements.potentSpellcasting.checked,
     magician: elements.magician.checked,
     tempHp: state.tempHp,
     selectedId: state.selectedId,
@@ -294,6 +304,7 @@ function loadCharacterProfile() {
   }
   elements.moonDruid.checked = Boolean(profile.moonDruid);
   elements.primalStrike.checked = Boolean(profile.primalStrike);
+  elements.potentSpellcasting.checked = Boolean(profile.potentSpellcasting) && !elements.primalStrike.checked;
   elements.magician.checked = Boolean(profile.magician);
   state.tempHp = Number(profile.tempHp) || 0;
   state.selectedId = profile.selectedId ?? null;
