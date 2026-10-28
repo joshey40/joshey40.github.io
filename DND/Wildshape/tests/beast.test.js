@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { toBeast } from "../src/models/beast.js";
 import { mockBeasts } from "../src/data/mock-beasts.js";
-import { inRange, matchesAll, meetsMinimums } from "../src/domain/filters.js";
+import { inRange, matchesAll, matchesSearch, meetsMinimums } from "../src/domain/filters.js";
 
 const apiBeast = {
   key: "srd-2024_wolf", name: "Wolf", size: { name: "Medium" }, challenge_rating: "0.25", armor_class: 12, hit_points: 11,
@@ -44,6 +44,15 @@ test("toBeast accepts the mock data", () => {
     assert.ok(beast.actions.every((action) => action.type === "ACTION"));
     assert.equal(Object.keys(beast.senseRanges).length, beast.senses.length);
   }
+});
+
+test("search by name, traits and actions", () => {
+  const wolf = toBeast(apiBeast);
+  assert.equal(matchesSearch(wolf, ""), true);
+  assert.equal(matchesSearch(wolf, "wol"), true);
+  assert.equal(matchesSearch(wolf, "pack tactics"), false);
+  assert.equal(matchesSearch(wolf, "pack tactics", true), true);
+  assert.equal(matchesSearch(wolf, "bite text", true), true);
 });
 
 test("filters", () => {

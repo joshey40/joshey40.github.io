@@ -41,7 +41,7 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   const traits = [...getDruidTraits(character), ...(beast.traits ?? [])];
   const wasFullscreen = container.classList.contains("is-fullscreen");
   container.innerHTML = `
-    <div class="detail-title"><div><h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)} Beast</p></div><div class="detail-title-actions"><span class="tag">CR ${formatCR(beast.challengeRating)}</span><button class="detail-fullscreen-button" type="button" data-detail-fullscreen aria-label="Open Beast detail in fullscreen" title="Open fullscreen">⛶</button></div></div>
+    <div class="detail-title"><div><h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)} Beast</p></div><div class="detail-title-actions"><span class="tag${character.isAboveLimit ? ' is-above-limit" title="Not available at your Druid level' : ""}">CR ${formatCR(beast.challengeRating)}</span><button class="detail-fullscreen-button" type="button" data-detail-fullscreen aria-label="Open Beast detail in fullscreen" title="Open fullscreen">⛶</button></div></div>
     <div class="detail-columns">
       <div class="detail-column detail-column--stats">
         <div class="stat-grid">

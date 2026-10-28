@@ -9,6 +9,7 @@
   --button-bg: #222;
   --border: #666;
   --border-subtle: #414141;
+  --danger: #ef8a7a;
 
   color-scheme: dark;
   font-family: system-ui, sans-serif;
@@ -298,6 +299,7 @@ input:focus, select:focus {
 
 /* Filters and sorting */
 .controls {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 10rem;
   gap: .8rem;
@@ -306,11 +308,31 @@ input:focus, select:focus {
   border: 1px solid var(--border);
   border-radius: .65rem;
 }
+.reset-filters-button {
+  position: absolute;
+  top: .55rem;
+  right: .55rem;
+}
+.search-field {
+  display: grid;
+  gap: .35rem;
+  align-content: start;
+}
+.inline-check {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  color: var(--text-muted);
+  font-size: .75rem;
+  font-weight: 400;
+}
+.inline-check input { width: auto; }
 .filter-main {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: .8rem;
 }
+.filter-main > label { align-content: start; }
 
 .range-field {
   margin: 0;
@@ -418,11 +440,13 @@ input:focus, select:focus {
   margin-bottom: .7rem;
 }
 .result-count { color: var(--text-muted); }
+.known-forms.is-over-limit, .beast-card__cr.is-above-limit { color: var(--danger); }
 .beast-list {
   display: grid;
   gap: .55rem;
 }
-.retry-button, .reset-button {
+.retry-button {
+  margin-top: .6rem;
   padding: .5rem .9rem;
   cursor: pointer;
   color: inherit;
@@ -555,6 +579,7 @@ input:focus, select:focus {
   white-space: nowrap;
   font-size: .85rem;
 }
+.tag.is-above-limit { background: #7a3128; }
 
 /* Detail stats */
 .stat-grid {
@@ -658,9 +683,7 @@ input:focus, select:focus {
 }
 
 /* Shared hover and focus state for small buttons */
-.retry-button { margin-top: .6rem; }
 .retry-button:hover, .retry-button:focus-visible,
-.reset-button:hover, .reset-button:focus-visible,
 .detail-fullscreen-button:hover, .detail-fullscreen-button:focus-visible,
 .resource-button:hover, .resource-button:focus-visible {
   border-color: var(--accent);

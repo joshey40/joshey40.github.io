@@ -1,6 +1,6 @@
 import { formatCR, formatSpeed } from "../domain/wildshape.js";
 
-export function renderBeastList(container, beasts, selectedId, bookmarks, emptyMessage, onSelect, onToggleBookmark) {
+export function renderBeastList(container, beasts, selectedId, bookmarks, emptyMessage, isAboveLimit, onSelect, onToggleBookmark) {
   container.replaceChildren();
   const template = document.querySelector("#beast-card-template");
   for (const beast of beasts) {
@@ -9,7 +9,12 @@ export function renderBeastList(container, beasts, selectedId, bookmarks, emptyM
     card.classList.toggle("is-selected", beast.id === selectedId);
     card.classList.toggle("is-bookmarked", bookmarks.has(beast.id));
     card.querySelector(".beast-card__name").textContent = beast.name;
-    card.querySelector(".beast-card__cr").textContent = `CR ${formatCR(beast.challengeRating)}`;
+    const cr = card.querySelector(".beast-card__cr");
+    cr.textContent = `CR ${formatCR(beast.challengeRating)}`;
+    if (isAboveLimit(beast)) {
+      cr.classList.add("is-above-limit");
+      cr.title = "Not available at your Druid level";
+    }
     card.querySelector(".beast-card__meta").textContent = `${beast.size} · ${formatSpeed(beast.speed, beast.speedUnit)}`;
     card.querySelector(".beast-card-select").addEventListener("click", () => onSelect(beast.id));
     const bookmarkButton = card.querySelector(".bookmark-button");

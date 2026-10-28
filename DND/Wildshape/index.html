@@ -66,11 +66,15 @@
       </details>
 
       <section class="controls" aria-label="Filters and sorting">
+        <button id="reset-filters" class="resource-button reset-filters-button" type="button" aria-label="Reset filters" title="Reset filters">↺</button>
         <div class="filter-main">
-          <label>
-            Name
-            <input id="search-input" type="search" placeholder="Enter a name …" autocomplete="off" />
-          </label>
+          <div class="search-field">
+            <label>
+              Name
+              <input id="search-input" type="search" placeholder="Enter a name …" autocomplete="off" />
+            </label>
+            <label class="inline-check"><input id="search-details" type="checkbox" /> Also search traits &amp; actions</label>
+          </div>
           <label>
             Size
             <select id="size-filter"><option value="all">All</option></select>
@@ -112,7 +116,6 @@
               <option value="desc">Descending</option>
             </select>
           </label>
-          <button id="reset-filters" class="reset-button" type="button">Reset filters</button>
         </div>
       </section>
 
