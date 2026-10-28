@@ -1,6 +1,6 @@
 import { formatCR, formatSpeed, getWildshapeArmorClass, getWildshapeTempHp } from "../domain/wildshape.js";
 import { abilities as abilityKeys, getProficiencyValue, modifier, skillAbilities, skillKey } from "../domain/character.js";
-import { getAttackFeatures, getDruidTraits } from "../domain/druid-features.js";
+import { getAttackFeatures, getDruidTraits, getSpellAttacks } from "../domain/druid-features.js";
 import { formatDamage } from "../domain/attacks.js";
 import { escapeHtml, formatMarkdown } from "./format.js";
 
@@ -52,7 +52,7 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
           <div class="stat speed-stat"><span>Speed</span><strong>${formatSpeed(beast.speed, beast.speedUnit, ", ")}</strong></div>
         </div>
         <div class="stat-grid">${abilityHtml}</div>
-        ${formatAttacks(beast.actions, getAttackFeatures(character))}
+        ${formatAttacks([...beast.actions, ...getSpellAttacks(character)], getAttackFeatures(character))}
         <hr /><h3>Saving Throws</h3><div class="bonus-grid saving-grid">${savingThrowHtml}</div>
         <hr /><h3>Skills</h3><div class="bonus-grid check-grid">${abilityCheckHtml}</div>
       </div>
@@ -100,7 +100,7 @@ function formatAttacks(actions, features) {
   const multiattackHtml = multiattack ? formatAttackRow(`<strong>Multiattack</strong><span class="attack__summary">${escapeHtml(multiattack.multiattack?.summary ?? multiattack.description)}</span>`, multiattack.multiattack?.note ? [multiattack.multiattack.note] : []) : "";
   const rows = combatActions.map((action) => {
     const name = `<strong>${escapeHtml(action.name)}${action.type === "ACTION" ? "" : ` <small>${actionTypeLabel(action.type)}</small>`}</strong>`;
-    if (action.attack) return formatAttackRow(`${name}<span>+${action.attack.toHit}</span><span>${escapeHtml(action.attack.distance)}</span><span>${formatDamageCell(action.attack.damage)}</span>`, action.attack.notes);
+    if (action.attack) return formatAttackRow(`${name}<span>${formatModifier(action.attack.toHit)}</span><span>${escapeHtml(action.attack.distance)}</span><span>${formatDamageCell(action.attack.damage)}</span>`, action.attack.notes);
     return formatAttackRow(`${name}<span>DC ${action.save.dc}</span><span>${action.save.ability}</span><span>${formatDamageCell(action.save.damage)}</span>`, action.save.notes);
   }).join("");
   const featureHtml = features.map((feature) => `<div class="attack__feature"><strong>${escapeHtml(feature.name)}:</strong> ${escapeHtml(feature.text)}</div>`).join("");

@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { cleanDescription, formatDamage, parseAttack, parseMultiattack, parseSaveAction } from "../src/domain/attacks.js";
-import { getAttackFeatures } from "../src/domain/druid-features.js";
+import { getAttackFeatures, getSpellAttacks } from "../src/domain/druid-features.js";
 
 const attackTexts = JSON.parse(readFileSync(new URL("./fixtures/attack-texts.json", import.meta.url), "utf8"));
 const summary = (beast, action) => {
@@ -77,6 +77,17 @@ test("non-attack descriptions", () => {
   assert.equal(parseAttack("Melee attack; minor practice damage."), null);
   assert.equal(parseAttack("The ape makes two Fist attacks."), null);
   assert.equal(parseAttack(undefined), null);
+});
+
+test("starry wisp for Moon Druids", () => {
+  const wisp = (character) => getSpellAttacks({ isMoonDruid: true, abilities: { wis: 16 }, ...character })[0]?.attack;
+  assert.equal(wisp({ isMoonDruid: false, druidLevel: 5, characterLevel: 5, proficiencyBonus: 3 }), undefined);
+  assert.equal(wisp({ druidLevel: 2, characterLevel: 2, proficiencyBonus: 2 }), undefined);
+  assert.deepEqual(wisp({ druidLevel: 3, characterLevel: 3, proficiencyBonus: 2 }), { kind: "Ranged", toHit: 5, distance: "60 ft.", damage: [{ average: 4, dice: "1d8", type: "Radiant" }], notes: [] });
+  assert.equal(wisp({ druidLevel: 4, characterLevel: 5, proficiencyBonus: 3 }).damage[0].dice, "2d8");
+  assert.equal(wisp({ druidLevel: 11, characterLevel: 11, proficiencyBonus: 4 }).damage[0].dice, "3d8");
+  assert.deepEqual(wisp({ druidLevel: 17, characterLevel: 17, proficiencyBonus: 6 }).damage[0], { average: 18, dice: "4d8", type: "Radiant" });
+  assert.equal(wisp({ druidLevel: 17, characterLevel: 17, proficiencyBonus: 6 }).toHit, 9);
 });
 
 test("druid features for attacks", () => {

@@ -27,6 +27,23 @@ export function getDruidTraits(character) {
     .map((feature) => ({ name: feature.name, description: typeof feature.description === "function" ? feature.description(character) : feature.description }));
 }
 
+export function getSpellAttacks(character) {
+  if (!character.isMoonDruid || character.druidLevel < 3) return [];
+  const level = character.characterLevel ?? character.druidLevel;
+  const dice = level >= 17 ? 4 : level >= 11 ? 3 : level >= 5 ? 2 : 1;
+  return [{
+    name: "Starry Wisp",
+    type: "CANTRIP",
+    attack: {
+      kind: "Ranged",
+      toHit: character.proficiencyBonus + modifier(character.abilities?.wis ?? 10),
+      distance: "60 ft.",
+      damage: [{ average: Math.floor(dice * 4.5), dice: `${dice}d8`, type: "Radiant" }],
+      notes: [],
+    },
+  }];
+}
+
 export function getAttackFeatures(character) {
   const features = [];
   if (character.isMoonDruid && character.druidLevel >= 14) features.push({ name: "Improved Lunar Radiance", text: "Damage can be Radiant · +2d10 Radiant once per turn" });

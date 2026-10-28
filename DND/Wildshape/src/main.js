@@ -127,6 +127,7 @@ function render() {
     magician: elements.magician.checked,
     druidLevel: level,
     abilities: Object.fromEntries(abilities.map((ability) => [ability, Number(document.querySelector(`#ability-${ability}`).value) || 0])),
+    characterLevel: Number(elements.characterLevel.value),
     proficiencyBonus: getProficiencyBonus(Number(elements.characterLevel.value)),
     savingThrowProficiencies: proficiencyStates("saving-throw"),
     savingThrowBonuses: Object.fromEntries(abilities.map((ability) => [ability, Number(document.querySelector(`#saving-bonus-${ability}`).value) || 0])),
