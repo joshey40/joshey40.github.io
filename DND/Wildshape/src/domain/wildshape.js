@@ -1,9 +1,12 @@
+import { modifier } from "./character.js";
+
 // Rules helper: verify it against the rules source used at your table before play.
 const limitsByLevel = [
   { minLevel: 8, maxCR: 1, canFly: true },
   { minLevel: 4, maxCR: 0.5, canFly: false },
   { minLevel: 2, maxCR: 0.25, canFly: false },
 ];
+const knownFormsByLevel = [[8, 8], [4, 6], [2, 4]];
 
 export function getWildshapeLimit(level, isMoonDruid = false) {
   const limit = limitsByLevel.find((entry) => level >= entry.minLevel) ?? null;
@@ -15,12 +18,24 @@ export function isWildshapeEligible(beast, level, isMoonDruid = false) {
   return Boolean(limit) && beast.challengeRating <= limit.maxCR && (limit.canFly || !beast.speed.fly);
 }
 
+export function getKnownFormsCount(level) {
+  return knownFormsByLevel.find(([minLevel]) => level >= minLevel)?.[1] ?? 0;
+}
+
+export function getWildshapeTempHp(level, isMoonDruid = false) {
+  return isMoonDruid ? level * 3 : level;
+}
+
 export function getWildshapeArmorClass(beast, isMoonDruid, wisdom, bonusAc = 0) {
-  const wisdomModifier = Math.floor((wisdom - 10) / 2);
-  const baseArmorClass = isMoonDruid ? Math.max(beast.armorClass, 13 + wisdomModifier) : beast.armorClass;
+  const baseArmorClass = isMoonDruid ? Math.max(beast.armorClass, 13 + modifier(wisdom)) : beast.armorClass;
   return baseArmorClass + bonusAc;
 }
 
 export function formatCR(cr) {
   return ({ 0.125: "1/8", 0.25: "1/4", 0.5: "1/2" }[cr] ?? String(cr));
+}
+
+export function formatSpeed(speed, unit, separator = " · ") {
+  const shortUnit = { feet: "ft.", foot: "ft.", meters: "m", metres: "m" }[unit] ?? unit;
+  return Object.entries(speed).map(([type, value]) => `${type} ${value} ${shortUnit}`).join(separator);
 }

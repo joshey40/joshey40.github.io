@@ -1,4 +1,4 @@
-import { formatCR } from "../domain/wildshape.js";
+import { formatCR, formatSpeed } from "../domain/wildshape.js";
 
 export function renderBeastList(container, beasts, selectedId, bookmarks, emptyMessage, onSelect, onToggleBookmark) {
   container.replaceChildren();
@@ -26,5 +26,3 @@ export function renderBeastList(container, beasts, selectedId, bookmarks, emptyM
     container.append(message);
   }
 }
-
-function formatSpeed(speed, unit) { return Object.entries(speed).map(([type, value]) => `${type}: ${value} ${unit}`).join(" · "); }

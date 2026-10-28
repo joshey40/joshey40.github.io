@@ -1,19 +1,19 @@
 import { getBeasts } from "./data/beast-repository.js";
-import { getWildshapeLimit } from "./domain/wildshape.js";
+import { getKnownFormsCount, getWildshapeLimit, isWildshapeEligible } from "./domain/wildshape.js";
+import { abilities, getProficiencyBonus, skillAbilities, skillKey } from "./domain/character.js";
+import { inRange, matchesAll, meetsMinimums } from "./domain/filters.js";
 import { renderBeastList } from "./ui/beast-list.js";
 import { renderBeastDetail } from "./ui/beast-detail.js";
-import { isWildshapeEligible } from "./domain/wildshape.js";
 
 const state = { beasts: [], selectedId: null, sortDirection: "asc", tempHp: 0, isLoaded: false };
 const CHARACTER_PROFILE_STORAGE_KEY = "wildshape-manager-character-profile";
 const BOOKMARKS_STORAGE_KEY = "wildshape-manager-bookmarks";
-const skills = ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival"];
-const characterFieldIds = ["character-level", "druid-level", "bonus-ac", "character-hp", "character-max-hp", "ability-str", "ability-dex", "ability-con", "ability-int", "ability-wis", "ability-cha", "saving-bonus-str", "saving-bonus-dex", "saving-bonus-con", "saving-bonus-int", "saving-bonus-wis", "saving-bonus-cha", "character-notes"];
+const skills = Object.keys(skillAbilities);
+const characterFieldIds = ["character-level", "druid-level", "bonus-ac", "character-hp", "character-max-hp", ...abilities.map((ability) => `ability-${ability}`), ...abilities.map((ability) => `saving-bonus-${ability}`), "character-notes"];
 const elements = {
   search: document.querySelector("#search-input"), characterLevel: document.querySelector("#character-level"), druidLevel: document.querySelector("#druid-level"), bonusAc: document.querySelector("#bonus-ac"),
   moonDruid: document.querySelector("#moon-druid"), primalStrike: document.querySelector("#primal-strike"), magician: document.querySelector("#magician"),
   characterHp: document.querySelector("#character-hp"), characterMaxHp: document.querySelector("#character-max-hp"),
-  abilityInt: document.querySelector("#ability-int"), abilityWis: document.querySelector("#ability-wis"), abilityCha: document.querySelector("#ability-cha"),
   crMin: document.querySelector("#cr-min"), crMax: document.querySelector("#cr-max"),
   acMin: document.querySelector("#ac-min"), acMax: document.querySelector("#ac-max"),
   movement: document.querySelector("#movement-filter"), size: document.querySelector("#size-filter"),
@@ -43,7 +43,7 @@ elements.direction.addEventListener("input", () => {
 async function init() {
   loadBookmarks();
   fillChallengeRatingOptions();
-  fillSkillBonusOptions();
+  fillSkillOptions();
   setupProficiencyControls();
   for (const bonusInput of document.querySelectorAll('input[id^="saving-bonus-"], input[id^="skill-bonus-"]')) bonusInput.addEventListener("input", render);
   loadCharacterProfile();
@@ -63,8 +63,8 @@ async function loadBeasts() {
   }
   fillOptions(elements.size, valuesFor("size"));
   fillMultiSelect(elements.resistance, valuesFor("resistances"));
-  fillSenseFilter(elements.sense, [...new Set(state.beasts.flatMap((beast) => Object.keys(beast.senseRanges)))].sort());
-  fillMultiSelect(elements.movement, [...new Set(state.beasts.flatMap((beast) => Object.keys(beast.speed)))].sort());
+  fillRangeFilter(elements.sense, keysFor("senseRanges"), "range");
+  fillRangeFilter(elements.movement, keysFor("speed"), "speed");
   state.isLoaded = true;
   render();
 }
@@ -79,20 +79,21 @@ function render() {
   if (!state.isLoaded) return;
   const characterLimit = getWildshapeLimit(level, isMoonDruid);
   const crMax = elements.crMax.value === "character" ? characterLimit?.maxCR : elements.crMax.value;
+  const resistances = selectedValues(elements.resistance), senseMinimums = rangeMinimums(elements.sense), movementMinimums = rangeMinimums(elements.movement);
   const filters = [
     (beast) => !query || beast.name.toLocaleLowerCase().includes(query),
     (beast) => inRange(beast.challengeRating, elements.crMin.value, crMax),
     (beast) => inRange(beast.armorClass, elements.acMin.value, elements.acMax.value),
     (beast) => elements.size.value === "all" || beast.size === elements.size.value,
-    (beast) => matchesAll(beast.resistances, selectedValues(elements.resistance)),
-    matchesSenses,
-    (beast) => matchesAll(Object.keys(beast.speed), selectedValues(elements.movement)),
+    (beast) => matchesAll(beast.resistances, resistances),
+    (beast) => meetsMinimums(beast.senseRanges, senseMinimums),
+    (beast) => meetsMinimums(beast.speed, movementMinimums),
   ];
   const visible = state.beasts.filter((beast) => isWildshapeEligible(beast, level, isMoonDruid) && (state.bookmarks.has(beast.id) || filters.every((matches) => matches(beast))));
   for (const container of [elements.resistance, elements.sense, elements.movement]) updateMultiSelectCount(container);
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   if (state.selectedId && !visible.some((beast) => beast.id === state.selectedId)) state.selectedId = null;
-  let knownFormsCount = level >= 8 ? 8 : level >= 4 ? 6 : level >= 2 ? 4 : 0;
+  const knownFormsCount = getKnownFormsCount(level);
   elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"} | ${state.bookmarks.size}/${knownFormsCount} known form${knownFormsCount === 1 ? "" : "s"}`;
   const emptyMessage = characterLimit ? "No forms match these filters." : "Wild Shape is available from Druid Level 2.";
   renderBeastList(elements.list, visible, state.selectedId, state.bookmarks, emptyMessage, (id) => {
@@ -100,14 +101,6 @@ function render() {
     render();
   }, (id) => toggleBookmark(id));
   const selectedBeast = state.beasts.find((beast) => beast.id === state.selectedId);
-  const abilities = {
-    str: Number(document.querySelector("#ability-str").value) || 0,
-    dex: Number(document.querySelector("#ability-dex").value) || 0,
-    con: Number(document.querySelector("#ability-con").value) || 0,
-    int: Number(elements.abilityInt.value) || 0,
-    wis: Number(elements.abilityWis.value) || 0,
-    cha: Number(elements.abilityCha.value) || 0,
-  };
   renderBeastDetail(elements.detail, selectedBeast, {
     hp: Number(elements.characterHp.value) || 0,
     maxHp: Number(elements.characterMaxHp.value) || 0,
@@ -117,10 +110,10 @@ function render() {
     primalStrike: elements.primalStrike.checked,
     magician: elements.magician.checked,
     druidLevel: level,
-    abilities,
+    abilities: Object.fromEntries(abilities.map((ability) => [ability, Number(document.querySelector(`#ability-${ability}`).value) || 0])),
     proficiencyBonus: getProficiencyBonus(Number(elements.characterLevel.value)),
     savingThrowProficiencies: proficiencyStates("saving-throw"),
-    savingThrowBonuses: Object.fromEntries(["str", "dex", "con", "int", "wis", "cha"].map((ability) => [ability, Number(document.querySelector(`#saving-bonus-${ability}`).value) || 0])),
+    savingThrowBonuses: Object.fromEntries(abilities.map((ability) => [ability, Number(document.querySelector(`#saving-bonus-${ability}`).value) || 0])),
     skillProficiencies: proficiencyStates("skill"),
     skillBonuses: Object.fromEntries(skills.map((skill) => [skillKey(skill), Number(document.querySelector(`#skill-bonus-${skillKey(skill)}`).value) || 0])),
     notes: elements.notes.value,
@@ -131,6 +124,7 @@ function render() {
   });
 }
 
+function keysFor(property) { return [...new Set(state.beasts.flatMap((beast) => Object.keys(beast[property])))].sort(); }
 function valuesFor(property) { return [...new Set(state.beasts.flatMap((beast) => Array.isArray(beast[property]) ? beast[property] : [beast[property]]))].filter(Boolean).sort(); }
 function fillOptions(select, values) { for (const value of values) select.add(new Option(value, value)); }
 function fillMultiSelect(container, values) {
@@ -147,38 +141,36 @@ function fillMultiSelect(container, values) {
   }
   container.append(options);
 }
-function fillSenseFilter(container, types) {
+function fillRangeFilter(container, types, measure) {
   const options = document.createElement("div");
   options.className = "multi-select__options";
   for (const type of types) {
     const row = document.createElement("div");
-    row.className = "sense-option";
+    row.className = "range-option";
     const label = document.createElement("label");
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.value = type;
     checkbox.addEventListener("input", render);
     label.append(checkbox, document.createTextNode(` ${type}`));
-    const range = document.createElement("input");
-    range.type = "number";
-    range.min = "0";
-    range.step = "5";
-    range.placeholder = "min ft.";
-    range.setAttribute("aria-label", `Minimum ${type} range in feet`);
-    range.addEventListener("input", () => {
-      if (range.value !== "") checkbox.checked = true;
+    const minimum = document.createElement("input");
+    minimum.type = "number";
+    minimum.min = "0";
+    minimum.step = "5";
+    minimum.placeholder = "min ft.";
+    minimum.setAttribute("aria-label", `Minimum ${type} ${measure} in feet`);
+    minimum.addEventListener("input", () => {
+      if (minimum.value !== "") checkbox.checked = true;
       render();
     });
-    row.append(label, range);
+    row.append(label, minimum);
     options.append(row);
   }
   container.append(options);
 }
-function matchesSenses(beast) {
-  return [...elements.sense.querySelectorAll(".sense-option")].every((row) => {
-    const [checkbox, range] = row.querySelectorAll("input");
-    return !checkbox.checked || (beast.senseRanges[checkbox.value] ?? 0) >= Math.max(1, Number(range.value) || 0);
-  });
+function rangeMinimums(container) {
+  return [...container.querySelectorAll(".range-option")].map((row) => row.querySelectorAll("input"))
+    .filter(([checkbox]) => checkbox.checked).map(([checkbox, minimum]) => [checkbox.value, Number(minimum.value) || 0]);
 }
 function fillChallengeRatingOptions() {
   const ratings = [["Any", ""], ["0", "0"], ["1/8", "0.125"], ["1/4", "0.25"], ["1/2", "0.5"], ...Array.from({ length: 30 }, (_, index) => [String(index + 1), String(index + 1)])];
@@ -194,14 +186,13 @@ function updateMultiSelectCount(container) {
 }
 function selectedValues(container) { return [...container.querySelectorAll('input:checked')].map((input) => input.value); }
 function proficiencyStates(name) { return [...document.querySelectorAll(`button[data-proficiency-name="${name}"]`)].map((button) => ({ key: button.dataset.proficiencyKey, state: button.dataset.proficiency })); }
-function matchesAll(values, requested) { return requested.every((value) => values.includes(value)); }
-function inRange(value, min, max) { return (min === "" || value >= Number(min)) && (max === "" || value <= Number(max)); }
-function getProficiencyBonus(level) { return level > 0 ? Math.floor((level - 1) / 4) + 2 : 2; }
-function skillKey(skill) { return skill.toLocaleLowerCase("en").replaceAll(" ", "_"); }
-function fillSkillBonusOptions() {
-  for (const label of document.querySelectorAll(".skill-options label")) {
-    const input = label.querySelector('input[name="skill"]');
-    const skill = input.value;
+function fillSkillOptions() {
+  for (const skill of skills) {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.name = "skill";
+    input.value = skill;
     const name = document.createElement("span");
     name.className = "skill-proficiency-name";
     name.append(input, document.createTextNode(` ${skill}`));
@@ -210,7 +201,8 @@ function fillSkillBonusOptions() {
     bonusInput.type = "number";
     bonusInput.value = "0";
     bonusInput.setAttribute("aria-label", `Additional ${skill} bonus`);
-    label.replaceChildren(name, bonusInput);
+    label.append(name, bonusInput);
+    document.querySelector(".skill-options").append(label);
   }
 }
 function setupProficiencyControls() {

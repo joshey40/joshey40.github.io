@@ -37,7 +37,7 @@ export function toBeast(apiBeast) {
     ["Blindsight", apiBeast.blindsight_range], ["Darkvision", apiBeast.darkvision_range],
     ["Tremorsense", apiBeast.tremorsense_range], ["Truesight", apiBeast.truesight_range],
   ].filter(([, range]) => Number(range) > 0).map(([name, range]) => [name, Number(range)]));
-  const senses = Object.entries(senseRanges).map(([name, range]) => `${name} ${range}ft.`);
+  const senses = Object.entries(senseRanges).map(([name, range]) => `${name} ${range} ft.`);
   return {
     id: apiBeast.key, name: apiBeast.name, size: apiBeast.size?.name ?? "Unknown",
     challengeRating: Number(apiBeast.challenge_rating), speed, speedUnit: apiBeast.speed?.unit ?? "feet",
