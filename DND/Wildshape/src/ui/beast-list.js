@@ -1,6 +1,6 @@
 import { formatCR } from "../domain/wildshape.js";
 
-export function renderBeastList(container, beasts, selectedId, bookmarks, onSelect, onToggleBookmark) {
+export function renderBeastList(container, beasts, selectedId, bookmarks, emptyMessage, onSelect, onToggleBookmark) {
   container.replaceChildren();
   const template = document.querySelector("#beast-card-template");
   for (const beast of beasts) {
@@ -19,7 +19,12 @@ export function renderBeastList(container, beasts, selectedId, bookmarks, onSele
     bookmarkButton.addEventListener("click", () => onToggleBookmark(beast.id));
     container.append(card);
   }
-  if (!beasts.length) container.innerHTML = '<p class="empty-detail">No forms match these filters.</p>';
+  if (!beasts.length) {
+    const message = document.createElement("p");
+    message.className = "empty-detail";
+    message.textContent = emptyMessage;
+    container.append(message);
+  }
 }
 
 function formatSpeed(speed, unit) { return Object.entries(speed).map(([type, value]) => `${type}: ${value} ${unit}`).join(" · "); }

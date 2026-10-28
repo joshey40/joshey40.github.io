@@ -12,7 +12,7 @@
  * @property {{name:string, description:string}[]} [traits]
  */
 
-/** Normalisiert eine Open5e-v2-Antwort auf das app-eigene Beast-Modell. */
+/** Normalizes an Open5e v2 response to the app's own Beast model. */
 export function toBeast(apiBeast) {
   // Mock data already uses the app's own model.
   if (apiBeast.challengeRating !== undefined) return {

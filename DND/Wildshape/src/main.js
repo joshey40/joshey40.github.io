@@ -79,19 +79,23 @@ function render() {
   if (!state.isLoaded) return;
   const characterLimit = getWildshapeLimit(level, isMoonDruid);
   const crMax = elements.crMax.value === "character" ? characterLimit?.maxCR : elements.crMax.value;
-  let visible = state.beasts.filter((beast) => !query || beast.name.toLocaleLowerCase().includes(query));
-  visible = visible.filter((beast) => inRange(beast.challengeRating, elements.crMin.value, crMax));
-  visible = visible.filter((beast) => inRange(beast.armorClass, elements.acMin.value, elements.acMax.value));
-  if (elements.size.value !== "all") visible = visible.filter((beast) => beast.size === elements.size.value);
-  visible = visible.filter((beast) => matchesAll(beast.resistances, selectedValues(elements.resistance)));
-  visible = visible.filter(matchesSenses);
-  visible = visible.filter((beast) => matchesAll(Object.keys(beast.speed), selectedValues(elements.movement)));
-  visible = visible.filter((beast) => isWildshapeEligible(beast, level, isMoonDruid));
+  const filters = [
+    (beast) => !query || beast.name.toLocaleLowerCase().includes(query),
+    (beast) => inRange(beast.challengeRating, elements.crMin.value, crMax),
+    (beast) => inRange(beast.armorClass, elements.acMin.value, elements.acMax.value),
+    (beast) => elements.size.value === "all" || beast.size === elements.size.value,
+    (beast) => matchesAll(beast.resistances, selectedValues(elements.resistance)),
+    matchesSenses,
+    (beast) => matchesAll(Object.keys(beast.speed), selectedValues(elements.movement)),
+  ];
+  const visible = state.beasts.filter((beast) => isWildshapeEligible(beast, level, isMoonDruid) && (state.bookmarks.has(beast.id) || filters.every((matches) => matches(beast))));
+  for (const container of [elements.resistance, elements.sense, elements.movement]) updateMultiSelectCount(container);
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   if (state.selectedId && !visible.some((beast) => beast.id === state.selectedId)) state.selectedId = null;
   let knownFormsCount = level >= 8 ? 8 : level >= 4 ? 6 : level >= 2 ? 4 : 0;
   elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"} | ${state.bookmarks.size}/${knownFormsCount} known form${knownFormsCount === 1 ? "" : "s"}`;
-  renderBeastList(elements.list, visible, state.selectedId, state.bookmarks, (id) => {
+  const emptyMessage = characterLimit ? "No forms match these filters." : "Wild Shape is available from Druid Level 2.";
+  renderBeastList(elements.list, visible, state.selectedId, state.bookmarks, emptyMessage, (id) => {
     state.selectedId = id;
     render();
   }, (id) => toggleBookmark(id));
@@ -182,6 +186,12 @@ function fillChallengeRatingOptions() {
   for (const [label, value] of [["Any", ""], ["Char", "character"], ...ratings.slice(1)]) elements.crMax.add(new Option(label, value));
   elements.crMax.value = "";
 }
+function updateMultiSelectCount(container) {
+  const summary = container.querySelector("summary");
+  summary.dataset.label ??= summary.textContent;
+  const count = container.querySelectorAll('input[type="checkbox"]:checked').length;
+  summary.textContent = count ? `${summary.dataset.label} (${count})` : summary.dataset.label;
+}
 function selectedValues(container) { return [...container.querySelectorAll('input:checked')].map((input) => input.value); }
 function proficiencyStates(name) { return [...document.querySelectorAll(`button[data-proficiency-name="${name}"]`)].map((button) => ({ key: button.dataset.proficiencyKey, state: button.dataset.proficiency })); }
 function matchesAll(values, requested) { return requested.every((value) => values.includes(value)); }
@@ -211,7 +221,8 @@ function setupProficiencyControls() {
     button.dataset.proficiencyName = input.name;
     button.dataset.proficiencyKey = input.name === "skill" ? skillKey(input.value) : input.value;
     button.dataset.proficiency = "none";
-    button.setAttribute("aria-label", `${input.value} proficiency: none`);
+    button.dataset.proficiencyLabel = input.name === "skill" ? input.value : input.value.toUpperCase();
+    updateProficiencyButton(button);
     button.addEventListener("click", () => cycleProficiency(button));
     input.replaceWith(button);
   }
@@ -263,14 +274,20 @@ function loadCharacterProfile() {
     const button = document.querySelector(`button[data-proficiency-name="skill"][data-proficiency-key="${entry.key}"]`);
     if (button) button.dataset.proficiency = entry.state;
   }
+  document.querySelectorAll(".proficiency-toggle").forEach(updateProficiencyButton);
   if (Number(elements.characterLevel.value) < Number(elements.druidLevel.value)) elements.characterLevel.value = elements.druidLevel.value;
 }
 function cycleProficiency(button) {
   const states = ["none", "half", "proficient", "expertise"];
   const nextState = states[(states.indexOf(button.dataset.proficiency) + 1) % states.length];
   button.dataset.proficiency = nextState;
-  button.setAttribute("aria-label", `${button.dataset.proficiencyKey} proficiency: ${nextState}`);
+  updateProficiencyButton(button);
   render();
+}
+function updateProficiencyButton(button) {
+  const labels = { none: "No Proficiency", half: "Half-Proficiency", proficient: "Proficiency", expertise: "Expertise" };
+  button.title = labels[button.dataset.proficiency];
+  button.setAttribute("aria-label", `${button.dataset.proficiencyLabel}: ${button.title}`);
 }
 
 function comparator(sort, direction) {
@@ -282,8 +299,8 @@ function comparator(sort, direction) {
     else if (sort === "cr") result = a.challengeRating - b.challengeRating;
     else if (sort === "ac") result = a.armorClass - b.armorClass;
     else if (sort === "size") result = sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
-    else result = a.name.localeCompare(b.name, "de");
-    return result * multiplier || a.name.localeCompare(b.name, "de") * multiplier;
+    else result = a.name.localeCompare(b.name, "en");
+    return result * multiplier || a.name.localeCompare(b.name, "en") * multiplier;
   };
 }
 init();
