@@ -4,7 +4,7 @@ import { renderBeastList } from "./ui/beast-list.js";
 import { renderBeastDetail } from "./ui/beast-detail.js";
 import { isWildshapeEligible } from "./domain/wildshape.js";
 
-const state = { beasts: [], selectedId: null, sortDirection: "asc", tempHp: 0 };
+const state = { beasts: [], selectedId: null, sortDirection: "asc", tempHp: 0, isLoaded: false };
 const CHARACTER_PROFILE_STORAGE_KEY = "wildshape-manager-character-profile";
 const BOOKMARKS_STORAGE_KEY = "wildshape-manager-bookmarks";
 const skills = ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival"];
@@ -41,23 +41,32 @@ elements.direction.addEventListener("input", () => {
 });
 
 async function init() {
+  loadBookmarks();
+  fillChallengeRatingOptions();
+  fillSkillBonusOptions();
+  setupProficiencyControls();
+  for (const bonusInput of document.querySelectorAll('input[id^="saving-bonus-"], input[id^="skill-bonus-"]')) bonusInput.addEventListener("input", render);
+  loadCharacterProfile();
+  render();
+  await loadBeasts();
+}
+
+async function loadBeasts() {
+  elements.list.innerHTML = '<p class="empty-detail">Loading Beasts …</p>';
   try {
-    loadBookmarks();
     state.beasts = await getBeasts();
-    fillOptions(elements.size, valuesFor("size"));
-    fillChallengeRatingOptions();
-    fillMultiSelect(elements.resistance, valuesFor("resistances"));
-    fillMultiSelect(elements.sense, valuesFor("senses"));
-    fillMultiSelect(elements.movement, [...new Set(state.beasts.flatMap((beast) => Object.keys(beast.speed)))].sort());
-    fillSkillBonusOptions();
-    setupProficiencyControls();
-    for (const bonusInput of document.querySelectorAll('input[id^="saving-bonus-"], input[id^="skill-bonus-"]')) bonusInput.addEventListener("input", render);
-    loadCharacterProfile();
-    render();
   } catch (error) {
     console.error("Could not load Beasts:", error);
-    elements.list.innerHTML = '<p class="empty-detail">The Beast data could not be loaded. Please try again later.</p>';
+    elements.list.innerHTML = '<p class="empty-detail">The Beast data could not be loaded.</p><button class="retry-button" type="button">Try again</button>';
+    elements.list.querySelector(".retry-button").addEventListener("click", loadBeasts);
+    return;
   }
+  fillOptions(elements.size, valuesFor("size"));
+  fillMultiSelect(elements.resistance, valuesFor("resistances"));
+  fillSenseFilter(elements.sense, [...new Set(state.beasts.flatMap((beast) => Object.keys(beast.senseRanges)))].sort());
+  fillMultiSelect(elements.movement, [...new Set(state.beasts.flatMap((beast) => Object.keys(beast.speed)))].sort());
+  state.isLoaded = true;
+  render();
 }
 
 function render() {
@@ -67,6 +76,7 @@ function render() {
   if (level < 3) elements.moonDruid.checked = false;
   if (level < 7) elements.primalStrike.checked = false;
   saveCharacterProfile();
+  if (!state.isLoaded) return;
   const characterLimit = getWildshapeLimit(level, isMoonDruid);
   const crMax = elements.crMax.value === "character" ? characterLimit?.maxCR : elements.crMax.value;
   let visible = state.beasts.filter((beast) => !query || beast.name.toLocaleLowerCase().includes(query));
@@ -74,12 +84,12 @@ function render() {
   visible = visible.filter((beast) => inRange(beast.armorClass, elements.acMin.value, elements.acMax.value));
   if (elements.size.value !== "all") visible = visible.filter((beast) => beast.size === elements.size.value);
   visible = visible.filter((beast) => matchesAll(beast.resistances, selectedValues(elements.resistance)));
-  visible = visible.filter((beast) => matchesAll(beast.senses, selectedValues(elements.sense)));
+  visible = visible.filter(matchesSenses);
   visible = visible.filter((beast) => matchesAll(Object.keys(beast.speed), selectedValues(elements.movement)));
   visible = visible.filter((beast) => isWildshapeEligible(beast, level, isMoonDruid));
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   if (state.selectedId && !visible.some((beast) => beast.id === state.selectedId)) state.selectedId = null;
-  let knownFormsCount = level >= 8 ? 8 : level >= 4 ? 2 : level >= 2 ? 1 : 0;
+  let knownFormsCount = level >= 8 ? 8 : level >= 4 ? 6 : level >= 2 ? 4 : 0;
   elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"} | ${state.bookmarks.size}/${knownFormsCount} known form${knownFormsCount === 1 ? "" : "s"}`;
   renderBeastList(elements.list, visible, state.selectedId, state.bookmarks, (id) => {
     state.selectedId = id;
@@ -132,6 +142,39 @@ function fillMultiSelect(container, values) {
     options.append(label);
   }
   container.append(options);
+}
+function fillSenseFilter(container, types) {
+  const options = document.createElement("div");
+  options.className = "multi-select__options";
+  for (const type of types) {
+    const row = document.createElement("div");
+    row.className = "sense-option";
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = type;
+    checkbox.addEventListener("input", render);
+    label.append(checkbox, document.createTextNode(` ${type}`));
+    const range = document.createElement("input");
+    range.type = "number";
+    range.min = "0";
+    range.step = "5";
+    range.placeholder = "min ft.";
+    range.setAttribute("aria-label", `Minimum ${type} range in feet`);
+    range.addEventListener("input", () => {
+      if (range.value !== "") checkbox.checked = true;
+      render();
+    });
+    row.append(label, range);
+    options.append(row);
+  }
+  container.append(options);
+}
+function matchesSenses(beast) {
+  return [...elements.sense.querySelectorAll(".sense-option")].every((row) => {
+    const [checkbox, range] = row.querySelectorAll("input");
+    return !checkbox.checked || (beast.senseRanges[checkbox.value] ?? 0) >= Math.max(1, Number(range.value) || 0);
+  });
 }
 function fillChallengeRatingOptions() {
   const ratings = [["Any", ""], ["0", "0"], ["1/8", "0.125"], ["1/4", "0.25"], ["1/2", "0.5"], ...Array.from({ length: 30 }, (_, index) => [String(index + 1), String(index + 1)])];

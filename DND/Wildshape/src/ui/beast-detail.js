@@ -24,7 +24,7 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
     const characterValue = modifier(abilities[ability]) + proficiencyBonus(character.skillProficiencies, skill, character.proficiencyBonus) + character.skillBonuses[skill];
     let finalValue = Math.max(characterValue, Number(beast.skillBonuses[skill]) || characterValue);
     if (character.magician && (skill === "arcana" || skill === "nature")) {
-      finalValue += modifier(abilities["wis"]);
+      finalValue += Math.max(1, modifier(abilities["wis"]));
     }
     skillCheckValues[skill] = finalValue;
     return `<div class="bonus-value"><span>${skillLabel(skill)}:</span><strong>${formatModifier(finalValue)}</strong></div>`;
@@ -37,11 +37,11 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
     {name: "Vulnerabilities", description: beast.vulnerabilities}
   ];
   const characterTraits = [];
-  if (character.isMoonDruid && character.druidLevel >= 2) {
-    if (character.druidLevel < 5) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Flame Blade, Moonbeam and Starry Wisp." });
-    else if (character.druidLevel < 7) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Flame Blade, Moonbeam, Starry Wisp and Conjure Animals." });
-    else if (character.druidLevel < 9) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Flame Blade, Moonbeam, Starry Wisp, Conjure Animals and Fount of Moonlight." });
-    else characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Flame Blade, Moonbeam, Starry Wisp, Conjure Animals, Fount of Moonlight and Mass Cure Wounds." });
+  if (character.isMoonDruid && character.druidLevel >= 3) {
+    if (character.druidLevel < 5) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Moonbeam and Starry Wisp." });
+    else if (character.druidLevel < 7) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Moonbeam, Starry Wisp and Conjure Animals." });
+    else if (character.druidLevel < 9) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Moonbeam, Starry Wisp, Conjure Animals and Fount of Moonlight." });
+    else characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Moonbeam, Starry Wisp, Conjure Animals, Fount of Moonlight and Mass Cure Wounds." });
   }
   if (character.isMoonDruid && character.druidLevel >= 6) {
     if (character.druidLevel < 14) characterTraits.push({ name: "Lunar Radiance", description: "Your attacks can deal its normal damage type or Radiant damage. You make this choice each time you hit with those attacks." });
@@ -79,7 +79,7 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
         ${traits.length ? `<hr /><h3>Traits</h3>` : ""}
         ${traits.map((trait) => `<p class="beast-property"><strong>${escapeHtml(trait.name)}:</strong> ${escapeHtml(Array.isArray(trait.description) ? trait.description.join("; ") : trait.description)}</p>`).join("")}
         ${beast.actions.length ? `<hr /><h3>Actions</h3>` : ""}
-        ${beast.actions.map((action) => `<p class="beast-property"><strong>${escapeHtml(action.name)}:</strong> ${escapeHtml(action.description)}</p>`).join("")}
+        ${beast.actions.map((action) => `<p class="beast-property"><span class="action-type" data-action-type="${escapeHtml(action.type)}">${actionTypeLabel(action.type)}</span> <strong>${escapeHtml(action.name)}:</strong> ${escapeHtml(action.description)}</p>`).join("")}
         ${character.notes ? `<hr /><h3 class="notes-heading">Notes</h3><div class="notes">${formatNotes(character.notes)}</div>` : ""}
       </div>
     </div>`;
@@ -119,6 +119,7 @@ function proficiencyBonus(proficiencies, key, bonus) {
   if (state === "half") return Math.floor(bonus / 2);
   return 0;
 }
+function actionTypeLabel(type) { return ({ ACTION: "Action", BONUS_ACTION: "Bonus Action", REACTION: "Reaction" }[type] ?? escapeHtml(skillLabel(type.toLocaleLowerCase("en")))); }
 function skillLabel(skill) { return skill.split("_").map((part) => part[0].toUpperCase() + part.slice(1)).join(" "); }
 function formatPassives(passives = {}) {
   const values = [["Perception", passives.perception], ["Investigation", passives.investigation], ["Insight", passives.insight]].filter(([, value]) => Number.isFinite(value));
