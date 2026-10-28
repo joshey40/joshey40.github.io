@@ -52,7 +52,7 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
           <div class="stat speed-stat"><span>Speed</span><strong>${formatSpeed(beast.speed, beast.speedUnit, ", ")}</strong></div>
         </div>
         <div class="stat-grid">${abilityHtml}</div>
-        ${formatAttacks(beast.actions.filter((action) => action.attack), getAttackFeatures(character))}
+        ${formatAttacks(beast.actions, getAttackFeatures(character))}
         <hr /><h3>Saving Throws</h3><div class="bonus-grid saving-grid">${savingThrowHtml}</div>
         <hr /><h3>Skills</h3><div class="bonus-grid check-grid">${abilityCheckHtml}</div>
       </div>
@@ -94,13 +94,23 @@ document.addEventListener("keydown", (event) => {
 });
 
 function formatAttacks(actions, features) {
-  if (!actions.length) return "";
-  const rows = actions.map(({ name, attack }) => `<div class="attack">
-    <div class="attack__main"><strong>${escapeHtml(name)}</strong><span>+${attack.toHit}</span><span>${escapeHtml(attack.distance)}</span><span>${escapeHtml(formatDamage(attack.damage))} <small>(${attack.damage.reduce((sum, part) => sum + part.average, 0)})</small></span></div>
-    ${attack.notes.map((note) => `<div class="attack__note">${escapeHtml(note)}</div>`).join("")}
-  </div>`).join("");
+  const combatActions = actions.filter((action) => action.attack || action.save);
+  if (!combatActions.length) return "";
+  const multiattack = actions.find((action) => action.name === "Multiattack");
+  const multiattackHtml = multiattack ? formatAttackRow(`<strong>Multiattack</strong><span class="attack__summary">${escapeHtml(multiattack.multiattack?.summary ?? multiattack.description)}</span>`, multiattack.multiattack?.note ? [multiattack.multiattack.note] : []) : "";
+  const rows = combatActions.map((action) => {
+    const name = `<strong>${escapeHtml(action.name)}${action.type === "ACTION" ? "" : ` <small>${actionTypeLabel(action.type)}</small>`}</strong>`;
+    if (action.attack) return formatAttackRow(`${name}<span>+${action.attack.toHit}</span><span>${escapeHtml(action.attack.distance)}</span><span>${formatDamageCell(action.attack.damage)}</span>`, action.attack.notes);
+    return formatAttackRow(`${name}<span>DC ${action.save.dc}</span><span>${action.save.ability}</span><span>${formatDamageCell(action.save.damage)}</span>`, action.save.notes);
+  }).join("");
   const featureHtml = features.map((feature) => `<div class="attack__feature"><strong>${escapeHtml(feature.name)}:</strong> ${escapeHtml(feature.text)}</div>`).join("");
-  return `<hr /><h3>Attacks</h3><div class="attack-list">${rows}${featureHtml}</div>`;
+  return `<hr /><h3>Attacks</h3><div class="attack-list">${multiattackHtml}${rows}${featureHtml}</div>`;
+}
+function formatAttackRow(mainHtml, notes) {
+  return `<div class="attack"><div class="attack__main">${mainHtml}</div>${notes.map((note) => `<div class="attack__note">${escapeHtml(note)}</div>`).join("")}</div>`;
+}
+function formatDamageCell(damage) {
+  return damage.length ? `${escapeHtml(formatDamage(damage))} <small>(${damage.reduce((sum, part) => sum + part.average, 0)})</small>` : "";
 }
 function formatModifier(value) { return value >= 0 ? `+${value}` : String(value); }
 function proficiencyBonus(proficiencies, key, bonus) { return getProficiencyValue(proficiencies.find((entry) => entry.key === key)?.state, bonus); }

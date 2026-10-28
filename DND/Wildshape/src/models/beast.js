@@ -1,4 +1,5 @@
-import { parseAttack } from "../domain/attacks.js";
+import { cleanDescription, parseAttack, parseMultiattack, parseSaveAction } from "../domain/attacks.js";
+import { modifier } from "../domain/character.js";
 
 /** @typedef {Object} Beast
  * @property {string} id @property {string} name @property {string} size
@@ -10,7 +11,7 @@ import { parseAttack } from "../domain/attacks.js";
  * @property {Partial<Record<string, number>>} savingThrows @property {Partial<Record<string, number>>} skillBonuses
  * @property {string[]} resistances @property {string[]} immunities @property {string[]} vulnerabilities @property {string[]} senses @property {string[]} languages
  * @property {Partial<Record<string, number>>} senseRanges
- * @property {{name:string, description:string, type:string, attack:Object|null}[]} actions
+ * @property {{name:string, description:string, type:string, attack:Object|null, save:Object|null, multiattack:Object|null}[]} actions
  * @property {{name:string, description:string}[]} [traits]
  */
 
@@ -25,10 +26,10 @@ export function toBeast(apiBeast) {
     vulnerabilities: apiBeast.vulnerabilities ?? [],
     senses: apiBeast.senses ?? [],
     senseRanges: parseSenseRanges(apiBeast.senses ?? []),
-    actions: sortActions((apiBeast.actions ?? []).map((action) => ({ ...action, type: action.type ?? "ACTION", attack: parseAttack(action.description) }))),
+    actions: sortActions((apiBeast.actions ?? []).map((action) => ({ ...toAction(action.name, action.description), type: action.type ?? "ACTION" }))),
     languages: apiBeast.languages ?? [],
     traits: apiBeast.traits ?? [],
-    savingThrows: normalizeSavingThrows(apiBeast.savingThrows),
+    savingThrows: proficientSavingThrows(normalizeSavingThrows(apiBeast.savingThrows), apiBeast.abilities),
     skillBonuses: apiBeast.skillBonuses ?? {},
     passiveSkills: apiBeast.passiveSkills ?? {},
   };
@@ -40,25 +41,36 @@ export function toBeast(apiBeast) {
     ["Tremorsense", apiBeast.tremorsense_range], ["Truesight", apiBeast.truesight_range],
   ].filter(([, range]) => Number(range) > 0).map(([name, range]) => [name, Number(range)]));
   const senses = Object.entries(senseRanges).map(([name, range]) => `${name} ${range} ft.`);
+  const abilities = {
+    str: apiBeast.ability_scores.strength, dex: apiBeast.ability_scores.dexterity,
+    con: apiBeast.ability_scores.constitution, int: apiBeast.ability_scores.intelligence,
+    wis: apiBeast.ability_scores.wisdom, cha: apiBeast.ability_scores.charisma,
+  };
   return {
     id: apiBeast.key, name: apiBeast.name, size: apiBeast.size?.name ?? "Unknown",
     challengeRating: Number(apiBeast.challenge_rating), speed, speedUnit: apiBeast.speed?.unit ?? "feet",
     armorClass: Number(apiBeast.armor_class), hitPoints: Number(apiBeast.hit_points),
-    abilities: {
-      str: apiBeast.ability_scores.strength, dex: apiBeast.ability_scores.dexterity,
-      con: apiBeast.ability_scores.constitution, int: apiBeast.ability_scores.intelligence,
-      wis: apiBeast.ability_scores.wisdom, cha: apiBeast.ability_scores.charisma,
-    },
+    abilities,
     actions: sortActions([...(apiBeast.actions ?? [])].sort((a, b) => a.order_in_statblock - b.order_in_statblock)
-      .map((action) => ({ name: action.name, description: action.desc ?? "", type: action.action_type ?? "ACTION", attack: parseAttack(action.desc) }))),
+      .map((action) => ({ ...toAction(action.name, action.desc), type: action.action_type ?? "ACTION" }))),
     traits: (apiBeast.traits ?? []).map((trait) => ({ name: trait.name, description: trait.desc ?? "" })),
     resistances: namesFrom(defenses.damage_resistances),
     immunities: [...namesFrom(defenses.damage_immunities), ...namesFrom(defenses.condition_immunities)],
     vulnerabilities: namesFrom(defenses.damage_vulnerabilities),
     senses, senseRanges,
     languages: apiBeast.languages?.as_string ? [apiBeast.languages.as_string] : [],
-    savingThrows: normalizeSavingThrows(apiBeast.saving_throws),
+    savingThrows: proficientSavingThrows(normalizeSavingThrows(apiBeast.saving_throws), abilities),
     skillBonuses: apiBeast.skill_bonuses ?? {},
+  };
+}
+
+function toAction(name, text) {
+  const description = cleanDescription(text);
+  return {
+    name, description,
+    attack: parseAttack(description),
+    save: parseSaveAction(description),
+    multiattack: name === "Multiattack" ? parseMultiattack(description) : null,
   };
 }
 
@@ -74,4 +86,7 @@ function namesFrom(values = []) { return values.map((value) => typeof value === 
 function normalizeSavingThrows(values = {}) {
   const names = { strength: "str", dexterity: "dex", constitution: "con", intelligence: "int", wisdom: "wis", charisma: "cha" };
   return Object.fromEntries(Object.entries(values).map(([key, value]) => [names[key] ?? key, Number(value)]));
+}
+function proficientSavingThrows(savingThrows, abilities = {}) {
+  return Object.fromEntries(Object.entries(savingThrows).filter(([ability, value]) => value > modifier(abilities[ability] ?? 10)));
 }

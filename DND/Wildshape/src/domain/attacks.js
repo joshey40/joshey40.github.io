@@ -19,6 +19,32 @@ export function parseAttack(description) {
   return { kind, toHit: Number(toHit), distance: reach ? `${reach} ft.` : `${range} ft.`, damage, notes };
 }
 
+export function parseMultiattack(description) {
+  const match = String(description ?? "").match(/^The .+? makes (.+?)\.\s*(.*)$/s);
+  if (!match) return null;
+  const counts = { one: 1, two: 2, three: 3, four: 4 };
+  const parts = match[1].split(/, and |, | and /).map((part) => {
+    const attack = part.match(/^(one|two|three|four) (.+?) attacks?$/);
+    if (attack) return `${counts[attack[1]]}× ${attack[2]}`;
+    return part.match(/^uses (.+)$/)?.[1] ?? null;
+  });
+  if (parts.includes(null)) return null;
+  return { summary: parts.join(" + "), note: match[2] || null };
+}
+
+export function parseSaveAction(description) {
+  const match = String(description ?? "").match(/^(?:.+? )?(Strength|Dexterity|Constitution|Intelligence|Wisdom|Charisma) Saving Throw: DC (\d+), (.+?)\. Failure: (.+?)(?:\s*Success: (.+?)\.?)?$/s);
+  if (!match) return null;
+  const [, ability, dc, target, failure, success] = match;
+  const failureDamage = failure.match(/^(\d+.*?damage)[,.]?\s*(.*)$/s);
+  const damage = failureDamage ? parseDamage(failureDamage[1]) : [];
+  const effect = summarizeFailure(failureDamage ? failureDamage[2] : failure);
+  const notes = [`Target: ${target}`];
+  if (effect) notes.push(`Failure: ${effect}`);
+  if (success) notes.push(`Success: ${success}`);
+  return { ability: ability.slice(0, 3).toUpperCase(), dc: Number(dc), damage, notes };
+}
+
 export function formatDamage(damage) {
   return damage.map((part) => `${part.dice ?? part.average} ${part.type}`).join(" + ");
 }
@@ -49,10 +75,18 @@ function formatAlternative(text) {
 }
 
 function summarizeConsequence(text) {
-  return text
-    .replace(/takes an extra \d+ \((\d+d\d+)\) (\w+) damage/g, "+$1 $2")
-    .replace(/has the (\w+) condition(?: \(escape DC (\d+)\))?/g, (_, condition, dc) => dc ? `${condition} (DC ${dc})` : condition)
-    .replace(/,? and /g, ", ");
+  return shortenConditions(text.replace(/takes an extra \d+ \((\d+d\d+)\) (\w+) damage/g, "+$1 $2")).replace(/,? and /g, ", ");
 }
+
+function summarizeFailure(text) {
+  const sentences = text.replace(/^and /, "").split(/(?<=\.)\s+/).filter(Boolean);
+  return sentences.map((sentence) => parseEffect(sentence) ?? shortenConditions(sentence.replace(/^the target /i, "").replace(/\.$/, ""))).join(" · ");
+}
+
+function shortenConditions(text) {
+  return text.replace(/has the (\w+) condition(?: \(escape DC (\d+)\))?/g, (_, condition, dc) => dc ? `${condition} (DC ${dc})` : condition);
+}
+
+export function cleanDescription(text) { return String(text ?? "").replace(/\s*\[[^\]]+\]\|[A-Z]+\|\w+/g, ""); }
 
 function capitalize(text) { return text.charAt(0).toUpperCase() + text.slice(1); }

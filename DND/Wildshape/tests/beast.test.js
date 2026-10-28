@@ -9,7 +9,7 @@ const apiBeast = {
   speed: { walk: 40, swim: 0, unit: "feet" },
   ability_scores: { strength: 14, dexterity: 15, constitution: 12, intelligence: 3, wisdom: 12, charisma: 6 },
   darkvision_range: 60, blindsight_range: null,
-  saving_throws: { dexterity: 4 }, skill_bonuses: { perception: 5 },
+  saving_throws: { strength: 2, dexterity: 4, constitution: 1, intelligence: -4, wisdom: 1, charisma: -2 }, skill_bonuses: { perception: 5 },
   resistances_and_immunities: { damage_resistances: [{ name: "Cold" }], damage_immunities: [], condition_immunities: [{ name: "Charmed" }], damage_vulnerabilities: [] },
   actions: [
     { name: "Howl", desc: "Reaction text", action_type: "REACTION", order_in_statblock: 0 },
@@ -26,7 +26,7 @@ test("toBeast maps the Open5e response", () => {
   assert.equal(beast.speedUnit, "feet");
   assert.deepEqual(beast.senses, ["Darkvision 60 ft."]);
   assert.deepEqual(beast.senseRanges, { Darkvision: 60 });
-  assert.deepEqual(beast.savingThrows, { dex: 4 });
+  assert.deepEqual(beast.savingThrows, { dex: 4 }, "only saves above the ability modifier are proficient");
   assert.deepEqual(beast.resistances, ["Cold"]);
   assert.deepEqual(beast.immunities, ["Charmed"]);
   assert.deepEqual(beast.actions.map((action) => [action.name, action.type]), [["Bite", "ACTION"], ["Howl", "REACTION"]]);

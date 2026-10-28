@@ -678,6 +678,8 @@ input:focus, select:focus {
 }
 .attack__note, .attack__feature { grid-column: 1 / -1; }
 .attack__main strong { color: var(--accent); }
+.attack__main strong small { color: var(--text-muted); font-weight: 400; }
+.attack__summary { grid-column: 2 / -1; }
 .attack__main small { color: var(--text-muted); }
 .attack__note {
   margin-top: .15rem;

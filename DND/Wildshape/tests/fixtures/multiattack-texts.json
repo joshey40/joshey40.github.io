@@ -1,0 +1,110 @@
+[
+  {
+    "beast": "Ankylosaurus",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The ankylosaurus makes two Tail attacks."
+  },
+  {
+    "beast": "Ape",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The ape makes two Fist attacks."
+  },
+  {
+    "beast": "Archelon",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The archelon makes two Bite attacks."
+  },
+  {
+    "beast": "Black Bear",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The bear makes two Rend attacks."
+  },
+  {
+    "beast": "Brown Bear",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The bear makes one Bite attack and one Claw attack."
+  },
+  {
+    "beast": "Elephant",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The elephant makes two Gore attacks."
+  },
+  {
+    "beast": "Giant Ape",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The ape makes two Fist attacks."
+  },
+  {
+    "beast": "Giant Constrictor Snake",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The snake makes one Bite attack and uses Constrict."
+  },
+  {
+    "beast": "Giant Crocodile",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The crocodile makes one Bite attack and one Tail attack."
+  },
+  {
+    "beast": "Giant Scorpion",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The scorpion makes two Claw attacks and one Sting attack."
+  },
+  {
+    "beast": "Giant Shark",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The shark makes two Bite attacks."
+  },
+  {
+    "beast": "Hippopotamus",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The hippopotamus makes two Bite attacks."
+  },
+  {
+    "beast": "Lion",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The lion makes two Rend attacks. It can replace one attack with a use of Roar."
+  },
+  {
+    "beast": "Mammoth",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The mammoth makes two Gore attacks."
+  },
+  {
+    "beast": "Polar Bear",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The bear makes two Rend attacks."
+  },
+  {
+    "beast": "Saber-Toothed Tiger",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The tiger makes two Rend attacks."
+  },
+  {
+    "beast": "Triceratops",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The triceratops makes two Gore attacks."
+  },
+  {
+    "beast": "Tyrannosaurus Rex",
+    "action": "Multiattack",
+    "type": "ACTION",
+    "description": "The tyrannosaurus makes one Bite attack and one Tail attack."
+  }
+]

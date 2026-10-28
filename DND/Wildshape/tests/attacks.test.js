@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { formatDamage, parseAttack } from "../src/domain/attacks.js";
+import { cleanDescription, formatDamage, parseAttack, parseMultiattack, parseSaveAction } from "../src/domain/attacks.js";
 import { getAttackFeatures } from "../src/domain/druid-features.js";
 
 const attackTexts = JSON.parse(readFileSync(new URL("./fixtures/attack-texts.json", import.meta.url), "utf8"));
@@ -45,6 +45,32 @@ test("alternative damage and to-hit notes", () => {
   assert.equal(summary("Blood Hawk", "Beak"), "+4 | 5 ft. | 1d4+2 Piercing | Target Bloodied: 1d8+2 Piercing instead");
   assert.equal(summary("Swarm of Venomous Snakes", "Bites"), "+6 | 5 ft. | 1d8+4 Piercing + 3d6 Poison | Swarm Bloodied: 1d4+4 Piercing instead");
   assert.equal(summary("Hunter Shark", "Bite"), "+6 | 5 ft. | 3d6+4 Piercing | Advantage if the target doesn't have all its Hit Points");
+});
+
+const multiattackTexts = JSON.parse(readFileSync(new URL("./fixtures/multiattack-texts.json", import.meta.url), "utf8"));
+const saveActionTexts = JSON.parse(readFileSync(new URL("./fixtures/save-action-texts.json", import.meta.url), "utf8"));
+const multiattack = (beast) => parseMultiattack(multiattackTexts.find((entry) => entry.beast === beast).description);
+const saveAction = (beast, action) => {
+  const save = parseSaveAction(cleanDescription(saveActionTexts.find((entry) => entry.beast === beast && entry.action === action).description));
+  return [save.ability, `DC ${save.dc}`, formatDamage(save.damage), ...save.notes].join(" | ");
+};
+
+test("every multiattack is parsed", () => {
+  assert.deepEqual(multiattackTexts.filter((entry) => !parseMultiattack(entry.description)), []);
+  assert.deepEqual(multiattack("Ape"), { summary: "2× Fist", note: null });
+  assert.deepEqual(multiattack("Giant Scorpion"), { summary: "2× Claw + 1× Sting", note: null });
+  assert.deepEqual(multiattack("Giant Constrictor Snake"), { summary: "1× Bite + Constrict", note: null });
+  assert.deepEqual(multiattack("Lion"), { summary: "2× Rend", note: "It can replace one attack with a use of Roar." });
+  assert.equal(parseMultiattack("The beast does something unusual."), null);
+});
+
+test("every save action is parsed", () => {
+  assert.deepEqual(saveActionTexts.filter((entry) => !parseSaveAction(cleanDescription(entry.description))), []);
+  assert.equal(saveAction("Elephant", "Trample"), "DEX | DC 16 | 2d10+6 Bludgeoning | Target: one creature within 5 feet that has the Prone condition | Success: Half damage");
+  assert.equal(saveAction("Constrictor Snake", "Constrict"), "STR | DC 12 | 3d4 Bludgeoning | Target: one Medium or smaller creature the snake can see within 5 feet | Failure: Grappled (DC 12)");
+  assert.equal(saveAction("Giant Ape", "Boulder Toss"), "DEX | DC 17 | 7d6 Bludgeoning | Target: each creature in a 5-foot-radius Sphere centered on that point | Failure: ≤ Large: Prone | Success: Half damage only");
+  assert.equal(saveAction("Lion", "Roar"), "WIS | DC 11 |  | Target: one creature within 15 feet | Failure: Frightened until the start of the lion's next turn");
+  assert.equal(saveAction("Swarm of Ravens", "Cacophony"), "WIS | DC 10 |  | Target: one creature in the swarm's space | Failure: Deafened until the start of the swarm's next turn · While Deafened, the target also has Disadvantage on ability checks and attack rolls");
 });
 
 test("non-attack descriptions", () => {
