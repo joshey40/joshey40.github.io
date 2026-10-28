@@ -16,7 +16,7 @@ export function toBeast(apiBeast) {
   // Mock data already uses the app's own model.
   if (apiBeast.challengeRating !== undefined) return {
     ...apiBeast,
-    speedUnit: apiBeast.speedUnit ?? "m",
+    speedUnit: apiBeast.speedUnit ?? "feet",
     resistances: apiBeast.resistances ?? [],
     immunities: apiBeast.immunities ?? [],
     vulnerabilities: apiBeast.vulnerabilities ?? [],

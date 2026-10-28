@@ -39,7 +39,7 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   const characterTraits = [];
   if (character.isMoonDruid && character.druidLevel >= 2) {
     if (character.druidLevel < 5) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Flame Blade, Moonbeam and Starry Wisp." });
-    else if (character.druidLevel < 7) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, lame Blade, Moonbeam, Starry Wisp and Conjure Animals." });
+    else if (character.druidLevel < 7) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Flame Blade, Moonbeam, Starry Wisp and Conjure Animals." });
     else if (character.druidLevel < 9) characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Flame Blade, Moonbeam, Starry Wisp, Conjure Animals and Fount of Moonlight." });
     else characterTraits.push({ name: "Circle of the Moon Spells", description: "You can cast the following spells in Wild Shape: Cure Wounds, Flame Blade, Moonbeam, Starry Wisp, Conjure Animals, Fount of Moonlight and Mass Cure Wounds." });
   }
@@ -77,9 +77,9 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
         <h3>Properties</h3>
         ${properties.filter((prop) => prop.description && prop.description.length > 0).map((prop) => `<p class="beast-property"><strong>${prop.name}:</strong> ${escapeHtml(Array.isArray(prop.description) ? prop.description.join("; ") : prop.description)}</p>`).join("")}
         ${traits.length ? `<hr /><h3>Traits</h3>` : ""}
-        ${traits.map((trait) => `<p class="beast-property"><strong>${trait.name}:</strong> ${escapeHtml(Array.isArray(trait.description) ? trait.description.join("; ") : trait.description)}</p>`).join("")}
+        ${traits.map((trait) => `<p class="beast-property"><strong>${escapeHtml(trait.name)}:</strong> ${escapeHtml(Array.isArray(trait.description) ? trait.description.join("; ") : trait.description)}</p>`).join("")}
         ${beast.actions.length ? `<hr /><h3>Actions</h3>` : ""}
-        ${beast.actions.map((action) => `<p class="beast-property"><strong>${action.name}:</strong> ${escapeHtml(action.description)}</p>`).join("")}
+        ${beast.actions.map((action) => `<p class="beast-property"><strong>${escapeHtml(action.name)}:</strong> ${escapeHtml(action.description)}</p>`).join("")}
         ${character.notes ? `<hr /><h3 class="notes-heading">Notes</h3><div class="notes">${formatNotes(character.notes)}</div>` : ""}
       </div>
     </div>`;

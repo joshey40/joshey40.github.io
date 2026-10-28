@@ -26,9 +26,13 @@ const elements = {
 
 for (const control of Object.values(elements))
   if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement || control instanceof HTMLTextAreaElement)
-    if (control !== elements.druidLevel) control.addEventListener("input", render);
+    if (control !== elements.druidLevel && control !== elements.characterLevel) control.addEventListener("input", render);
 elements.druidLevel.addEventListener("input", () => {
   if (Number(elements.characterLevel.value) < Number(elements.druidLevel.value)) elements.characterLevel.value = elements.druidLevel.value;
+  render();
+});
+elements.characterLevel.addEventListener("input", () => {
+  if (elements.characterLevel.value !== "" && Number(elements.characterLevel.value) < Number(elements.druidLevel.value)) elements.druidLevel.value = elements.characterLevel.value;
   render();
 });
 elements.direction.addEventListener("input", () => {
