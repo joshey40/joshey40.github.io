@@ -1,0 +1,477 @@
+[
+  {
+    "beast": "Allosaurus",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +6, reach 5 ft. 15 (2d10 + 4) Piercing damage."
+  },
+  {
+    "beast": "Allosaurus",
+    "action": "Claws",
+    "description": "Melee Attack Roll: +6, reach 5 ft. 8 (1d8 + 4) Slashing damage. If the target is a Large or smaller creature and the allosaurus moved 30+ feet straight toward it immediately before the hit, the target has the Prone condition, and the allosaurus can make one Bite attack against it."
+  },
+  {
+    "beast": "Ankylosaurus",
+    "action": "Tail",
+    "description": "Melee Attack Roll: +6, reach 10 ft. 9 (1d10 + 4) Bludgeoning damage. If the target is a Huge or smaller creature, it has the Prone condition."
+  },
+  {
+    "beast": "Ape",
+    "action": "Fist",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 5 (1d4 + 3) Bludgeoning damage."
+  },
+  {
+    "beast": "Ape",
+    "action": "Rock",
+    "description": "Ranged Attack Roll: +5, range 25/50 ft. 10 (2d6 + 3) Bludgeoning damage."
+  },
+  {
+    "beast": "Archelon",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +6, reach 5 ft. 14 (3d6 + 4) Piercing damage."
+  },
+  {
+    "beast": "Baboon",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +1, reach 5 ft. 1 (1d4 - 1) Piercing damage."
+  },
+  {
+    "beast": "Badger",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 1 Piercing damage."
+  },
+  {
+    "beast": "Bat",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4 to hit, reach 5 ft. 1 Piercing damage."
+  },
+  {
+    "beast": "Black Bear",
+    "action": "Rend",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 5 (1d6 + 2) Slashing damage."
+  },
+  {
+    "beast": "Blood Hawk",
+    "action": "Beak",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 4 (1d4 + 2) Piercing damage, or 6 (1d8 + 2) Piercing damage if the target is Bloodied."
+  },
+  {
+    "beast": "Boar",
+    "action": "Gore",
+    "description": "Melee Attack Roll: +3, reach 5 ft. 4 (1d6 + 1) Piercing damage. If the target is a Medium or smaller creature and the boar moved 20+ feet straight toward it immediately before the hit, the target takes an extra 3 (1d6) Piercing damage and has the Prone condition."
+  },
+  {
+    "beast": "Brown Bear",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 7 (1d8 + 3) Piercing damage."
+  },
+  {
+    "beast": "Brown Bear",
+    "action": "Claw",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 5 (1d4 + 3) Slashing damage. If the target is a Large or smaller creature, it has the Prone condition."
+  },
+  {
+    "beast": "Camel",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 4 (1d4 + 2) Bludgeoning damage."
+  },
+  {
+    "beast": "Cat",
+    "action": "Scratch",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 1 Slashing damage."
+  },
+  {
+    "beast": "Constrictor Snake",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 6 (1d8 + 2) Piercing damage."
+  },
+  {
+    "beast": "Crab",
+    "action": "Claw",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 1 Bludgeoning damage."
+  },
+  {
+    "beast": "Crocodile",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 6 (1d8 + 2) Piercing damage. If the target is a Medium or smaller creature, it has the Grappled condition (escape DC 12). While Grappled, the target has the Restrained condition."
+  },
+  {
+    "beast": "Deer",
+    "action": "Ram",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 2 (1d4) Bludgeoning damage."
+  },
+  {
+    "beast": "Dire Wolf",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 8 (1d10 + 3) Piercing damage. If the target is a Large or smaller creature, it has the Prone condition."
+  },
+  {
+    "beast": "Draft Horse",
+    "action": "Hooves",
+    "description": "Melee Attack Roll: +6, reach 5 ft. 6 (1d4 + 4) Bludgeoning damage."
+  },
+  {
+    "beast": "Eagle",
+    "action": "Talons",
+    "description": "Melee Attack Roll: +4, reach 5 feet. 4 (1d4 + 2) Slashing damage."
+  },
+  {
+    "beast": "Elephant",
+    "action": "Gore",
+    "description": "Melee Attack Roll: +8, reach 5 ft. 15 (2d8 + 6) Piercing damage. If the target is a Huge or smaller creature and the elephant moved 20+ feet straight toward it immediately before the hit, the target has the Prone condition."
+  },
+  {
+    "beast": "Elk",
+    "action": "Ram",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 6 (1d6 + 3) Bludgeoning damage. If the target is a Large or smaller creature and the elk moved 20+ feet straight toward it immediately before the hit, the target takes an extra 3 (1d6) Bludgeoning damage and has the Prone condition."
+  },
+  {
+    "beast": "Frog",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +3, reach 5 ft. 1 Piercing damage."
+  },
+  {
+    "beast": "Giant Ape",
+    "action": "Fist",
+    "description": "Melee Attack Roll: +9, reach 10 ft. 22 (3d10 + 6) Bludgeoning damage."
+  },
+  {
+    "beast": "Giant Badger",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +3, reach 5 ft. 6 (2d4 + 1) Piercing damage."
+  },
+  {
+    "beast": "Giant Bat",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 6 (1d6 + 3) Piercing damage."
+  },
+  {
+    "beast": "Giant Boar",
+    "action": "Gore",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 10 (2d6 + 3) Piercing damage. If the target is a Large or smaller creature and the boar moved 20+ feet straight toward it immediately before the hit, the target takes an extra 7 (2d6) Piercing damage and has the Prone condition."
+  },
+  {
+    "beast": "Giant Centipede",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 4 (1d4 + 2) Piercing damage, and the target has the Poisoned condition until the start of the centipede's next turn."
+  },
+  {
+    "beast": "Giant Constrictor Snake",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +6, reach 10 ft. 11 (2d6 + 4) Piercing damage."
+  },
+  {
+    "beast": "Giant Crab",
+    "action": "Claw",
+    "description": "Melee Attack Roll: +3, reach 5 ft. 4 (1d6 + 1) Bludgeoning damage. If the target is a Medium or smaller creature, it has the Grappled condition (escape DC 11) from one of two claws."
+  },
+  {
+    "beast": "Giant Crocodile",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +8, reach 5 ft. 21 (3d10 + 5) Piercing damage. If the target is a Large or smaller creature, it has the Grappled condition (escape DC 15). While Grappled, the target has the Restrained condition and can't be targeted by the crocodile's Tail."
+  },
+  {
+    "beast": "Giant Crocodile",
+    "action": "Tail",
+    "description": "Melee Attack Roll: +8, reach 10 ft. 18 (3d8 + 5) Bludgeoning damage. If the target is a Large or smaller creature, it has the Prone condition."
+  },
+  {
+    "beast": "Giant Fire Beetle",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +1, reach 5 ft. 1 Fire damage."
+  },
+  {
+    "beast": "Giant Frog",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +3, reach 5 ft. 5 (1d6 + 2) Piercing damage. If the target is a Medium or smaller creature, it has the Grappled condition (escape DC 11)."
+  },
+  {
+    "beast": "Giant Goat",
+    "action": "Ram",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 6 (1d6 + 3) Bludgeoning damage. If the target is a Large or smaller creature and the goat moved 20+ feet straight toward it immediately before the hit, the target takes an extra 5 (2d4) Bludgeoning damage and has the Prone condition."
+  },
+  {
+    "beast": "Giant Hyena",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 10 (2d6 + 3) Piercing damage."
+  },
+  {
+    "beast": "Giant Lizard",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 6 (1d8 + 2) Piercing damage."
+  },
+  {
+    "beast": "Giant Octopus",
+    "action": "Tentacles",
+    "description": "Melee Attack Roll: +5, reach 10 ft. 10 (2d6 + 3) Bludgeoning damage. If the target is a Medium or smaller creature, it has the Grappled condition (escape DC 13) from all eight tentacles. While Grappled, the target has the Restrained condition."
+  },
+  {
+    "beast": "Giant Rat",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5, reach 5 feet. 5 (1d4 + 3) Piercing damage."
+  },
+  {
+    "beast": "Giant Scorpion",
+    "action": "Claw",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 6 (1d6 + 3) Bludgeoning damage. If the target is a Large or smaller creature, it has the Grappled condition (escape DC 13) from one of two claws."
+  },
+  {
+    "beast": "Giant Scorpion",
+    "action": "Sting",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 7 (1d8 + 3) Piercing damage plus 11 (2d10) Poison damage."
+  },
+  {
+    "beast": "Giant Seahorse",
+    "action": "Ram",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 9 (2d6 + 2) Bludgeoning damage, or 11 (2d8 + 2) Bludgeoning damage if the seahorse moved 20+ feet straight toward the target immediately before the hit."
+  },
+  {
+    "beast": "Giant Shark",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +9 (with Advantage if the target doesn't have all its Hit Points), reach 5 ft. 22 (3d10 + 6) Piercing damage."
+  },
+  {
+    "beast": "Giant Spider",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 7 (1d8 + 3) Piercing damage plus 7 (2d6) Poison damage."
+  },
+  {
+    "beast": "Giant Toad",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 5 (1d6 + 2) Piercing damage plus 5 (2d4) Poison damage. If the target is a Medium or smaller creature, it has the Grappled condition (escape DC 12)."
+  },
+  {
+    "beast": "Giant Venomous Snake",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +6, reach 10 ft. 6 (1d4 + 4) Piercing damage plus 4 (1d8) Poison damage."
+  },
+  {
+    "beast": "Giant Wasp",
+    "action": "Sting",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 5 (1d6 + 2) Piercing damage plus 5 (2d4) Poison damage."
+  },
+  {
+    "beast": "Giant Weasel",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 5 (1d4 + 3) Piercing damage."
+  },
+  {
+    "beast": "Giant Wolf Spider",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 5 (1d4 + 3) Piercing damage plus 5 (2d4) Poison damage."
+  },
+  {
+    "beast": "Goat",
+    "action": "Ram",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 1 Bludgeoning damage, or 2 (1d4) Bludgeoning damage if the goat moved 20+ feet straight toward the target immediately before the hit."
+  },
+  {
+    "beast": "Hawk",
+    "action": "Talons",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 1 Slashing damage."
+  },
+  {
+    "beast": "Hippopotamus",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +7, reach 5 ft. 16 (2d10 + 5) Piercing damage."
+  },
+  {
+    "beast": "Hunter Shark",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +6 (with Advantage if the target doesn't have all its Hit Points), reach 5 ft. 14 (3d6 + 4) Piercing damage."
+  },
+  {
+    "beast": "Hyena",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 3 (1d6) Piercing damage."
+  },
+  {
+    "beast": "Jackal",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +1, reach 5 ft. 1 (1d4 - 1) Piercing damage."
+  },
+  {
+    "beast": "Killer Whale",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +6, reach 5 ft. 21 (5d6 + 4) Piercing damage."
+  },
+  {
+    "beast": "Lion",
+    "action": "Rend",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 7 (1d8 + 3) Slashing damage."
+  },
+  {
+    "beast": "Lizard",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 1 Piercing damage."
+  },
+  {
+    "beast": "Mammoth",
+    "action": "Gore",
+    "description": "Melee Attack Roll: +10, reach 10 ft. 18 (2d10 + 7) Piercing damage. If the target is a Huge or smaller creature and the mammoth moved 20+ feet straight toward it immediately before the hit, the target has the Prone condition."
+  },
+  {
+    "beast": "Mastiff",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +3, reach 5 ft. 4 (1d6 + 1) Piercing damage. If the target is a Medium or smaller creature, it has the Prone condition."
+  },
+  {
+    "beast": "Mule",
+    "action": "Hooves",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 4 (1d4 + 2) Bludgeoning damage."
+  },
+  {
+    "beast": "Octopus",
+    "action": "Tentacles",
+    "description": "Melee Attack Roll: +4, reach 5 ft. Hit: 1 Bludgeoning damage."
+  },
+  {
+    "beast": "Owl",
+    "action": "Talons",
+    "description": "Melee Attack Roll: +3, reach 5 ft. 1 Slashing damage."
+  },
+  {
+    "beast": "Panther",
+    "action": "Rend",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 6 (1d6 + 3) Slashing damage."
+  },
+  {
+    "beast": "Piranha",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5 (with Advantage if the target doesn't have all its Hit Points), reach 5 ft. 1 Piercing damage."
+  },
+  {
+    "beast": "Plesiosaurus",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +6, reach 10 ft. 11 (2d6 + 4) Piercing damage."
+  },
+  {
+    "beast": "Polar Bear",
+    "action": "Rend",
+    "description": "Melee Attack Roll: +7, reach 5 ft. 9 (1d8 + 5) Slashing damage."
+  },
+  {
+    "beast": "Pony",
+    "action": "Hooves",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 4 (1d4 + 2) Bludgeoning damage."
+  },
+  {
+    "beast": "Pteranodon",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 6 (1d8 + 2) Piercing damage."
+  },
+  {
+    "beast": "Rat",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 1 Piercing damage."
+  },
+  {
+    "beast": "Raven",
+    "action": "Beak",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 1 Piercing damage."
+  },
+  {
+    "beast": "Reef Shark",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 7 (2d4 + 2) Piercing damage."
+  },
+  {
+    "beast": "Rhinoceros",
+    "action": "Gore",
+    "description": "Melee Attack Roll: +7, reach 5 ft. 14 (2d8 + 5) Piercing damage. If target is a Large or smaller creature and the rhinoceros moved 20+ feet straight toward it immediately before the hit, the target takes an extra 9 (2d8) Piercing damage and has the Prone condition."
+  },
+  {
+    "beast": "Riding Horse",
+    "action": "Hooves",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 7 (1d8 + 3) Bludgeoning damage."
+  },
+  {
+    "beast": "Saber-Toothed Tiger",
+    "action": "Rend",
+    "description": "Melee Attack Roll: +6, reach 5 ft. 11 (2d6 + 4) Slashing damage."
+  },
+  {
+    "beast": "Scorpion",
+    "action": "Sting",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 1 Piercing damage plus 3 (1d6) Poison damage."
+  },
+  {
+    "beast": "Spider",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 1 Piercing damage plus 2 (1d4) Poison damage."
+  },
+  {
+    "beast": "Swarm of Bats",
+    "action": "Bites",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 5 (2d4) Piercing damage, or 2 (1d4) Piercing damage if the swarm is Bloodied."
+  },
+  {
+    "beast": "Swarm of Insects",
+    "action": "Bites",
+    "description": "Melee Attack Roll: +3, reach 5 ft. 6 (2d4 + 1) Poison damage, or 3 (1d4 + 1) Poison damage if the swarm is Bloodied."
+  },
+  {
+    "beast": "Swarm of Piranhas",
+    "action": "Bites",
+    "description": "Melee Attack Roll: +5 (with Advantage if the target doesn't have all its Hit Points), reach 5 ft. 8 (2d4 + 3) Piercing damage, or 5 (1d4 + 3) Piercing damage if the swarm is Bloodied."
+  },
+  {
+    "beast": "Swarm of Rats",
+    "action": "Bites",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 5 (2d4) Piercing damage, or 2 (1d4) Piercing damage if the swarm is Bloodied."
+  },
+  {
+    "beast": "Swarm of Ravens",
+    "action": "Beaks",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 5 (1d6 + 2) Piercing damage, or 2 (1d4) Piercing damage if the swarm is Bloodied."
+  },
+  {
+    "beast": "Swarm of Venomous Snakes",
+    "action": "Bites",
+    "description": "Melee Attack Roll: +6, reach 5 ft. 8 (1d8 + 4) Piercing damage—or 6 (1d4 + 4) Piercing damage if the swarm is Bloodied—plus 10 (3d6) Poison damage."
+  },
+  {
+    "beast": "Tiger",
+    "action": "Rend",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 10 (2d6 + 3) Slashing damage. If the target is a Large or smaller creature, it has the Prone condition."
+  },
+  {
+    "beast": "Triceratops",
+    "action": "Gore",
+    "description": "Melee Attack Roll: +9, reach 5 ft. 19 (2d12 + 6) Piercing damage. If the target is Huge or smaller and the triceratops moved 20+ feet straight toward it immediately before the hit, the target takes an extra 9 (2d8) Piercing damage and has the Prone condition."
+  },
+  {
+    "beast": "Tyrannosaurus Rex",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +10, reach 10 ft. 33 (4d12 + 7) Piercing damage. If the target is a Large or smaller creature, it has the Grappled condition (escape DC 17). While Grappled, the target has the Restrained condition and can't be targeted by the tyrannosaurus's Tail."
+  },
+  {
+    "beast": "Tyrannosaurus Rex",
+    "action": "Tail",
+    "description": "Melee Attack Roll: +10, reach 15 ft. 25 (4d8 + 7) Bludgeoning damage. If the target is a Huge or smaller creature, it has the Prone condition."
+  },
+  {
+    "beast": "Venomous Snake",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 4 (1d4 + 2) Piercing damage plus 3 (1d6) Poison damage."
+  },
+  {
+    "beast": "Vulture",
+    "action": "Beak",
+    "description": "Melee Attack Roll: +2, reach 5 ft. 2 (1d4) Piercing damage."
+  },
+  {
+    "beast": "Warhorse",
+    "action": "Hooves",
+    "description": "Melee Attack Roll: +6, reach 5 ft. 9 (2d4 + 4) Bludgeoning damage. If the target is a Large or smaller creature and the horse moved 20+ feet straight toward it immediately before the hit, the target takes an extra 5 (2d4) Bludgeoning damage and has the Prone condition."
+  },
+  {
+    "beast": "Weasel",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +5, reach 5 ft. 1 Piercing damage."
+  },
+  {
+    "beast": "Wolf",
+    "action": "Bite",
+    "description": "Melee Attack Roll: +4, reach 5 ft. 5 (1d6 + 2) Piercing damage. If the target is a Medium or smaller creature, it has the Prone condition."
+  }
+]

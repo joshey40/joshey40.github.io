@@ -27,4 +27,12 @@ export function getDruidTraits(character) {
     .map((feature) => ({ name: feature.name, description: typeof feature.description === "function" ? feature.description(character) : feature.description }));
 }
 
+export function getAttackFeatures(character) {
+  const features = [];
+  if (character.isMoonDruid && character.druidLevel >= 14) features.push({ name: "Improved Lunar Radiance", text: "Damage can be Radiant · +2d10 Radiant once per turn" });
+  else if (character.isMoonDruid && character.druidLevel >= 6) features.push({ name: "Lunar Radiance", text: "Damage can be Radiant" });
+  if (character.primalStrike && character.druidLevel >= 7) features.push({ name: "Primal Strike", text: `+${character.druidLevel >= 15 ? "2d8" : "1d8"} Cold, Fire, Lightning or Thunder once per turn` });
+  return features;
+}
+
 function formatList(values) { return values.length > 1 ? `${values.slice(0, -1).join(", ")} and ${values.at(-1)}` : values.join(""); }

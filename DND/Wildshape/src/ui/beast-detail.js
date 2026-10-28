@@ -1,6 +1,7 @@
 import { formatCR, formatSpeed, getWildshapeArmorClass, getWildshapeTempHp } from "../domain/wildshape.js";
 import { abilities as abilityKeys, getProficiencyValue, modifier, skillAbilities, skillKey } from "../domain/character.js";
-import { getDruidTraits } from "../domain/druid-features.js";
+import { getAttackFeatures, getDruidTraits } from "../domain/druid-features.js";
+import { formatDamage } from "../domain/attacks.js";
 import { escapeHtml, formatMarkdown } from "./format.js";
 
 export function renderBeastDetail(container, beast, character, onHpChange) {
@@ -51,6 +52,7 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
           <div class="stat speed-stat"><span>Speed</span><strong>${formatSpeed(beast.speed, beast.speedUnit, ", ")}</strong></div>
         </div>
         <div class="stat-grid">${abilityHtml}</div>
+        ${formatAttacks(beast.actions.filter((action) => action.attack), getAttackFeatures(character))}
         <hr /><h3>Saving Throws</h3><div class="bonus-grid saving-grid">${savingThrowHtml}</div>
         <hr /><h3>Skills</h3><div class="bonus-grid check-grid">${abilityCheckHtml}</div>
       </div>
@@ -91,6 +93,15 @@ document.addEventListener("keydown", (event) => {
   if (container) toggleFullscreen(container);
 });
 
+function formatAttacks(actions, features) {
+  if (!actions.length) return "";
+  const rows = actions.map(({ name, attack }) => `<div class="attack">
+    <div class="attack__main"><strong>${escapeHtml(name)}</strong><span>+${attack.toHit}</span><span>${escapeHtml(attack.distance)}</span><span>${escapeHtml(formatDamage(attack.damage))} <small>(${attack.damage.reduce((sum, part) => sum + part.average, 0)})</small></span></div>
+    ${attack.notes.map((note) => `<div class="attack__note">${escapeHtml(note)}</div>`).join("")}
+  </div>`).join("");
+  const featureHtml = features.map((feature) => `<div class="attack__feature"><strong>${escapeHtml(feature.name)}:</strong> ${escapeHtml(feature.text)}</div>`).join("");
+  return `<hr /><h3>Attacks</h3><div class="attack-list">${rows}${featureHtml}</div>`;
+}
 function formatModifier(value) { return value >= 0 ? `+${value}` : String(value); }
 function proficiencyBonus(proficiencies, key, bonus) { return getProficiencyValue(proficiencies.find((entry) => entry.key === key)?.state, bonus); }
 function actionTypeLabel(type) { return ({ ACTION: "Action", BONUS_ACTION: "Bonus Action", REACTION: "Reaction" }[type] ?? escapeHtml(type.toLocaleLowerCase("en").split("_").map((part) => part[0].toUpperCase() + part.slice(1)).join(" "))); }

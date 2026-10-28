@@ -1,3 +1,5 @@
+import { parseAttack } from "../domain/attacks.js";
+
 /** @typedef {Object} Beast
  * @property {string} id @property {string} name @property {string} size
  * @property {number} challengeRating @property {{walk?: number, swim?: number, fly?: number}} speed
@@ -8,7 +10,7 @@
  * @property {Partial<Record<string, number>>} savingThrows @property {Partial<Record<string, number>>} skillBonuses
  * @property {string[]} resistances @property {string[]} immunities @property {string[]} vulnerabilities @property {string[]} senses @property {string[]} languages
  * @property {Partial<Record<string, number>>} senseRanges
- * @property {{name:string, description:string, type:string}[]}
+ * @property {{name:string, description:string, type:string, attack:Object|null}[]} actions
  * @property {{name:string, description:string}[]} [traits]
  */
 
@@ -23,7 +25,7 @@ export function toBeast(apiBeast) {
     vulnerabilities: apiBeast.vulnerabilities ?? [],
     senses: apiBeast.senses ?? [],
     senseRanges: parseSenseRanges(apiBeast.senses ?? []),
-    actions: sortActions((apiBeast.actions ?? []).map((action) => ({ ...action, type: action.type ?? "ACTION" }))),
+    actions: sortActions((apiBeast.actions ?? []).map((action) => ({ ...action, type: action.type ?? "ACTION", attack: parseAttack(action.description) }))),
     languages: apiBeast.languages ?? [],
     traits: apiBeast.traits ?? [],
     savingThrows: normalizeSavingThrows(apiBeast.savingThrows),
@@ -48,7 +50,7 @@ export function toBeast(apiBeast) {
       wis: apiBeast.ability_scores.wisdom, cha: apiBeast.ability_scores.charisma,
     },
     actions: sortActions([...(apiBeast.actions ?? [])].sort((a, b) => a.order_in_statblock - b.order_in_statblock)
-      .map((action) => ({ name: action.name, description: action.desc ?? "", type: action.action_type ?? "ACTION" }))),
+      .map((action) => ({ name: action.name, description: action.desc ?? "", type: action.action_type ?? "ACTION", attack: parseAttack(action.desc) }))),
     traits: (apiBeast.traits ?? []).map((trait) => ({ name: trait.name, description: trait.desc ?? "" })),
     resistances: namesFrom(defenses.damage_resistances),
     immunities: [...namesFrom(defenses.damage_immunities), ...namesFrom(defenses.condition_immunities)],

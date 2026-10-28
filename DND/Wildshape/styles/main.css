@@ -653,6 +653,43 @@ input:focus, select:focus {
 }
 .bonus-value strong { font-size: .88rem; }
 
+/* Attacks */
+.attack-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  gap: .3rem .6rem;
+  margin: .1rem 0 .65rem;
+}
+.attack {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  padding: .35rem .5rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: .25rem;
+}
+.attack__main {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+  font-size: .88rem;
+}
+.attack__note, .attack__feature { grid-column: 1 / -1; }
+.attack__main strong { color: var(--accent); }
+.attack__main small { color: var(--text-muted); }
+.attack__note {
+  margin-top: .15rem;
+  color: var(--text-muted);
+  font-size: .78rem;
+}
+.attack__feature {
+  color: #d7d7d7;
+  font-size: .8rem;
+}
+.attack__feature strong { color: var(--accent); }
+
 /* Properties, traits and actions */
 .beast-property {
   margin: .45rem 0;
