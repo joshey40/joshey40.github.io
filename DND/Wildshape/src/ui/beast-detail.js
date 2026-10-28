@@ -1,6 +1,7 @@
 import { formatCR, formatSpeed, getWildshapeArmorClass, getWildshapeTempHp } from "../domain/wildshape.js";
 import { abilities as abilityKeys, getProficiencyValue, modifier, skillAbilities, skillKey } from "../domain/character.js";
 import { getDruidTraits } from "../domain/druid-features.js";
+import { escapeHtml, formatMarkdown } from "./format.js";
 
 export function renderBeastDetail(container, beast, character, onHpChange) {
   if (!beast) {
@@ -57,10 +58,10 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
         <h3>Properties</h3>
         ${properties.filter((prop) => prop.description && prop.description.length > 0).map((prop) => `<p class="beast-property"><strong>${prop.name}:</strong> ${escapeHtml(Array.isArray(prop.description) ? prop.description.join("; ") : prop.description)}</p>`).join("")}
         ${traits.length ? `<hr /><h3>Traits</h3>` : ""}
-        ${traits.map((trait) => `<p class="beast-property"><strong>${escapeHtml(trait.name)}:</strong> ${escapeHtml(Array.isArray(trait.description) ? trait.description.join("; ") : trait.description)}</p>`).join("")}
+        ${traits.map((trait) => `<p class="beast-property"><strong>${escapeHtml(trait.name)}:</strong> ${formatMarkdown(Array.isArray(trait.description) ? trait.description.join("; ") : trait.description)}</p>`).join("")}
         ${beast.actions.length ? `<hr /><h3>Actions</h3>` : ""}
-        ${beast.actions.map((action) => `<p class="beast-property"><span class="action-type" data-action-type="${escapeHtml(action.type)}">${actionTypeLabel(action.type)}</span> <strong>${escapeHtml(action.name)}:</strong> ${escapeHtml(action.description)}</p>`).join("")}
-        ${character.notes ? `<hr /><h3 class="notes-heading">Notes</h3><div class="notes">${formatNotes(character.notes)}</div>` : ""}
+        ${beast.actions.map((action) => `<p class="beast-property"><span class="action-type" data-action-type="${escapeHtml(action.type)}">${actionTypeLabel(action.type)}</span> <strong>${escapeHtml(action.name)}:</strong> ${formatMarkdown(action.description)}</p>`).join("")}
+        ${character.notes ? `<hr /><h3 class="notes-heading">Notes</h3><div class="notes">${formatMarkdown(character.notes, true)}</div>` : ""}
       </div>
     </div>`;
   container.querySelectorAll("[data-hp-change]").forEach((button) => button.addEventListener("click", () => onHpChange(Number(button.dataset.hpChange), false)));
@@ -96,13 +97,4 @@ function actionTypeLabel(type) { return ({ ACTION: "Action", BONUS_ACTION: "Bonu
 function formatPassives(passives = {}) {
   const values = [["Perception", passives.perception], ["Investigation", passives.investigation], ["Insight", passives.insight]].filter(([, value]) => Number.isFinite(value));
   return values.length ? values.map(([name, value]) => `${name} ${10 + value}`).join(", ") : "";
-}
-function escapeHtml(value) { const element = document.createElement("div"); element.textContent = value; return element.innerHTML; }
-function formatNotes(value) {
-  const escaped = escapeHtml(value ?? "");
-  return escaped
-    .replace(/\*\*\*(.+?)\*\*\*/g, '<span class="notes-highlight"><strong><em>$1</em></strong></span>')
-    .replace(/\*\*(.+?)\*\*/g, '<span class="notes-highlight"><strong>$1</strong></span>')
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/\n/g, "<br>");
 }

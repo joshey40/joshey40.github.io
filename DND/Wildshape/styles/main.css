@@ -422,8 +422,7 @@ input:focus, select:focus {
   display: grid;
   gap: .55rem;
 }
-.retry-button {
-  margin-top: .6rem;
+.retry-button, .reset-button {
   padding: .5rem .9rem;
   cursor: pointer;
   color: inherit;
@@ -659,7 +658,9 @@ input:focus, select:focus {
 }
 
 /* Shared hover and focus state for small buttons */
+.retry-button { margin-top: .6rem; }
 .retry-button:hover, .retry-button:focus-visible,
+.reset-button:hover, .reset-button:focus-visible,
 .detail-fullscreen-button:hover, .detail-fullscreen-button:focus-visible,
 .resource-button:hover, .resource-button:focus-visible {
   border-color: var(--accent);

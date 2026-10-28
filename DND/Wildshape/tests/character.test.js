@@ -35,6 +35,12 @@ test("circle spells grow with level", () => {
   assert.match(description({ druidLevel: 9 }, "Circle of the Moon Spells"), /Fount of Moonlight and Mass Cure Wounds\.$/);
 });
 
+test("moonlight step uses follow the Wisdom modifier", () => {
+  assert.match(description({ druidLevel: 10, abilities: { wis: 18 } }, "Moonlight Step"), /use this feature 4 times/);
+  assert.match(description({ druidLevel: 10, abilities: { wis: 8 } }, "Moonlight Step"), /use this feature 1 time \(/);
+  assert.match(description({ druidLevel: 14, abilities: { wis: 14 } }, "Shared Moonlight Step"), /use this feature 2 times/);
+});
+
 test("primal strike dice", () => {
   assert.match(description({ druidLevel: 7, primalStrike: true }, "Primal Strike"), /extra 1d8/);
   assert.match(description({ druidLevel: 15, primalStrike: true }, "Primal Strike"), /extra 2d8/);

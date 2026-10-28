@@ -27,14 +27,14 @@ const elements = {
 for (const control of Object.values(elements))
   if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement || control instanceof HTMLTextAreaElement)
     if (control !== elements.druidLevel && control !== elements.characterLevel) control.addEventListener("input", render);
-elements.druidLevel.addEventListener("input", () => {
-  if (Number(elements.characterLevel.value) < Number(elements.druidLevel.value)) elements.characterLevel.value = elements.druidLevel.value;
-  render();
-});
-elements.characterLevel.addEventListener("input", () => {
-  if (elements.characterLevel.value !== "" && Number(elements.characterLevel.value) < Number(elements.druidLevel.value)) elements.druidLevel.value = elements.characterLevel.value;
-  render();
-});
+for (const input of [elements.druidLevel, elements.characterLevel]) {
+  input.addEventListener("input", () => onLevelInput(input));
+  input.addEventListener("change", () => {
+    input.value = clampLevel(input.value);
+    onLevelInput(input);
+  });
+}
+document.querySelector("#reset-filters").addEventListener("click", resetFilters);
 elements.direction.addEventListener("input", () => {
   state.sortDirection = elements.direction.value;
   render();
@@ -78,24 +78,23 @@ function render() {
   saveCharacterProfile();
   if (!state.isLoaded) return;
   const characterLimit = getWildshapeLimit(level, isMoonDruid);
-  const crMax = elements.crMax.value === "character" ? characterLimit?.maxCR : elements.crMax.value;
+  const useCharacterLimit = elements.crMax.value === "character";
   const resistances = selectedValues(elements.resistance), senseMinimums = rangeMinimums(elements.sense), movementMinimums = rangeMinimums(elements.movement);
   const filters = [
     (beast) => !query || beast.name.toLocaleLowerCase().includes(query),
-    (beast) => inRange(beast.challengeRating, elements.crMin.value, crMax),
+    (beast) => inRange(beast.challengeRating, elements.crMin.value, useCharacterLimit ? "" : elements.crMax.value),
     (beast) => inRange(beast.armorClass, elements.acMin.value, elements.acMax.value),
     (beast) => elements.size.value === "all" || beast.size === elements.size.value,
     (beast) => matchesAll(beast.resistances, resistances),
     (beast) => meetsMinimums(beast.senseRanges, senseMinimums),
     (beast) => meetsMinimums(beast.speed, movementMinimums),
   ];
-  const visible = state.beasts.filter((beast) => isWildshapeEligible(beast, level, isMoonDruid) && (state.bookmarks.has(beast.id) || filters.every((matches) => matches(beast))));
+  const visible = state.beasts.filter((beast) => (!useCharacterLimit || isWildshapeEligible(beast, level, isMoonDruid)) && (state.bookmarks.has(beast.id) || filters.every((matches) => matches(beast))));
   for (const container of [elements.resistance, elements.sense, elements.movement]) updateMultiSelectCount(container);
   visible.sort(comparator(elements.sort.value, state.sortDirection));
-  if (state.selectedId && !visible.some((beast) => beast.id === state.selectedId)) state.selectedId = null;
   const knownFormsCount = getKnownFormsCount(level);
   elements.count.textContent = `${visible.length} result${visible.length === 1 ? "" : "s"} | ${state.bookmarks.size}/${knownFormsCount} known form${knownFormsCount === 1 ? "" : "s"}`;
-  const emptyMessage = characterLimit ? "No forms match these filters." : "Wild Shape is available from Druid Level 2.";
+  const emptyMessage = useCharacterLimit && !characterLimit ? "Wild Shape is available from Druid Level 2." : "No forms match these filters.";
   renderBeastList(elements.list, visible, state.selectedId, state.bookmarks, emptyMessage, (id) => {
     state.selectedId = id;
     render();
@@ -173,11 +172,32 @@ function rangeMinimums(container) {
     .filter(([checkbox]) => checkbox.checked).map(([checkbox, minimum]) => [checkbox.value, Number(minimum.value) || 0]);
 }
 function fillChallengeRatingOptions() {
-  const ratings = [["Any", ""], ["0", "0"], ["1/8", "0.125"], ["1/4", "0.25"], ["1/2", "0.5"], ...Array.from({ length: 30 }, (_, index) => [String(index + 1), String(index + 1)])];
+  const ratings = [["0", "0"], ["1/8", "0.125"], ["1/4", "0.25"], ["1/2", "0.5"], ...Array.from({ length: 30 }, (_, index) => [String(index + 1), String(index + 1)])];
   for (const [label, value] of ratings) elements.crMin.add(new Option(label, value));
-  for (const [label, value] of [["Any", ""], ["Char", "character"], ...ratings.slice(1)]) elements.crMax.add(new Option(label, value));
-  elements.crMax.value = "";
+  for (const [label, value] of [["Char", "character"], ...ratings]) elements.crMax.add(new Option(label, value));
+  elements.crMax.value = "character";
 }
+function resetFilters() {
+  elements.search.value = "";
+  elements.size.value = "all";
+  elements.acMin.value = "";
+  elements.acMax.value = "";
+  elements.crMin.value = "0";
+  elements.crMax.value = "character";
+  for (const input of document.querySelectorAll(".multi-select input")) {
+    if (input.type === "checkbox") input.checked = false;
+    else input.value = "";
+  }
+  render();
+}
+function onLevelInput(input) {
+  if (Number(input.value) > 20) input.value = "20";
+  if (input.value !== "" && Number(elements.characterLevel.value) < Number(elements.druidLevel.value)) {
+    (input === elements.druidLevel ? elements.characterLevel : elements.druidLevel).value = input.value;
+  }
+  render();
+}
+function clampLevel(value) { return String(Math.min(20, Math.max(1, Math.round(Number(value)) || 1))); }
 function updateMultiSelectCount(container) {
   const summary = container.querySelector("summary");
   summary.dataset.label ??= summary.textContent;
@@ -267,7 +287,8 @@ function loadCharacterProfile() {
     if (button) button.dataset.proficiency = entry.state;
   }
   document.querySelectorAll(".proficiency-toggle").forEach(updateProficiencyButton);
-  if (Number(elements.characterLevel.value) < Number(elements.druidLevel.value)) elements.characterLevel.value = elements.druidLevel.value;
+  elements.druidLevel.value = clampLevel(elements.druidLevel.value);
+  elements.characterLevel.value = clampLevel(Math.max(Number(elements.characterLevel.value), Number(elements.druidLevel.value)));
 }
 function cycleProficiency(button) {
   const states = ["none", "half", "proficient", "expertise"];
