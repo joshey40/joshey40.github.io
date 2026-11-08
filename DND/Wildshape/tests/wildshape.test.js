@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { formatCR, formatSpeed, getKnownFormsCount, getWildshapeArmorClass, getWildshapeLimit, getWildshapeTempHp, isWildshapeEligible } from "../src/domain/wildshape.js";
+import { applyDamage, formatCR, formatSpeed, getKnownFormsCount, getWildshapeArmorClass, getWildshapeLimit, getWildshapeTempHp, isWildshapeEligible } from "../src/domain/wildshape.js";
 
 const beast = (challengeRating, speed = { walk: 30 }, armorClass = 12) => ({ challengeRating, speed, armorClass });
 
@@ -33,6 +33,13 @@ test("known forms", () => {
 test("temporary hit points", () => {
   assert.equal(getWildshapeTempHp(5), 5);
   assert.equal(getWildshapeTempHp(5, true), 15);
+});
+
+test("damage hits temporary hit points first", () => {
+  assert.deepEqual(applyDamage(30, 10, 4), { hp: 30, tempHp: 6 });
+  assert.deepEqual(applyDamage(30, 10, 10), { hp: 30, tempHp: 0 });
+  assert.deepEqual(applyDamage(30, 10, 17), { hp: 23, tempHp: 0 });
+  assert.deepEqual(applyDamage(5, 0, 12), { hp: 0, tempHp: 0 });
 });
 
 test("armor class", () => {

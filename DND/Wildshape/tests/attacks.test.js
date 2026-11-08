@@ -73,6 +73,16 @@ test("every save action is parsed", () => {
   assert.equal(saveAction("Swarm of Ravens", "Cacophony"), "WIS | DC 10 |  | Target: one creature in the swarm's space | Failure: Deafened until the start of the swarm's next turn · While Deafened, the target also has Disadvantage on ability checks and attack rolls");
 });
 
+test("short forms keep their original sentence", () => {
+  const original = (beast, action) => parseAttack(attackTexts.find((entry) => entry.beast === beast && entry.action === action).description);
+  const wolf = original("Wolf", "Bite");
+  assert.equal(wolf.sources[wolf.notes[0]], "If the target is a Medium or smaller creature, it has the Prone condition.");
+  const hawk = original("Blood Hawk", "Beak");
+  assert.equal(hawk.sources[hawk.notes[0]], "6 (1d8 + 2) Piercing damage if the target is Bloodied");
+  const constrict = parseSaveAction(saveActionTexts.find((entry) => entry.action === "Constrict").description);
+  assert.match(constrict.sources["Failure: Grappled (DC 12)"], /^Failure: 7 \(3d4\) Bludgeoning damage, and the target has the Grappled condition/);
+});
+
 test("non-attack descriptions", () => {
   assert.equal(parseAttack("Melee attack; minor practice damage."), null);
   assert.equal(parseAttack("The ape makes two Fist attacks."), null);

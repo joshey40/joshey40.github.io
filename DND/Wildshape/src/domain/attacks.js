@@ -12,11 +12,19 @@ export function parseAttack(description) {
   const [main, alternative] = inserted ? [sentence[1].replace(inserted[0], " "), inserted[1]] : sentence[1].split(", or ");
   const damage = parseDamage(main);
   if (!damage.length) return null;
-  const notes = [];
-  if (alternative) notes.push(formatAlternative(alternative));
+  const notes = [], sources = {};
+  if (alternative) {
+    const note = formatAlternative(alternative);
+    notes.push(note);
+    sources[note] = capitalize(alternative);
+  }
   if (toHitNote) notes.push(capitalize(toHitNote.replace(/^with /, "")));
-  if (sentence[2]) notes.push(parseEffect(sentence[2]) ?? sentence[2]);
-  return { kind, toHit: Number(toHit), distance: reach ? `${reach} ft.` : `${range} ft.`, damage, notes };
+  if (sentence[2]) {
+    const note = parseEffect(sentence[2]) ?? sentence[2];
+    notes.push(note);
+    if (note !== sentence[2]) sources[note] = sentence[2];
+  }
+  return { kind, toHit: Number(toHit), distance: reach ? `${reach} ft.` : `${range} ft.`, damage, notes, sources };
 }
 
 export function parseMultiattack(description) {
@@ -39,10 +47,13 @@ export function parseSaveAction(description) {
   const failureDamage = failure.match(/^(\d+.*?damage)[,.]?\s*(.*)$/s);
   const damage = failureDamage ? parseDamage(failureDamage[1]) : [];
   const effect = summarizeFailure(failureDamage ? failureDamage[2] : failure);
-  const notes = [`Target: ${target}`];
-  if (effect) notes.push(`Failure: ${effect}`);
+  const notes = [`Target: ${target}`], sources = {};
+  if (effect) {
+    notes.push(`Failure: ${effect}`);
+    sources[`Failure: ${effect}`] = `Failure: ${failure}`;
+  }
   if (success) notes.push(`Success: ${success}`);
-  return { ability: ability.slice(0, 3).toUpperCase(), dc: Number(dc), damage, notes };
+  return { ability: ability.slice(0, 3).toUpperCase(), dc: Number(dc), damage, notes, sources };
 }
 
 export function createDamage(count, sides, bonus, type) {

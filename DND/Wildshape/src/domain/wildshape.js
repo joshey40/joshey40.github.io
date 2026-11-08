@@ -27,6 +27,11 @@ export function getWildshapeTempHp(level, isMoonDruid = false) {
   return isMoonDruid ? level * 3 : level;
 }
 
+export function applyDamage(hp, tempHp, amount) {
+  const absorbed = Math.min(tempHp, amount);
+  return { hp: Math.max(0, hp - (amount - absorbed)), tempHp: tempHp - absorbed };
+}
+
 export function getWildshapeArmorClass(beast, isMoonDruid, wisdom, bonusAc = 0) {
   const baseArmorClass = isMoonDruid ? Math.max(beast.armorClass, 13 + modifier(wisdom)) : beast.armorClass;
   return baseArmorClass + bonusAc;

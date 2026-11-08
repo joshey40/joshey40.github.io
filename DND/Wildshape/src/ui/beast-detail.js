@@ -4,7 +4,7 @@ import { getAttackFeatures, getDruidTraits, getSpellAttacks } from "../domain/dr
 import { formatDamage } from "../domain/attacks.js";
 import { escapeHtml, formatMarkdown } from "./format.js";
 
-export function renderBeastDetail(container, beast, character, onHpChange) {
+export function renderBeastDetail(container, beast, character, { onHpChange, onDamage, onSelectForm }) {
   if (!beast) {
     container.classList.remove("is-fullscreen");
     document.body.classList.remove("detail-is-fullscreen");
@@ -42,13 +42,15 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   const traits = [...getDruidTraits(character), ...(beast.traits ?? [])];
   const wasFullscreen = container.classList.contains("is-fullscreen");
   container.innerHTML = `
-    <div class="detail-title"><div><h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)} Beast</p></div><div class="detail-title-actions"><span class="tag${character.isAboveLimit ? ' is-above-limit" title="Not available at your Druid level' : ""}">CR ${formatCR(beast.challengeRating)}</span><button class="detail-fullscreen-button" type="button" data-detail-fullscreen aria-label="Open Beast detail in fullscreen" title="Open fullscreen">⛶</button></div></div>
+    <div class="detail-title"><div><h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)}${beast.challengeRating === null ? "" : " Beast"}</p></div><div class="detail-title-actions"><span class="tag${character.isAboveLimit ? ' is-above-limit" title="Not available at your Druid level' : ""}">CR ${formatCR(beast.challengeRating)}</span><button class="detail-fullscreen-button" type="button" data-detail-fullscreen aria-label="Open Beast detail in fullscreen" title="Open fullscreen">⛶</button></div></div>
+    ${formatKnownFormSwitch(character.knownForms, beast.id)}
     <div class="detail-columns">
       <div class="detail-column detail-column--stats">
         <div class="stat-grid">
           <div class="stat"><span>AC</span><strong>${getWildshapeArmorClass(beast, character.isMoonDruid, character.abilities.wis, character.bonusAc)}</strong></div>
-          <div class="stat resource-stat"><span>HP <small>/ ${character.maxHp || "-"}</small></span><div class="resource-control"><button class="resource-button" type="button" data-hp-change="-1" aria-label="Decrease hit points">-</button><strong>${character.hp}</strong><button class="resource-button" type="button" data-hp-change="1" aria-label="Increase hit points">+</button><button class="resource-button" type="button" id="reset-hp" aria-label="Reset hit points">↺</button></div></div>
-          <div class="stat resource-stat"><span>Temp HP</span><div class="resource-control"><button class="resource-button" type="button" data-temp-hp-change="-1" aria-label="Decrease temporary hit points">-</button><strong>${character.tempHp}</strong><button class="resource-button" type="button" data-temp-hp-change="1" aria-label="Increase temporary hit points">+</button><button class="resource-button" type="button" id="reset-temp-hp" aria-label="Reset temporary hit points">↺</button></div></div>
+          <div class="stat resource-stat"><span>HP <small>/ ${character.maxHp || "-"}</small></span><div class="resource-control"><button class="resource-button" type="button" data-hp-change="-1" aria-label="Decrease hit points" title="Decrease HP by 1">-</button><strong>${character.hp}</strong><button class="resource-button" type="button" data-hp-change="1" aria-label="Increase hit points" title="Increase HP by 1">+</button><button class="resource-button" type="button" id="reset-hp" aria-label="Reset hit points" title="Reset HP to Max HP">↺</button></div></div>
+          <div class="stat resource-stat"><span>Temp HP</span><div class="resource-control"><button class="resource-button" type="button" data-temp-hp-change="-1" aria-label="Decrease temporary hit points" title="Decrease Temp HP by 1">-</button><strong>${character.tempHp}</strong><button class="resource-button" type="button" data-temp-hp-change="1" aria-label="Increase temporary hit points" title="Increase Temp HP by 1">+</button><button class="resource-button" type="button" id="reset-temp-hp" aria-label="Reset temporary hit points" title="Set Temp HP to ${getWildshapeTempHp(character.druidLevel, character.isMoonDruid)} for a new Wild Shape">↺</button></div></div>
+          <form class="stat hp-adjust" data-hp-adjust><input id="hp-amount" type="number" min="1" placeholder="Amount" aria-label="Damage or healing amount" /><button class="hp-adjust__button" type="submit" title="Subtract from Temp HP first, then HP">Damage</button><button class="hp-adjust__button" type="button" data-hp-heal title="Add to HP">Heal</button></form>
           <div class="stat speed-stat"><span>Speed</span><strong>${formatSpeed(beast.speed, beast.speedUnit, ", ")}</strong></div>
         </div>
         <div class="stat-grid">${abilityHtml}</div>
@@ -70,6 +72,20 @@ export function renderBeastDetail(container, beast, character, onHpChange) {
   container.querySelectorAll("[data-temp-hp-change]").forEach((button) => button.addEventListener("click", () => onHpChange(Number(button.dataset.tempHpChange), true)));
   container.querySelector("#reset-temp-hp").addEventListener("click", () => {onHpChange(getWildshapeTempHp(character.druidLevel, character.isMoonDruid) - character.tempHp, true)});
   container.querySelector("#reset-hp").addEventListener("click", () => {onHpChange(character.maxHp - character.hp, false)});
+  const applyAmount = (apply) => {
+    const amount = Math.floor(Number(container.querySelector("#hp-amount").value));
+    if (amount > 0) apply(amount);
+    container.querySelector("#hp-amount").focus();
+  };
+  container.querySelector("[data-hp-adjust]").addEventListener("submit", (event) => {
+    event.preventDefault();
+    applyAmount(onDamage);
+  });
+  container.querySelector("[data-hp-heal]").addEventListener("click", () => applyAmount((amount) => onHpChange(amount, false)));
+  container.querySelectorAll("[data-form-id]").forEach((button) => button.addEventListener("click", () => {
+    onSelectForm(button.dataset.formId);
+    container.scrollTop = 0;
+  }));
   const fullscreenButton = container.querySelector("[data-detail-fullscreen]");
   fullscreenButton.addEventListener("click", () => toggleFullscreen(container));
   updateFullscreenButton(fullscreenButton, wasFullscreen);
@@ -97,17 +113,21 @@ function formatAttacks(actions, features) {
   const combatActions = actions.filter((action) => action.attack || action.save);
   if (!combatActions.length) return "";
   const multiattack = actions.find((action) => action.name === "Multiattack");
-  const multiattackHtml = multiattack ? formatAttackRow(`<strong>Multiattack</strong><span class="attack__summary">${escapeHtml(multiattack.multiattack?.summary ?? multiattack.description)}</span>`, multiattack.multiattack?.note ? [multiattack.multiattack.note] : []) : "";
+  const multiattackHtml = multiattack ? formatAttackRow(`<strong>Multiattack</strong><span class="attack__summary"${multiattack.multiattack ? ` title="${escapeHtml(multiattack.description)}"` : ""}>${escapeHtml(multiattack.multiattack?.summary ?? multiattack.description)}</span>`, multiattack.multiattack?.note ? [multiattack.multiattack.note] : []) : "";
   const rows = combatActions.map((action) => {
     const name = `<strong>${escapeHtml(action.name)}${action.type === "ACTION" ? "" : ` <small>${actionTypeLabel(action.type)}</small>`}</strong>`;
-    if (action.attack) return formatAttackRow(`${name}<span>${formatModifier(action.attack.toHit)}</span><span>${escapeHtml(action.attack.distance)}</span><span>${formatDamageCell(action.attack.damage)}</span>`, action.attack.notes);
-    return formatAttackRow(`${name}<span>DC ${action.save.dc}</span><span>${action.save.ability}</span><span>${formatDamageCell(action.save.damage)}</span>`, action.save.notes);
+    if (action.attack) return formatAttackRow(`${name}<span>${formatModifier(action.attack.toHit)}</span><span>${escapeHtml(action.attack.distance)}</span><span>${formatDamageCell(action.attack.damage)}</span>`, action.attack.notes, action.attack.sources);
+    return formatAttackRow(`${name}<span>DC ${action.save.dc}</span><span>${action.save.ability}</span><span>${formatDamageCell(action.save.damage)}</span>`, action.save.notes, action.save.sources);
   }).join("");
   const featureHtml = features.map((feature) => `<div class="attack__feature"><strong>${escapeHtml(feature.name)}:</strong> ${escapeHtml(feature.text)}</div>`).join("");
   return `<hr /><h3>Attacks</h3><div class="attack-list">${multiattackHtml}${rows}${featureHtml}</div>`;
 }
-function formatAttackRow(mainHtml, notes) {
-  return `<div class="attack"><div class="attack__main">${mainHtml}</div>${notes.map((note) => `<div class="attack__note">${escapeHtml(note)}</div>`).join("")}</div>`;
+function formatAttackRow(mainHtml, notes, sources = {}) {
+  return `<div class="attack"><div class="attack__main">${mainHtml}</div>${notes.map((note) => `<div class="attack__note"${sources[note] ? ` title="${escapeHtml(sources[note])}"` : ""}>${escapeHtml(note)}</div>`).join("")}</div>`;
+}
+function formatKnownFormSwitch(forms, selectedId) {
+  if (!forms.length) return "";
+  return `<div class="known-form-switch">${forms.map((form) => `<button class="known-form-switch__button${form.id === selectedId ? " is-active" : ""}" type="button" data-form-id="${escapeHtml(form.id)}">${escapeHtml(form.name)}</button>`).join("")}</div>`;
 }
 function formatDamageCell(damage) {
   return damage.length ? `${escapeHtml(formatDamage(damage))} <small>(${damage.reduce((sum, part) => sum + part.average, 0)})</small>` : "";

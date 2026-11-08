@@ -1,6 +1,6 @@
 import { getBeasts } from "./data/beast-repository.js";
 import { getCustomForms } from "./data/custom-forms.js";
-import { getKnownFormsCount, getWildshapeLimit, isWildshapeEligible } from "./domain/wildshape.js";
+import { applyDamage, getKnownFormsCount, getWildshapeLimit, isWildshapeEligible } from "./domain/wildshape.js";
 import { abilities, getProficiencyBonus, skillAbilities, skillKey } from "./domain/character.js";
 import { inRange, matchesAll, matchesSearch, meetsMinimums } from "./domain/filters.js";
 import { renderBeastList } from "./ui/beast-list.js";
@@ -22,7 +22,7 @@ const elements = {
   sort: document.querySelector("#sort-select"), direction: document.querySelector("#sort-direction"),
   count: document.querySelector("#result-count"),
   list: document.querySelector("#beast-list"), detail: document.querySelector("#detail-panel"),
-  notes: document.querySelector("#character-notes"),
+  notes: document.querySelector("#character-notes"), characterPanel: document.querySelector(".character-panel"),
 };
 
 for (const control of Object.values(elements))
@@ -47,6 +47,7 @@ for (const ability of abilities) {
   });
 }
 document.querySelector("#reset-filters").addEventListener("click", resetFilters);
+elements.characterPanel.addEventListener("toggle", saveCharacterProfile);
 for (const [toggle, other] of [[elements.primalStrike, elements.potentSpellcasting], [elements.potentSpellcasting, elements.primalStrike]]) {
   toggle.addEventListener("input", () => {
     if (toggle.checked) other.checked = false;
@@ -129,10 +130,23 @@ function render() {
     render();
   }, (id) => toggleBookmark(id));
   const selectedBeast = [...state.beasts, ...customForms].find((beast) => beast.id === state.selectedId);
-  renderBeastDetail(elements.detail, selectedBeast, { ...character, isAboveLimit: Boolean(selectedBeast) && isAboveLimit(selectedBeast) }, (change, isTempHp) => {
-    if (isTempHp) state.tempHp = Math.max(0, state.tempHp + change);
-    else elements.characterHp.value = Math.max(0, (Number(elements.characterHp.value) || 0) + change);
-    render();
+  const bookmarkedForms = availableForms.filter((beast) => state.bookmarks.has(beast.id)).sort((a, b) => a.name.localeCompare(b.name, "en"));
+  renderBeastDetail(elements.detail, selectedBeast, { ...character, isAboveLimit: Boolean(selectedBeast) && isAboveLimit(selectedBeast), knownForms: bookmarkedForms }, {
+    onHpChange: (change, isTempHp) => {
+      if (isTempHp) state.tempHp = Math.max(0, state.tempHp + change);
+      else elements.characterHp.value = Math.max(0, (Number(elements.characterHp.value) || 0) + change);
+      render();
+    },
+    onDamage: (amount) => {
+      const result = applyDamage(Number(elements.characterHp.value) || 0, state.tempHp, amount);
+      elements.characterHp.value = result.hp;
+      state.tempHp = result.tempHp;
+      render();
+    },
+    onSelectForm: (id) => {
+      state.selectedId = id;
+      render();
+    },
   });
 }
 
@@ -279,6 +293,7 @@ function saveCharacterProfile() {
   const values = Object.fromEntries([...characterFieldIds, ...skills.map((skill) => `skill-bonus-${skillKey(skill)}`)].map((id) => [id, document.querySelector(`#${id}`)?.value ?? ""]));
   const profile = {
     values,
+    panelOpen: elements.characterPanel.open,
     moonDruid: elements.moonDruid.checked,
     primalStrike: elements.primalStrike.checked,
     potentSpellcasting: elements.potentSpellcasting.checked,
@@ -306,6 +321,7 @@ function loadCharacterProfile() {
   let profile;
   try { profile = JSON.parse(localStorage.getItem(CHARACTER_PROFILE_STORAGE_KEY) ?? "null"); } catch (error) { return; }
   if (!profile) return;
+  elements.characterPanel.open = profile.panelOpen ?? true;
   for (const [id, value] of Object.entries(profile.values ?? {})) {
     const input = document.querySelector(`#${id}`);
     if (input) input.value = value;
