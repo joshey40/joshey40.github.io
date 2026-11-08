@@ -12,6 +12,10 @@ export function modifier(score) { return Math.floor((score - 10) / 2); }
 
 export function getProficiencyBonus(level) { return level > 0 ? Math.floor((level - 1) / 4) + 2 : 2; }
 
+export function getSpellAttackBonus(proficiencyBonus, wisdom) { return proficiencyBonus + modifier(wisdom); }
+
+export function getSpellSaveDc(proficiencyBonus, wisdom) { return 8 + getSpellAttackBonus(proficiencyBonus, wisdom); }
+
 export function getProficiencyValue(state, proficiencyBonus) {
   if (state === "expertise") return proficiencyBonus * 2;
   if (state === "proficient") return proficiencyBonus;

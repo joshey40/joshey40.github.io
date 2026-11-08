@@ -45,6 +45,10 @@ export function parseSaveAction(description) {
   return { ability: ability.slice(0, 3).toUpperCase(), dc: Number(dc), damage, notes };
 }
 
+export function createDamage(count, sides, bonus, type) {
+  return { average: Math.max(0, Math.floor(count * (sides + 1) / 2) + bonus), dice: `${count}d${sides}${bonus > 0 ? `+${bonus}` : bonus < 0 ? bonus : ""}`, type };
+}
+
 export function formatDamage(damage) {
   return damage.map((part) => `${part.dice ?? part.average} ${part.type}`).join(" + ");
 }

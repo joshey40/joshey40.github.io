@@ -14,6 +14,7 @@ export function getWildshapeLimit(level, isMoonDruid = false) {
 }
 
 export function isWildshapeEligible(beast, level, isMoonDruid = false) {
+  if (beast.challengeRating === null) return isMoonDruid && level >= 3;
   const limit = getWildshapeLimit(level, isMoonDruid);
   return Boolean(limit) && beast.challengeRating <= limit.maxCR && (limit.canFly || !beast.speed.fly);
 }
@@ -32,6 +33,7 @@ export function getWildshapeArmorClass(beast, isMoonDruid, wisdom, bonusAc = 0) 
 }
 
 export function formatCR(cr) {
+  if (cr === null) return "–";
   return ({ 0.125: "1/8", 0.25: "1/4", 0.5: "1/2" }[cr] ?? String(cr));
 }
 

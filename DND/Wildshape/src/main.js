@@ -1,4 +1,5 @@
 import { getBeasts } from "./data/beast-repository.js";
+import { getCustomForms } from "./data/custom-forms.js";
 import { getKnownFormsCount, getWildshapeLimit, isWildshapeEligible } from "./domain/wildshape.js";
 import { abilities, getProficiencyBonus, skillAbilities, skillKey } from "./domain/character.js";
 import { inRange, matchesAll, matchesSearch, meetsMinimums } from "./domain/filters.js";
@@ -96,26 +97,30 @@ function render() {
   if (level < 7) elements.potentSpellcasting.checked = false;
   saveCharacterProfile();
   if (!state.isLoaded) return;
+  const character = readCharacter(level, isMoonDruid);
+  const customForms = getCustomForms(character);
+  const availableForms = [...state.beasts, ...customForms.filter((form) => isWildshapeEligible(form, level, isMoonDruid))];
   const characterLimit = getWildshapeLimit(level, isMoonDruid);
   const useCharacterLimit = elements.crMax.value === "character";
   const resistances = selectedValues(elements.resistance), senseMinimums = rangeMinimums(elements.sense), movementMinimums = rangeMinimums(elements.movement);
   const filters = [
     (beast) => matchesSearch(beast, query, elements.searchDetails.checked),
-    (beast) => inRange(beast.challengeRating, elements.crMin.value, useCharacterLimit ? "" : elements.crMax.value),
+    (beast) => beast.challengeRating === null || inRange(beast.challengeRating, elements.crMin.value, useCharacterLimit ? "" : elements.crMax.value),
     (beast) => inRange(beast.armorClass, elements.acMin.value, elements.acMax.value),
     (beast) => elements.size.value === "all" || beast.size === elements.size.value,
     (beast) => matchesAll(beast.resistances, resistances),
     (beast) => meetsMinimums(beast.senseRanges, senseMinimums),
     (beast) => meetsMinimums(beast.speed, movementMinimums),
   ];
-  const visible = state.beasts.filter((beast) => (!useCharacterLimit || isWildshapeEligible(beast, level, isMoonDruid)) && (state.bookmarks.has(beast.id) || filters.every((matches) => matches(beast))));
+  const visible = availableForms.filter((beast) => (!useCharacterLimit || isWildshapeEligible(beast, level, isMoonDruid)) && (state.bookmarks.has(beast.id) || filters.every((matches) => matches(beast))));
   for (const container of [elements.resistance, elements.sense, elements.movement]) updateMultiSelectCount(container);
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   const knownFormsCount = getKnownFormsCount(level);
+  const bookmarkedCount = [...state.bookmarks].filter((id) => !customForms.some((form) => form.id === id)).length;
   const knownForms = document.createElement("span");
   knownForms.className = "known-forms";
-  knownForms.classList.toggle("is-over-limit", state.bookmarks.size > knownFormsCount);
-  knownForms.textContent = `${state.bookmarks.size}/${knownFormsCount} known form${knownFormsCount === 1 ? "" : "s"}`;
+  knownForms.classList.toggle("is-over-limit", bookmarkedCount > knownFormsCount);
+  knownForms.textContent = `${bookmarkedCount}/${knownFormsCount} known form${knownFormsCount === 1 ? "" : "s"}`;
   elements.count.replaceChildren(`${visible.length} result${visible.length === 1 ? "" : "s"} | `, knownForms);
   const isAboveLimit = (beast) => !isWildshapeEligible(beast, level, isMoonDruid);
   const emptyMessage = useCharacterLimit && !characterLimit ? "Wild Shape is available from Druid Level 2." : "No forms match these filters.";
@@ -123,9 +128,16 @@ function render() {
     state.selectedId = id;
     render();
   }, (id) => toggleBookmark(id));
-  const selectedBeast = state.beasts.find((beast) => beast.id === state.selectedId);
-  renderBeastDetail(elements.detail, selectedBeast, {
-    isAboveLimit: Boolean(selectedBeast) && isAboveLimit(selectedBeast),
+  const selectedBeast = [...state.beasts, ...customForms].find((beast) => beast.id === state.selectedId);
+  renderBeastDetail(elements.detail, selectedBeast, { ...character, isAboveLimit: Boolean(selectedBeast) && isAboveLimit(selectedBeast) }, (change, isTempHp) => {
+    if (isTempHp) state.tempHp = Math.max(0, state.tempHp + change);
+    else elements.characterHp.value = Math.max(0, (Number(elements.characterHp.value) || 0) + change);
+    render();
+  });
+}
+
+function readCharacter(level, isMoonDruid) {
+  return {
     hp: Number(elements.characterHp.value) || 0,
     maxHp: Number(elements.characterMaxHp.value) || 0,
     tempHp: state.tempHp,
@@ -143,11 +155,7 @@ function render() {
     skillProficiencies: proficiencyStates("skill"),
     skillBonuses: Object.fromEntries(skills.map((skill) => [skillKey(skill), Number(document.querySelector(`#skill-bonus-${skillKey(skill)}`).value) || 0])),
     notes: elements.notes.value,
-  }, (change, isTempHp) => {
-    if (isTempHp) state.tempHp = Math.max(0, state.tempHp + change);
-    else elements.characterHp.value = Math.max(0, (Number(elements.characterHp.value) || 0) + change);
-    render();
-  });
+  };
 }
 
 function keysFor(property) { return [...new Set(state.beasts.flatMap((beast) => Object.keys(beast[property])))].sort(); }

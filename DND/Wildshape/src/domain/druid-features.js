@@ -1,4 +1,5 @@
-import { modifier } from "./character.js";
+import { createDamage } from "./attacks.js";
+import { getSpellAttackBonus, modifier } from "./character.js";
 
 const moonlightStep ="You can use a bonus action to teleport up to 30 feet to an unoccupied space you can see, and you have Advantage on the next attack roll you make before the end of this turn.";
 const moonlightStepUses = (character) => {
@@ -39,9 +40,9 @@ export function getSpellAttacks(character) {
     type: "CANTRIP",
     attack: {
       kind: "Ranged",
-      toHit: character.proficiencyBonus + modifier(character.abilities?.wis ?? 10),
+      toHit: getSpellAttackBonus(character.proficiencyBonus, character.abilities?.wis ?? 10),
       distance: `${range} ft.`,
-      damage: [{ average: Math.max(0, Math.floor(dice * 4.5) + bonus), dice: `${dice}d8${bonus > 0 ? `+${bonus}` : bonus < 0 ? bonus : ""}`, type: "Radiant" }],
+      damage: [createDamage(dice, 8, bonus, "Radiant")],
       notes: [],
     },
   }];
