@@ -589,6 +589,8 @@ input:focus, select:focus {
   outline: none;
 }
 .form-tab.is-active {
+  position: relative;
+  z-index: 1;
   padding-top: .6rem;
   padding-bottom: .6rem;
   color: var(--accent);
@@ -645,9 +647,11 @@ input:focus, select:focus {
 }
 .stat span small { font-size: .78rem; }
 .stat strong { font-size: 1.08rem; }
+.vital-grid { margin-bottom: 0; }
 .ability-grid {
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: .4rem;
+  margin-top: .55rem;
 }
 .ability-grid .stat { padding: .4rem .45rem; }
 .ability-grid .stat strong {

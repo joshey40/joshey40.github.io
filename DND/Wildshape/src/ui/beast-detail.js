@@ -41,11 +41,12 @@ export function renderBeastDetail(container, beast, character, { onHpChange, onD
   ];
   const traits = [...getDruidTraits(character), ...(beast.traits ?? [])];
   const wasFullscreen = container.classList.contains("is-fullscreen");
+  const previousTabPositions = new Map([...container.querySelectorAll("[data-tab-id]")].map((tab) => [tab.dataset.tabId, tab.getBoundingClientRect().left]));
   container.innerHTML = `
     <div class="detail-title"><div class="detail-heading">${formatFormTabs(beast, character.knownForms)}<h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)}${beast.challengeRating === null ? "" : " Beast"} · ${escapeHtml(formatSpeed(beast.speed, beast.speedUnit, ", "))}</p></div><div class="detail-title-actions"><span class="tag${character.isAboveLimit ? ' is-above-limit" title="Not available at your Druid level' : ""}">CR ${formatCR(beast.challengeRating)}</span><button class="detail-fullscreen-button" type="button" data-detail-fullscreen aria-label="Open Beast detail in fullscreen" title="Open fullscreen">⛶</button></div></div>
     <div class="detail-columns">
       <div class="detail-column detail-column--stats">
-        <div class="stat-grid">
+        <div class="stat-grid vital-grid">
           <div class="stat"><span>AC</span><strong>${getWildshapeArmorClass(beast, character.isMoonDruid, character.abilities.wis, character.bonusAc)}</strong></div>
           <div class="stat resource-stat"><span>HP <small>/ ${character.maxHp || "-"}</small></span><div class="resource-control"><button class="resource-button" type="button" data-hp-change="-1" aria-label="Decrease hit points" title="Decrease HP by 1">-</button><strong>${character.hp}</strong><button class="resource-button" type="button" data-hp-change="1" aria-label="Increase hit points" title="Increase HP by 1">+</button><button class="resource-button" type="button" id="reset-hp" aria-label="Reset hit points" title="Reset HP to Max HP">↺</button></div></div>
           <div class="stat resource-stat"><span>Temp HP</span><div class="resource-control"><button class="resource-button" type="button" data-temp-hp-change="-1" aria-label="Decrease temporary hit points" title="Decrease Temp HP by 1">-</button><strong>${character.tempHp}</strong><button class="resource-button" type="button" data-temp-hp-change="1" aria-label="Increase temporary hit points" title="Increase Temp HP by 1">+</button><button class="resource-button" type="button" id="reset-temp-hp" aria-label="Reset temporary hit points" title="Set Temp HP to ${getWildshapeTempHp(character.druidLevel, character.isMoonDruid)} for a new Wild Shape">↺</button></div></div>
@@ -87,6 +88,7 @@ export function renderBeastDetail(container, beast, character, { onHpChange, onD
   const fullscreenButton = container.querySelector("[data-detail-fullscreen]");
   fullscreenButton.addEventListener("click", () => toggleFullscreen(container));
   updateFullscreenButton(fullscreenButton, wasFullscreen);
+  animateTabs(container, previousTabPositions);
 }
 
 function toggleFullscreen(container) {
@@ -125,7 +127,14 @@ function formatAttackRow(mainHtml, notes, sources = {}) {
 }
 function formatFormTabs(beast, knownForms) {
   const others = knownForms.filter((form) => form.id !== beast.id);
-  return `<nav class="form-tabs" aria-label="Known forms"><span class="form-tab is-active" aria-current="page">${escapeHtml(beast.name)}</span>${others.map((form) => `<button class="form-tab" type="button" data-form-id="${escapeHtml(form.id)}">${escapeHtml(form.name)}</button>`).join("")}</nav>`;
+  return `<nav class="form-tabs" aria-label="Known forms"><span class="form-tab is-active" aria-current="page" data-tab-id="${escapeHtml(beast.id)}">${escapeHtml(beast.name)}</span>${others.map((form) => `<button class="form-tab" type="button" data-form-id="${escapeHtml(form.id)}" data-tab-id="${escapeHtml(form.id)}">${escapeHtml(form.name)}</button>`).join("")}</nav>`;
+}
+function animateTabs(container, previousPositions) {
+  if (!previousPositions.size || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  for (const tab of container.querySelectorAll("[data-tab-id]")) {
+    const offset = previousPositions.get(tab.dataset.tabId) - tab.getBoundingClientRect().left;
+    if (offset) tab.animate([{ transform: `translateX(${offset}px)` }, { transform: "none" }], { duration: 350, easing: "ease-out" });
+  }
 }
 function formatDamageCell(damage) {
   return damage.length ? `${escapeHtml(formatDamage(damage))} <small>(${damage.reduce((sum, part) => sum + part.average, 0)})</small>` : "";
