@@ -7,19 +7,23 @@ const CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
 /** Returns all Beasts. Adapt only this file if the API changes. */
 export async function getBeasts() {
-  if (USE_MOCK_DATA) return mockBeasts.map(toBeast);
+  if (USE_MOCK_DATA) return toBeasts(mockBeasts);
   // The raw API response is cached, so changes to toBeast also apply to cached data.
   const cache = readCache();
-  if (cache && Date.now() - cache.savedAt < CACHE_MAX_AGE_MS) return cache.results.map(toBeast);
+  if (cache && Date.now() - cache.savedAt < CACHE_MAX_AGE_MS) return toBeasts(cache.results);
   try {
     const results = await fetchAllPages();
     writeCache(results);
-    return results.map(toBeast);
+    return toBeasts(results);
   } catch (error) {
     if (!cache) throw error;
     console.warn("Could not refresh Beasts, using cached data:", error);
-    return cache.results.map(toBeast);
+    return toBeasts(cache.results);
   }
+}
+
+function toBeasts(results) {
+  return results.filter((beast) => !/^swarm of /i.test(beast.name ?? "")).map(toBeast);
 }
 
 async function fetchAllPages() {

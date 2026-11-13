@@ -117,7 +117,7 @@ function render() {
   for (const container of [elements.resistance, elements.sense, elements.movement]) updateMultiSelectCount(container);
   visible.sort(comparator(elements.sort.value, state.sortDirection));
   const knownFormsCount = getKnownFormsCount(level);
-  const bookmarkedCount = [...state.bookmarks].filter((id) => !customForms.some((form) => form.id === id)).length;
+  const bookmarkedCount = state.beasts.filter((beast) => state.bookmarks.has(beast.id) && isWildshapeEligible(beast, level, isMoonDruid)).length;
   const knownForms = document.createElement("span");
   knownForms.className = "known-forms";
   knownForms.classList.toggle("is-over-limit", bookmarkedCount > knownFormsCount);
