@@ -42,8 +42,7 @@ export function renderBeastDetail(container, beast, character, { onHpChange, onD
   const traits = [...getDruidTraits(character), ...(beast.traits ?? [])];
   const wasFullscreen = container.classList.contains("is-fullscreen");
   container.innerHTML = `
-    <div class="detail-title"><div><h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)}${beast.challengeRating === null ? "" : " Beast"}</p></div><div class="detail-title-actions"><span class="tag${character.isAboveLimit ? ' is-above-limit" title="Not available at your Druid level' : ""}">CR ${formatCR(beast.challengeRating)}</span><button class="detail-fullscreen-button" type="button" data-detail-fullscreen aria-label="Open Beast detail in fullscreen" title="Open fullscreen">⛶</button></div></div>
-    ${formatKnownFormSwitch(character.knownForms, beast.id)}
+    <div class="detail-title"><div class="detail-heading">${formatFormTabs(beast, character.knownForms)}<h2>${escapeHtml(beast.name)}</h2><p class="header-copy">${escapeHtml(beast.size)}${beast.challengeRating === null ? "" : " Beast"} · ${escapeHtml(formatSpeed(beast.speed, beast.speedUnit, ", "))}</p></div><div class="detail-title-actions"><span class="tag${character.isAboveLimit ? ' is-above-limit" title="Not available at your Druid level' : ""}">CR ${formatCR(beast.challengeRating)}</span><button class="detail-fullscreen-button" type="button" data-detail-fullscreen aria-label="Open Beast detail in fullscreen" title="Open fullscreen">⛶</button></div></div>
     <div class="detail-columns">
       <div class="detail-column detail-column--stats">
         <div class="stat-grid">
@@ -51,9 +50,8 @@ export function renderBeastDetail(container, beast, character, { onHpChange, onD
           <div class="stat resource-stat"><span>HP <small>/ ${character.maxHp || "-"}</small></span><div class="resource-control"><button class="resource-button" type="button" data-hp-change="-1" aria-label="Decrease hit points" title="Decrease HP by 1">-</button><strong>${character.hp}</strong><button class="resource-button" type="button" data-hp-change="1" aria-label="Increase hit points" title="Increase HP by 1">+</button><button class="resource-button" type="button" id="reset-hp" aria-label="Reset hit points" title="Reset HP to Max HP">↺</button></div></div>
           <div class="stat resource-stat"><span>Temp HP</span><div class="resource-control"><button class="resource-button" type="button" data-temp-hp-change="-1" aria-label="Decrease temporary hit points" title="Decrease Temp HP by 1">-</button><strong>${character.tempHp}</strong><button class="resource-button" type="button" data-temp-hp-change="1" aria-label="Increase temporary hit points" title="Increase Temp HP by 1">+</button><button class="resource-button" type="button" id="reset-temp-hp" aria-label="Reset temporary hit points" title="Set Temp HP to ${getWildshapeTempHp(character.druidLevel, character.isMoonDruid)} for a new Wild Shape">↺</button></div></div>
           <form class="stat hp-adjust" data-hp-adjust><input id="hp-amount" type="number" min="1" placeholder="Amount" aria-label="Damage or healing amount" /><button class="hp-adjust__button" type="submit" title="Subtract from Temp HP first, then HP">Damage</button><button class="hp-adjust__button" type="button" data-hp-heal title="Add to HP">Heal</button></form>
-          <div class="stat speed-stat"><span>Speed</span><strong>${formatSpeed(beast.speed, beast.speedUnit, ", ")}</strong></div>
         </div>
-        <div class="stat-grid">${abilityHtml}</div>
+        <div class="stat-grid ability-grid">${abilityHtml}</div>
         ${formatAttacks([...beast.actions, ...getSpellAttacks(character)], getAttackFeatures(character))}
         <hr /><h3>Saving Throws</h3><div class="bonus-grid saving-grid">${savingThrowHtml}</div>
         <hr /><h3>Skills</h3><div class="bonus-grid check-grid">${abilityCheckHtml}</div>
@@ -125,9 +123,9 @@ function formatAttacks(actions, features) {
 function formatAttackRow(mainHtml, notes, sources = {}) {
   return `<div class="attack"><div class="attack__main">${mainHtml}</div>${notes.map((note) => `<div class="attack__note"${sources[note] ? ` title="${escapeHtml(sources[note])}"` : ""}>${escapeHtml(note)}</div>`).join("")}</div>`;
 }
-function formatKnownFormSwitch(forms, selectedId) {
-  if (!forms.length) return "";
-  return `<div class="known-form-switch">${forms.map((form) => `<button class="known-form-switch__button${form.id === selectedId ? " is-active" : ""}" type="button" data-form-id="${escapeHtml(form.id)}">${escapeHtml(form.name)}</button>`).join("")}</div>`;
+function formatFormTabs(beast, knownForms) {
+  const others = knownForms.filter((form) => form.id !== beast.id);
+  return `<nav class="form-tabs" aria-label="Known forms"><span class="form-tab is-active" aria-current="page">${escapeHtml(beast.name)}</span>${others.map((form) => `<button class="form-tab" type="button" data-form-id="${escapeHtml(form.id)}">${escapeHtml(form.name)}</button>`).join("")}</nav>`;
 }
 function formatDamageCell(damage) {
   return damage.length ? `${escapeHtml(formatDamage(damage))} <small>(${damage.reduce((sum, part) => sum + part.average, 0)})</small>` : "";

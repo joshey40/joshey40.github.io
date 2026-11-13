@@ -10,6 +10,7 @@
   --border: #666;
   --border-subtle: #414141;
   --danger: #ef8a7a;
+  --fullscreen-padding: clamp(1rem, 1vw, 2.5rem);
 
   color-scheme: dark;
   font-family: system-ui, sans-serif;
@@ -529,7 +530,7 @@ input:focus, select:focus {
   margin: 0;
   border: 0;
   border-radius: 0;
-  padding: clamp(1rem, 1vw, 2.5rem);
+  padding: var(--fullscreen-padding);
 }
 .detail-panel.is-fullscreen .detail-columns {
   display: flex;
@@ -555,6 +556,49 @@ input:focus, select:focus {
 }
 .detail-title p { margin-top: 0; }
 .detail-title .header-copy { margin-bottom: .25rem; }
+.detail-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.form-tabs {
+  display: none;
+  align-items: flex-start;
+  gap: .4rem;
+  margin: calc(-1 * var(--fullscreen-padding)) 0 .45rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.form-tab {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: .45rem .9rem .5rem;
+  color: var(--text-muted);
+  background: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+  border-top: 0;
+  border-radius: 0 0 .5rem .5rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 650;
+}
+.form-tab:hover, .form-tab:focus-visible {
+  color: var(--text);
+  border-color: var(--accent);
+  outline: none;
+}
+.form-tab.is-active {
+  padding-top: .6rem;
+  padding-bottom: .6rem;
+  color: var(--accent);
+  background: #222722;
+  border-color: var(--accent);
+  font-size: 1.05rem;
+  cursor: default;
+}
+.detail-panel.is-fullscreen .form-tabs { display: flex; }
+.detail-panel.is-fullscreen .detail-heading h2 { display: none; }
 .detail-title-actions {
   display: flex;
   align-items: center;
@@ -601,7 +645,15 @@ input:focus, select:focus {
 }
 .stat span small { font-size: .78rem; }
 .stat strong { font-size: 1.08rem; }
-.speed-stat { grid-column: 1 / -1; }
+.ability-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: .4rem;
+}
+.ability-grid .stat { padding: .4rem .45rem; }
+.ability-grid .stat strong {
+  font-size: .95rem;
+  white-space: nowrap;
+}
 
 .resource-stat { min-width: 0; }
 .resource-control {
@@ -637,7 +689,7 @@ input:focus, select:focus {
   min-width: 0;
   padding: .35rem .5rem;
 }
-.hp-adjust__button, .known-form-switch__button {
+.hp-adjust__button {
   padding: .35rem .7rem;
   color: inherit;
   background: var(--button-bg);
@@ -647,23 +699,10 @@ input:focus, select:focus {
   font: inherit;
   font-size: .85rem;
 }
-.hp-adjust__button:hover, .hp-adjust__button:focus-visible,
-.known-form-switch__button:hover, .known-form-switch__button:focus-visible {
+.hp-adjust__button:hover, .hp-adjust__button:focus-visible {
   border-color: var(--accent);
   outline: 2px solid var(--accent);
   outline-offset: 1px;
-}
-
-.known-form-switch {
-  display: none;
-  flex-wrap: wrap;
-  gap: .35rem;
-  margin-top: .5rem;
-}
-.detail-panel.is-fullscreen .known-form-switch { display: flex; }
-.known-form-switch__button.is-active {
-  color: var(--accent);
-  border-color: var(--accent);
 }
 
 .bonus-grid {
@@ -796,7 +835,7 @@ input:focus, select:focus {
 
 @media (max-width: 480px) {
   .character-details, .controls, .filter-main, .multi-filter-row { grid-template-columns: 1fr; }
-  .ability-fields, .saving-options, .skill-options { grid-template-columns: repeat(3, 1fr); }
+  .ability-fields, .saving-options, .skill-options, .ability-grid { grid-template-columns: repeat(3, 1fr); }
   .ability-fields, .saving-fields { grid-column: span 1; }
   .sort-control { grid-template-columns: 1fr; }
 }
